@@ -31,6 +31,8 @@ use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
 use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequestCIE;
 use SPID_CIE_OIDC_PHP\OIDC\TokenRequest;
 use SPID_CIE_OIDC_PHP\OIDC\UserinfoRequest;
+use SPID_CIE_OIDC_PHP\OIDC\IntrospectionRequest;
+use SPID_CIE_OIDC_PHP\OIDC\RevocationRequest;
 
 $f3 = \Base::instance();
 
@@ -87,9 +89,9 @@ $f3->set('ONERROR', function ($f3) {
 
 
 
-/**
- * routes
- */
+//----------------------------------------------------------------------------------------
+// Routes
+//----------------------------------------------------------------------------------------
 
 $f3->route('GET /.well-known/openid-federation', function ($f3) {
     $config = $f3->get("CONFIG");
@@ -109,6 +111,22 @@ $f3->route('GET /oidc/rp/authz', function ($f3) {
     $logger = $f3->get("LOGGER");
 
     $logger->log('VIEW', 'GET /oidc/rp/authz');
+
+    $auth = $f3->get('SESSION.auth');
+    if (
+        $auth != null
+        && $auth['userinfo'] != null
+        && $auth['redirect_uri'] != null
+        && $auth['state'] != null
+    ) {
+        $userinfoResponse = $auth['userinfo'];
+        $redirect_uri = $auth['redirect_uri'];
+        $state = $auth['state'];
+        $responseHandlerClass = $config->rp_response_handler;
+        $responseHandler = new $responseHandlerClass($config);
+        $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
+        die();
+    }
 
     $f3->set('baseurl', '/' . $config->service_name);
     echo View::instance()->render('view/login.php');
@@ -207,6 +225,14 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
         $userinfoRequest = new UserinfoRequest($config, $op_metadata->{$op}->openid_provider);
         $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
 
+        $f3->set('SESSION.auth', array(
+            "op" => $op,
+            "access_token" => $access_token,
+            "redirect_uri" => $redirect_uri,
+            "userinfo" => $userinfoResponse,
+            "state" => $state
+        ));
+
         $responseHandlerClass = $config->rp_response_handler;
         $responseHandler = new $responseHandlerClass($config);
         $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
@@ -215,10 +241,57 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     }
 });
 
+$f3->route('GET /oidc/rp/introspection', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_metadata = $f3->get("OP_METADATA");
+    $auth = $f3->get("SESSION.auth");
+
+    $op = $auth['op'];
+    $access_token = $auth['access_token'];
+
+    if ($access_token == null) {
+        $f3->error("Session not found");
+    }
+
+    // TODO : federation
+    $introspection_endpoint = $op_metadata->{$op}->openid_provider->introspection_endpoint;
+
+    $introspectionRequest = new IntrospectionRequest($config);
+    $introspectionResponse = $introspectionRequest->send($introspection_endpoint, $access_token);
+
+    header('ContentType: application/json');
+    echo json_encode($introspectionResponse);
+});
+
+$f3->route('GET /oidc/rp/logout', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_metadata = $f3->get("OP_METADATA");
+    $auth = $f3->get("SESSION.auth");
+
+    $op = $auth['op'];
+    $access_token = $auth['access_token'];
+
+    if ($access_token == null) {
+        $f3->reroute('/oidc/rp/authz');
+    }
+
+    // TODO : federation
+    $revocation_endpoint = $op_metadata->{$op}->openid_provider->revocation_endpoint;
+
+    try {
+        $revocationRequest = new RevocationRequest($config);
+        $revocationResponse = $revocationRequest->send($revocation_endpoint, $access_token);
+    } catch (Exception $e) {
+        // do not null
+    } finally {
+        $f3->clear('SESSION.auth');
+    }
+
+    $f3->reroute('/oidc/rp/authz');
+});
+
+//----------------------------------------------------------------------------------------
 
 
-/*
-TODO : /oidc/rp/logout
-*/
 
 $f3->run();
