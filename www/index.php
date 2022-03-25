@@ -21,7 +21,7 @@
  * @author     Michele D'Amico <michele.damico@linfaservice.it>
  * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
- 
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use SPID_CIE_OIDC_PHP\Core\Database;
