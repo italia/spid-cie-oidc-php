@@ -147,6 +147,7 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
     );
 
     // exec hooks pre_authorization_request
+    /*
     $hooks_pre = $hooks->pre_authorization_request;
     if ($hooks_pre != null && is_array($hooks_pre)) {
         foreach ($hooks_pre as $hpreClass) {
@@ -161,6 +162,7 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
             ));
         }
     }
+    */
 
     $f3->reroute($authenticationRequestURL);
 });

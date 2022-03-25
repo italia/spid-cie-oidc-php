@@ -28,7 +28,7 @@ class Util
 {
     public static function getRandomCode($length = 64)
     {
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._"; //~";
         $random = substr(str_shuffle($chars), 0, $length);
         return $random;
     }

@@ -126,7 +126,7 @@ class JWT
 
         $serializer = new JWSSerializer();
         $token = $serializer->serialize($jws, 0);
-
+        //$token = Util::fixPadding($token);
         return $token;
     }
 
