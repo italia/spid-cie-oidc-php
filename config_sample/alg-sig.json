@@ -1,0 +1,17 @@
+{
+    "HS256": "Jose\\Component\\Signature\\Algorithm\\HS256",
+    "HS384": "Jose\\Component\\Signature\\Algorithm\\HS384",
+    "HS512": "Jose\\Component\\Signature\\Algorithm\\HS512",
+
+    "RS256": "Jose\\Component\\Signature\\Algorithm\\RS256",
+    "RS384": "Jose\\Component\\Signature\\Algorithm\\RS384",
+    "RS512": "Jose\\Component\\Signature\\Algorithm\\RS512",
+
+    "PS256": "Jose\\Component\\Signature\\Algorithm\\PS256",
+    "PS384": "Jose\\Component\\Signature\\Algorithm\\PS384",
+    "PS512": "Jose\\Component\\Signature\\Algorithm\\PS512",
+
+    "ES256": "Jose\\Component\\Signature\\Algorithm\\ES256",
+    "ES384": "Jose\\Component\\Signature\\Algorithm\\ES384",
+    "ES512": "Jose\\Component\\Signature\\Algorithm\\ES512"
+}

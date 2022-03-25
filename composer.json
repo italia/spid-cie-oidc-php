@@ -1,0 +1,71 @@
+{
+    "name": "italia/spid-cie-oidc-php",
+    "description": "SPID CIE OIDC PHP",
+    "type": "project",
+    "config": {
+        "version": "0.1.0"
+    },
+    "repositories": {
+        "spid-sp-access-button": {
+            "type": "package",
+            "package": {
+                "name": "italia/spid-sp-access-button",
+                "version": "1.0.0",
+                "source": {
+                    "url": "https://github.com/italia/spid-sp-access-button",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    },
+    "require": {
+        "php": "~7.4.1",
+        "ext-mbstring": "*",
+        "ext-gmp": "*",
+        "lib-openssl": "^1.1.1",
+        "symfony/filesystem": "^5.2.6",
+        "italia/spid-sp-access-button": "^1.0.0",
+        "bcosca/fatfree": "^3.7",
+        "guzzlehttp/guzzle": "^7.0",
+        "web-token/jwt-core": "^2.2.11",
+        "web-token/jwt-key-mgmt": "^2.2.11",
+        "web-token/jwt-signature": "^2.2.11",
+        "web-token/jwt-signature-algorithm-rsa": "^2.2.11",
+        "web-token/jwt-signature-algorithm-hmac": "^2.2.11",     
+        "web-token/jwt-signature-algorithm-ecdsa": "^2.2.11",
+        "web-token/jwt-encryption": "^2.2.11", 
+        "web-token/jwt-encryption-algorithm-aeskw": "^2.2.11",
+        "web-token/jwt-encryption-algorithm-aesgcmkw": "^2.2.11",
+        "web-token/jwt-encryption-algorithm-rsa": "^2.2.11",
+        "web-token/jwt-encryption-algorithm-pbes2": "^2.2.11",
+        "web-token/jwt-encryption-algorithm-aesgcm": "^2.2.11",
+        "web-token/jwt-encryption-algorithm-aescbc": "^2.2.11"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.*",
+        "phpunit/phpunit": "^9.5",
+        "rregeer/phpunit-coverage-check": "*"
+    },
+    "autoload": {
+        "psr-4": {"SPID_CIE_OIDC_PHP\\": "lib/"}
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "SPID_CIE_OIDC_PHP\\Setup\\Setup::setup"
+        ],
+        "uninstall": [
+            "SPID_CIE_OIDC_PHP\\Setup\\Setup::remove"
+        ]
+    },
+    "scripts-descriptions": {
+        "uninstall": "Remove all packages and custom configurations"
+    },    
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Michele D'Amico",
+            "email": "michele.damico@linfaservice.it"
+        }
+    ]
+}

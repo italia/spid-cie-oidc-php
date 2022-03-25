@@ -1,0 +1,9 @@
+{
+    "A256KW": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\A256KW",
+    "A256GCMKW": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\A256GCMKW",
+    "PBES2-HS256+A128KW": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\PBES2HS256A128KW",
+    "PBES2-HS384+A192KW": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\PBES2HS384A192KW",
+    "PBES2-HS512+A256KW": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\PBES2HS512A256KW",
+    "RSA-OAEP": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\RSAOAEP",
+    "RSA-OAEP-256": "Jose\\Component\\Encryption\\Algorithm\\KeyEncryption\\RSAOAEP256"
+}

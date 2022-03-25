@@ -1,0 +1,33 @@
+{
+    "production": false,
+    "install_dir": "./",
+    "www_dir": "../public_html",
+    "service_name": "oidc",
+    "rp_client_id": "https://rp.it",
+    "rp_client_name": "Relying Party PHP",
+    "rp_authority_hint": "http://127.0.0.1:8000/",
+    "rp_contact": "rp@example.it",
+    "rp_is_pa": true,
+    "rp_code": "c_ipa",
+    "rp_code_type": "IPACode",
+    "rp_organization_identifier": "PA:IT-c_ipa",
+    "rp_country_name": "IT",
+    "rp_locality_name": "Rome",
+    "rp_email": "info@organization.org",
+    "rp_telephone": "+3912345678",
+    "rp_cert_private": "./cert/rp.pem",
+    "rp_cert_public": "./cert/rp.crt",
+    "rp_requested_acr": [
+        3,
+        2,
+        1
+    ],
+    "rp_spid_user_attributes": [
+        "name",
+        "familyName",
+        "email",
+        "fiscalNumber"
+    ],
+    "rp_redirect_uri": "https://rp.it/oidc/test.php",
+    "rp_response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
+}

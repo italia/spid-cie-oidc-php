@@ -1,0 +1,17 @@
+{
+    "pre_authorization_request": [
+
+    ],
+    "pre_token_request": [
+
+    ],
+    "post_token_request": [
+
+    ],
+    "pre_userinfo_request": [
+
+    ],
+    "post_userinfo_request": [
+        
+    ]
+}

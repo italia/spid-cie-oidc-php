@@ -1,10 +1,13 @@
 # SPID/CIE OIDC Federation Relying Party, for PHP
 
+[![spid-cie-oidc-php CI](https://github.com/damikael/spid-cie-oidc-php/actions/workflows/ci.yml/badge.svg)](https://github.com/damikael/spid-cie-oidc-php/actions/workflows/ci.yml)
 ![Apache license](https://img.shields.io/badge/license-Apache%202-blue.svg)
 [![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
 [![Join the #spid openid](https://img.shields.io/badge/Slack%20channel-%23spid%20openid-blue.svg)](https://developersitalia.slack.com/archives/C7E85ED1N/)
 
 > ⚠️ This project is a WiP
+
+<img src="doc/spid-cie-oidc-php.gif" width="500" />
 
 The SPID/CIE OIDC Federation Relying Party, for PHP
 
@@ -12,8 +15,7 @@ The SPID/CIE OIDC Federation Relying Party, for PHP
 
 * [Features](#features)
 * [Setup](#setup)
-* [Docker compose](#docker-compose)
-* [Usage](#usage)
+* [Docker](#docker)
 * [Contribute](#contribute)
     * [Contribute as end user](#contribute-as-end-user)
     * [Contribute as developer](#contribute-as-developer)
@@ -22,19 +24,27 @@ The SPID/CIE OIDC Federation Relying Party, for PHP
 
 ## Features
 
-> TODO: WiP
+- Interactive setup
+- Wizard for certificates generation
+- Bootstrap template
+- Hooks plugins
+- Simple API
+- Proxy functions
+- Ready to use
 
 ## Setup
 
-> TODO: WiP
+```
+git clone https://github.com/italia/spid-cie-oidc-php.git
+composer install
+```
+After setup go to /<i>service_name</i>/oidc/rp/authz
+where <i>service_name</i> is the service name configured during setup
 
-## Docker compose
+## Docker
 
 > TODO: Not available until v1.0.0 release
 
-## Usage
-
-> TODO: WiP
 
 ## Contribute
 
