@@ -40,13 +40,22 @@ class UserinfoRequest
      *
      * @param object $config base configuration
      * @param object $op_metadata provider metadata
+     * @param object $hooks hooks defined list
      * @throws Exception
      * @return UserinfoRequest
      */
-    public function __construct(object $config, object $op_metadata)
+    public function __construct(object $config, object $op_metadata, object $hooks = null)
     {
         $this->config = $config;
         $this->op_metadata = $op_metadata;
+        $this->hooks = $hooks;
+
+        $this->http_client = new Client([
+            'allow_redirects' => true,
+            'timeout' => 15,
+            'debug' => false,
+            'http_errors' => false
+        ]);
     }
 
     /**
@@ -59,14 +68,21 @@ class UserinfoRequest
      */
     public function send(string $userinfo_endpoint, string $access_token)
     {
-        $client = new Client([
-            'allow_redirects' => true,
-            'timeout' => 15,
-            'debug' => false,
-            'http_errors' => false
-        ]);
+        // HOOK: pre_userinfo_request
+        if ($this->hooks != null) {
+            $hooks_pre = $this->hooks->pre_userinfo_request;
+            if ($hooks_pre != null && is_array($hooks_pre)) {
+                foreach ($hooks_pre as $hpreClass) {
+                    $hpre = new $hpreClass($config);
+                    $hpre->run(array(
+                        "userinfo_endpoint" => $userinfo_endpoint,
+                        "access_token" => $access_token
+                    ));
+                }
+            }
+        }
 
-        $response = $client->get($userinfo_endpoint, ['headers' => [ 'Authorization' => 'Bearer ' . $access_token ]]);
+        $response = $this->http_client->get($userinfo_endpoint, ['headers' => [ 'Authorization' => 'Bearer ' . $access_token ]]);
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();
@@ -74,6 +90,19 @@ class UserinfoRequest
         }
 
         $jwe = $response->getBody()->getContents();
+
+        // HOOK: post_userinfo_request
+        if ($this->hooks != null) {
+            $hooks_pre = $this->hooks->post_userinfo_request;
+            if ($hooks_pre != null && is_array($hooks_pre)) {
+                foreach ($hooks_pre as $hpreClass) {
+                    $hpre = new $hpreClass($config);
+                    $hpre->run(array(
+                        "response" => $jwe
+                    ));
+                }
+            }
+        }
 
         $file_key = $this->config->rp_cert_private;
         $jws = JWT::decryptJWE($jwe, $file_key);

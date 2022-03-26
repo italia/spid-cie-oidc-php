@@ -1,10 +1,10 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database",
-            "name": "Database",
-            "summary": "Provides\u0020functions\u0020to\u0020saves\u0020and\u0020retrieves\u0020data\u0020from\u0020a\u0020SQLite\u0020storage\u0020database",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html"
+                    "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database",
+                    "name": "Database",
+                    "summary": "Provides\u0020functions\u0020to\u0020saves\u0020and\u0020retrieves\u0020data\u0020from\u0020a\u0020SQLite\u0020storage\u0020database",
+                    "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
@@ -195,6 +195,11 @@ Search.appendIndex(
             "name": "getRedirectURL",
             "summary": "creates\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider\u0020to\u0020which\u0020redirect\u0020the\u0020user",
             "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequestCIE.html#method_getRedirectURL"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequestCIE\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "redirect\u0020the\u0020browser\u0020with\u0020the\u0020authentication\u0020request\u0020to\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequestCIE.html#method_send"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\IntrospectionRequest",
             "name": "IntrospectionRequest",

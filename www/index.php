@@ -154,8 +154,8 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
     // TODO : federation
     $authorization_endpoint = $op_metadata->{$op}->openid_provider->authorization_endpoint;
 
-    $authenticationRequest = new AuthenticationRequestCIE($config);
-    $authenticationRequestURL = $authenticationRequest->getRedirectURL(
+    $authenticationRequest = new AuthenticationRequestCIE($config, $hooks);
+    $authenticationRequestURL = $authenticationRequest->send(
         $authorization_endpoint,
         $acr,
         $user_attributes,
@@ -163,30 +163,13 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
         $nonce,
         Util::base64UrlEncode(str_pad($req_id, 32))
     );
-
-    // HOOK: pre_authorization_request
-    $hooks_pre = $hooks->pre_authorization_request;
-    if ($hooks_pre != null && is_array($hooks_pre)) {
-        foreach ($hooks_pre as $hpreClass) {
-            $hpre = new $hpreClass($config);
-            $hpre->run(array(
-                "authorization_endpoint" => $authorization_endpoint,
-                "acr" => $acr,
-                "user_attributes" => $user_attributes,
-                "code_verifier" => $code_verifier,
-                "nonce" => $nonce,
-                "authentication_request_url" => $authenticationRequestURL
-            ));
-        }
-    }
-
-    $f3->reroute($authenticationRequestURL);
 });
 
 $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_metadata = $f3->get("OP_METADATA");
     $db = $f3->get("DB");
+    $hooks = $f3->get("HOOKS");
     $logger = $f3->get("LOGGER");
 
     $logger->log('OIDC', 'GET /oidc/rp/redirect');
@@ -216,11 +199,11 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $userinfo_endpoint = $op_metadata->{$op}->openid_provider->userinfo_endpoint;
 
     try {
-        $tokenRequest = new TokenRequest($config);
+        $tokenRequest = new TokenRequest($config, $hooks);
         $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
         $access_token = $tokenResponse->access_token;
 
-        $userinfoRequest = new UserinfoRequest($config, $op_metadata->{$op}->openid_provider);
+        $userinfoRequest = new UserinfoRequest($config, $op_metadata->{$op}->openid_provider, $hooks);
         $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
 
         $f3->set('SESSION.auth', array(

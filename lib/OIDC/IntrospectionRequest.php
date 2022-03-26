@@ -45,6 +45,13 @@ class IntrospectionRequest
     public function __construct(object $config)
     {
         $this->config = $config;
+
+        $this->http_client = new Client([
+            'allow_redirects' => true,
+            'timeout' => 15,
+            'debug' => false,
+            'http_errors' => false
+        ]);
     }
 
     /**
@@ -84,13 +91,6 @@ class IntrospectionRequest
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);
 
-        $client = new Client([
-            'allow_redirects' => true,
-            'timeout' => 15,
-            'debug' => false,
-            'http_errors' => false
-        ]);
-
         $data = array(
             'client_id' => $client_id,
             'client_assertion' => $signed_client_assertion,
@@ -98,7 +98,7 @@ class IntrospectionRequest
             'token' => $token
         );
 
-        $response = $client->post($introspection_endpoint, [ 'form_params' => $data ]);
+        $response = $this->http_client->post($introspection_endpoint, [ 'form_params' => $data ]);
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();

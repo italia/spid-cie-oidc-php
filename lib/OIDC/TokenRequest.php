@@ -39,12 +39,21 @@ class TokenRequest
      *  creates a new TokenRequest instance
      *
      * @param object $config base configuration
+     * @param object $hooks hooks defined list
      * @throws Exception
      * @return TokenRequest
      */
-    public function __construct(object $config)
+    public function __construct(object $config, object $hooks = null)
     {
         $this->config = $config;
+        $this->hooks = $hooks;
+
+        $this->http_client = new Client([
+            'allow_redirects' => true,
+            'timeout' => 15,
+            'debug' => false,
+            'http_errors' => false
+        ]);
     }
 
     /**
@@ -89,13 +98,6 @@ class TokenRequest
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);
 
-        $client = new Client([
-            'allow_redirects' => true,
-            'timeout' => 15,
-            'debug' => false,
-            'http_errors' => false
-        ]);
-
         $data = array(
             'client_id' => $client_id,
             'client_assertion' => $signed_client_assertion,
@@ -109,11 +111,40 @@ class TokenRequest
             $data['refresh_token'] = $refresh_token;
         }
 
-        $response = $client->post($token_endpoint, [ 'form_params' => $data ]);
+        // HOOK: pre_token_request
+        if ($this->hooks != null) {
+            $hooks_pre = $this->hooks->pre_token_request;
+            if ($hooks_pre != null && is_array($hooks_pre)) {
+                foreach ($hooks_pre as $hpreClass) {
+                    $hpre = new $hpreClass($config);
+                    $hpre->run(array(
+                        "token_endpoint" => $token_endpoint,
+                        "post_data" => $data
+                    ));
+                }
+            }
+        }
+
+        $response = $this->http_client->post($token_endpoint, [ 'form_params' => $data ]);
+
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();
             throw new \Exception($reason);
+        }
+
+        // HOOK: post_token_request
+        if ($this->hooks != null) {
+            $hooks_pre = $this->hooks->post_token_request;
+            if ($hooks_pre != null && is_array($hooks_pre)) {
+                foreach ($hooks_pre as $hpreClass) {
+                    $hpre = new $hpreClass($config);
+                    $hpre->run(array(
+                        "token_endpoint" => $token_endpoint,
+                        "response" => json_decode((string) $response->getBody())
+                    ));
+                }
+            }
         }
 
         $this->response = json_decode((string) $response->getBody());
