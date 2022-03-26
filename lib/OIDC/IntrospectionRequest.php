@@ -27,14 +27,35 @@ namespace SPID_CIE_OIDC_PHP\OIDC;
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use GuzzleHttp\Client;
 
+/**
+ *  Generates the Introspection Request
+ *
+ *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
+ *
+ */
 class IntrospectionRequest
 {
-    public function __construct($config)
+    /**
+     *  creates a new IntrospectionRequest instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return IntrospectionRequest
+     */
+    public function __construct(object $config)
     {
         $this->config = $config;
     }
 
-    public function send($introspection_endpoint, $token)
+    /**
+     *  send the introspection request
+     *
+     * @param string $introspection_endpoint introspection endpoint of the provider
+     * @param string $token token for wich send the introspection request
+     * @throws Exception
+     * @return object response returned from introspection
+     */
+    public function send(string $introspection_endpoint, string $token)
     {
         $client_id = $this->config->rp_client_id;
         $client_assertion = array(
@@ -91,6 +112,12 @@ class IntrospectionRequest
         return $this->response;
     }
 
+    /**
+     *  retrieves the response returned from previous introspection request
+     *
+     * @throws Exception
+     * @return object response returned from introspection
+     */
     public function getResponse()
     {
         return $this->response;

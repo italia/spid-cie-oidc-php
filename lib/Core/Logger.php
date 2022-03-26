@@ -24,9 +24,20 @@
 
 namespace SPID_CIE_OIDC_PHP\Core;
 
+/**
+ *  Provides functions to save logs.
+ *
+ */
 class Logger
 {
-    public function __construct($config = null)
+    /**
+     *  creates a new Logger instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return Database
+     */
+    public function __construct(object $config = null)
     {
         if ($config == null) {
             $config = (object)[];
@@ -34,7 +45,17 @@ class Logger
         $this->config = $config;
     }
 
-    public function log($tag, $value, $object = null, $priority = LOG_NOTICE)
+    /**
+     *  save a log on standard error_log
+     *
+     * @param string $tag tag to wich save the log
+     * @param string $value value of the log
+     * @param mixed $object object to dump
+     * @param int $priority on wichh save the log
+     * @throws Exception
+     * @return boolean result of save
+     */
+    public function log(string $tag, string $value, mixed $object = null, int $priority = LOG_NOTICE)
     {
         $message = "[" . $_SERVER['REMOTE_ADDR'] . "][" . $tag . "] - " . $value;
         if ($object != null) {

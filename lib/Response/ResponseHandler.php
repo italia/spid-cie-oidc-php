@@ -42,12 +42,32 @@ use Jose\Component\Encryption\Serializer\JWESerializerManager;
 use Jose\Component\Encryption\Serializer\CompactSerializer as JWESerializer;
 use Jose\Component\Encryption\JWEDecrypter;
 
+/**
+ *  Superclass for all classes that codes how to send a response after successfull authentication
+ *
+ *  to enable a ResponseHandler extended class set the parameter rp_response_handler to the name of the class (Es. "&bsol;SPID_CIE_OIDC_PHP&bsol;Response&bsol;MyResponse") into the config.json file
+ */
 abstract class ResponseHandler
 {
+    /**
+     *  creates a new <ResponseHandler> instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return ResponseHandler
+     */
     public function __construct(object $config)
     {
         $this->config = $config;
     }
 
+    /**
+     *  send the response
+     *
+     * @param string $redirect_uri URL where send te response
+     * @param object $data data within the response
+     * @param string $state state to be returned
+     * @throws Exception
+     */
     abstract public function sendResponse(string $redirect_uri, object $data, string $state);
 }

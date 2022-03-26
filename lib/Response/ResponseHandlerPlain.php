@@ -24,8 +24,21 @@
 
 namespace SPID_CIE_OIDC_PHP\Response;
 
+/**
+ *  ResponseHandler for plain response
+ *
+ *  send plain data as POST HTTP request to redirect_uri
+ */
 class ResponseHandlerPlain extends ResponseHandler
 {
+    /**
+     *  send the response
+     *
+     * @param string $redirect_uri URL where send te response
+     * @param object $data data within the response
+     * @param string $state state to be returned
+     * @throws Exception
+     */
     public function sendResponse(string $redirect_uri, object $data, string $state)
     {
         echo "<form name='spidauth' action='" . $redirect_uri . "' method='POST'>";

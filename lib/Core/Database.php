@@ -22,13 +22,24 @@
  * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
+
 namespace SPID_CIE_OIDC_PHP\Core;
 
 use SPID_CIE_OIDC_PHP\Core\Util;
 
+/**
+ *  Provides functions to saves and retrieves data from a SQLite storage database
+ */
 class Database
 {
-    public function __construct($db_file)
+    /**
+     *  creates a new Database instance
+     *
+     * @param string $db_file path of sqlite file
+     * @throws Exception
+     * @return Database
+     */
+    public function __construct(string $db_file)
     {
         $this->db = new \SQLite3($db_file);
         if (!$this->db) {
@@ -61,8 +72,18 @@ class Database
         ");
     }
 
-
-    public function createRequest($op_id, $redirect_uri, $state = '', $acr = '', $user_attributes = '')
+    /**
+     *  creates a record for an authentication request
+     *
+     * @param string $op_id client_id of provider to which send the request
+     * @param string $redirect_uri URL to which return after authentication
+     * @param string $state value of the state param sent with the request
+     * @param int[] $acr array of int values of the acr params to sent with the request
+     * @param string[] $user_attributes array of string values of the user attributes to query with the request
+     * @throws Exception
+     * @return string the request id
+     */
+    public function createRequest(string $op_id, string $redirect_uri, string $state = '', array $acr = [], array $user_attributes = [])
     {
         $stmt = $this->db->prepare("
             INSERT INTO request(op_id, redirect_uri, state, acr, user_attributes, nonce, code_verifier) 
@@ -80,7 +101,14 @@ class Database
         return $req_id;
     }
 
-    public function getRequest($req_id)
+    /**
+     *  get a saved request
+     *
+     * @param string $req_id the id of the request
+     * @throws Exception
+     * @return array data of the request: req_id, timestamp, op_id, redirect_uri, state, acr, user_attributes, none, code_verifier
+     */
+    public function getRequest(string $req_id)
     {
         $result = $this->query(
             "
@@ -99,7 +127,15 @@ class Database
         return $data;
     }
 
-    public function query($sql, $values = array())
+    /**
+     *  executes a SQL query to retrieve values (SELECT)
+     *
+     * @param string $sql the SQL prepared query to execute (es. SELECT * FROM request WHERE code_verifier = :code_verifier)
+     * @param string[] $values values to bind on the query
+     * @throws Exception
+     * @return array result of the query
+     */
+    public function query(string $sql, array $values = array())
     {
         $result = array();
         $stmt = $this->db->prepare($sql);
@@ -113,7 +149,15 @@ class Database
         return $result;
     }
 
-    public function exec($sql, $values = array())
+    /**
+     *  executes a SQL query to upsert values (INSERT, UPDATE)
+     *
+     * @param string $sql the SQL prepared query to execute
+     * @param string[] $values values to bind on the query
+     * @throws Exception
+     * @return array result of the query
+     */
+    public function exec(string $sql, array $values = array())
     {
         $stmt = $this->db->prepare($sql);
         foreach ($values as $key => $value) {
@@ -123,11 +167,26 @@ class Database
         return $result;
     }
 
+    /**
+     *  executes a dump of a table
+     *
+     * @param string $table the name of the table to dump
+     * @throws Exception
+     * @return array result of the dump
+     */
     public function dump($table)
     {
         return $this->query("SELECT * FROM " . $table);
     }
 
+    /**
+     *  saves a record on the log table
+     *
+     * @param string $tag tag for the log record
+     * @param mixed $value value for the log record
+     * @throws Exception
+     * @return array result of the save
+     */
     public function log($tag, $value)
     {
         $this->exec("

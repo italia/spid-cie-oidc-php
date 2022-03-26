@@ -7,4 +7,6 @@ error_log
 /cert/
 /data/
 /www/assets/spid-sp-access-button/
+/www/doc
+/.phpdoc/
 

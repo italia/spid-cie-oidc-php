@@ -2,12 +2,21 @@
 
 namespace SPID_CIE_OIDC_PHP\Setup;
 
+/**
+ *  Utility class to colour shell
+ *
+ */
 class Colors
 {
     private $foreground_colors = array();
     private $background_colors = array();
     private $hasColorSupport = null;
 
+    /**
+     *  setup shell colours
+     *
+     * @return Colors
+     */
     public function __construct()
     {
         // Set up shell colors
@@ -40,7 +49,14 @@ class Colors
         $this->hasColorSupport = $this->hasColorSupport();
     }
 
-    // Returns colored string
+    /**
+     *  get the colored string
+     *
+     * @param string $string string to be colored
+     * @param object $foreground_color color for foreground
+     * @param string $background_color color for background
+     * @return string the colored string
+     */
     public function getColoredString($string, $foreground_color = null, $background_color = null)
     {
         if (!$this->hasColorSupport()) {
@@ -64,20 +80,32 @@ class Colors
         return $colored_string;
     }
 
-    // Returns all foreground color names
+    /**
+     *  returns all foreground color names
+     * @return string[] all foreground color names
+     */
     public function getForegroundColors()
     {
         return array_keys($this->foreground_colors);
     }
 
-    // Returns all background color names
+    /**
+     *  returns all background color names
+     * @return string[] all background color names
+     */
     public function getBackgroundColors()
     {
         return array_keys($this->background_colors);
     }
 
-    // Copied from https://github.com/symfony/console/blob/v5.2.6/Output/StreamOutput.php#L94-L114
-    // under the MIT license
+    /**
+     *  test if system has color support
+     *
+     *  https://github.com/symfony/console/blob/v5.2.6/Output/StreamOutput.php#L94-L114
+     *
+     *  MIT license
+     * @return boolean
+     */
     public function hasColorSupport()
     {
         if ($this->hasColorSupport !== null) {

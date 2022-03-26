@@ -27,14 +27,39 @@ namespace SPID_CIE_OIDC_PHP\OIDC;
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use SPID_CIE_OIDC_PHP\Core\Util;
 
+/**
+ *  Generates the Authentication Request for CIE 
+ *
+ *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
+ *
+ */
 class AuthenticationRequestCIE
 {
-    public function __construct($config)
+    /**
+     *  creates a new AuthenticationRequestCIE instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return AuthenticationRequestCIE
+     */
+    public function __construct(object $config)
     {
         $this->config = $config;
     }
 
-    public function getRedirectURL($authorization_endpoint, $acr, $attributes, $code_verifier, $nonce, $state)
+    /**
+     *  creates the URL to OIDC Provider to which redirect the user
+     *
+     * @param string $authorization_endpoint autorization endpoint of the provider
+     * @param int[] $acr array of int values of the acr params to send with the request
+     * @param string[] $attributes array of string values of the user attributes to query with the request
+     * @param string $code_verifier value for PKCE code_verifier to send with the the request
+     * @param string $nonce value for nonce to send with the request
+     * @param string $state value for state to send with the request
+     * @throws Exception
+     * @return string URL of the authentication request
+     */
+    public function getRedirectURL(string $authorization_endpoint, array $acr, array $attributes, string $code_verifier, string $nonce, string $state)
     {
         $client_id = $this->config->rp_client_id;
         $redirect_uri = $client_id . '/oidc/rp/redirect';

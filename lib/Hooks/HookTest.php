@@ -24,13 +24,33 @@
 
 namespace SPID_CIE_OIDC_PHP\Hooks;
 
+/**
+ *  Test class that show how to code an hook plugin
+ *
+ *  to enable this hook add the value "&bsol;SPID_CIE_OIDC_PHP&bsol;Hooks&bsol;HookTest" into the hooks.json config file inside the hook section where you want to enable this hook
+ */
 class HookTest
 {
+
+    /**
+     *  creates a new <HookTest> instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return <HookTest>
+     */
     public function __construct($config)
     {
         $this->config = $config;
     }
 
+    /**
+     *  main function that will be executed when the hook is enabled
+     *
+     * @param object $data data provided by caller related to hook position
+     * @throws Exception
+     * @return mixed what you want
+     */
     public function run($data)
     {
         header("Content-Type: application/json");

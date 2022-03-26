@@ -103,7 +103,7 @@ $f3->route('GET /.well-known/openid-federation', function ($f3) {
     $decoded = $f3->get("GET.decoded");
     $mediaType = $decoded == 'Y' ? 'application/json' : 'application/jwt';
     header('Content-Type: ' . $mediaType);
-    echo $entityStatement->getConfiguration($decoded);
+    echo $entityStatement->getConfiguration($decoded == 'Y');
 });
 
 $f3->route('GET /oidc/rp/authz', function ($f3) {
@@ -164,8 +164,7 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
         Util::base64UrlEncode(str_pad($req_id, 32))
     );
 
-    // exec hooks pre_authorization_request
-    /*
+    // HOOK: pre_authorization_request
     $hooks_pre = $hooks->pre_authorization_request;
     if ($hooks_pre != null && is_array($hooks_pre)) {
         foreach ($hooks_pre as $hpreClass) {
@@ -180,7 +179,6 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
             ));
         }
     }
-    */
 
     $f3->reroute($authenticationRequestURL);
 });

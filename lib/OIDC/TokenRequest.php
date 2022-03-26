@@ -27,14 +27,38 @@ namespace SPID_CIE_OIDC_PHP\OIDC;
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use GuzzleHttp\Client;
 
+/**
+ *  Generates the Token Request 
+ *
+ *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
+ *
+ */
 class TokenRequest
 {
-    public function __construct($config)
+    /**
+     *  creates a new TokenRequest instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return TokenRequest
+     */
+    public function __construct(object $config)
     {
         $this->config = $config;
     }
 
-    public function send($token_endpoint, $auth_code, $code_verifier, $refresh = false, $refresh_token = null)
+    /**
+     *  send the token request
+     *
+     * @param string $token_endpoint token endpoint of the provider
+     * @param string $auth_code value of authorization_code obtained from authentication request
+     * @param string $code_verifier value of code_verifier whose related code_challenge was sent with authentication request
+     * @param boolean $refresh if true send a token request with a refresh token for obtain a new access token
+     * @param string $refresh_token value of refresh token
+     * @throws Exception
+     * @return object response returned from token request
+     */
+    public function send(string $token_endpoint, string $auth_code, string $code_verifier, $refresh = false, string $refresh_token = null)
     {
         $client_id = $this->config->rp_client_id;
         $client_assertion = array(
@@ -99,17 +123,35 @@ class TokenRequest
         return $this->response;
     }
 
+    /**
+     *  retrieves the response returned from previous token request
+     *
+     * @throws Exception
+     * @return object response returned from token request
+     */
     public function getResponse()
     {
         return $this->response;
     }
 
+    /**
+     *  retrieves the access_token returned from previous token request
+     *
+     * @throws Exception
+     * @return string access_token returned from token request
+     */
     public function getAccessToken()
     {
         $access_token = $this->response->access_token;
         return $access_token;
     }
 
+    /**
+     *  retrieves the id_token returned from previous token request
+     *
+     * @throws Exception
+     * @return string id_token returned from token request
+     */
     public function getIdToken()
     {
         $id_token = $this->response->id_token;

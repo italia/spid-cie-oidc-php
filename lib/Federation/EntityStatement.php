@@ -26,15 +26,34 @@ namespace SPID_CIE_OIDC_PHP\Federation;
 
 use SPID_CIE_OIDC_PHP\Core\JWT;
 
+/**
+ *  Generate the EntityStatement 
+ *
+ *  [OpenID Connect Federation Entity Statement](https://openid.net/specs/openid-connect-federation-1_0.html#rfc.section.3.1)
+ *
+ */
 class EntityStatement
 {
-    public function __construct($config)
+    /**
+     *  creates a new EntityStatement instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return EntityStatement
+     */
+    public function __construct(object $config)
     {
         $this->config = $config;
     }
 
-
-    public function getConfiguration($decoded = 'N')
+    /**
+     *  creates the JWT to be returned from .well-known/openid-federation endpoint
+     *
+     * @param boolean $decoded if true returns JSON instead of JWS
+     * @throws Exception
+     * @return mixed
+     */
+    public function getConfiguration($decoded = false)
     {
         $crt = $this->config->rp_cert_public;
         $crt_jwk = JWT::getCertificateJWK($crt);
@@ -78,6 +97,6 @@ class EntityStatement
         $key_jwk = JWT::getKeyJWK($key);
         $jws = JWT::makeJWS($header, $payload, $key_jwk);
 
-        return $decoded == 'Y' ? json_encode($payload) : $jws;
+        return $decoded? json_encode($payload) : $jws;
     }
 }

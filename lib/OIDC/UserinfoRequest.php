@@ -27,15 +27,37 @@ namespace SPID_CIE_OIDC_PHP\OIDC;
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use GuzzleHttp\Client;
 
+/**
+ *  Generates the Userinfo Request
+ *
+ *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
+ *
+ */
 class UserinfoRequest
 {
-    public function __construct($config, $op_metadata)
+    /**
+     *  creates a new UserinfoRequest instance
+     *
+     * @param object $config base configuration
+     * @param object $op_metadata provider metadata
+     * @throws Exception
+     * @return UserinfoRequest
+     */
+    public function __construct(object $config, object $op_metadata)
     {
         $this->config = $config;
         $this->op_metadata = $op_metadata;
     }
 
-    public function send($userinfo_endpoint, $access_token)
+    /**
+     *  send the userinfo request
+     *
+     * @param string $userinfo_endpoint userinfo endpoint of the provider
+     * @param string $access_token access_token needed to access to userinfo endpoint
+     * @throws Exception
+     * @return object response returned from userinfo endpoint
+     */
+    public function send(string $userinfo_endpoint, string $access_token)
     {
         $client = new Client([
             'allow_redirects' => true,
@@ -60,8 +82,8 @@ class UserinfoRequest
         $decrypted = $jws->getPayload();
         $decrypted = str_replace("\"", "", $decrypted);
 
-        // verify response against OP public key
-        // TODO : select key by kid
+        // TODO: verify response against OP public key
+        // TODO: select key by kid
         $key = $this->op_metadata->jwks->keys[0];
         $jwk = JWT::getJWKFromJSON(json_encode($key));
         if (!JWT::isVerified($decrypted, $jwk)) {

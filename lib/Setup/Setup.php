@@ -38,8 +38,17 @@ if (!function_exists('readline')) {
     }
 }
 
+/**
+ *  Composer setup class for spid-cie-oidc-php
+ *
+ *  allows to set all the necessary configurations interactively
+ */
+
 class Setup
 {
+    /**
+    *  main setup function called by "composer install" command
+    */
     public static function setup(Event $event)
     {
         $filesystem = new Filesystem();
@@ -540,7 +549,9 @@ class Setup
         echo $colors->getColoredString("\n\nSPID CIE OIDC PHP SDK successfully installed! Enjoy the OIDC identities\n\n", "green");
     }
 
-
+    /**
+    *  uninstall function called by "composer uninstall" command
+    */
     public static function remove()
     {
         $filesystem = new Filesystem();

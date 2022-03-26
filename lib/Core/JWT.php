@@ -70,21 +70,48 @@ use Jose\Component\Encryption\Algorithm\ContentEncryption\A256CBCHS512;
 
 const DEFAULT_TOKEN_EXPIRATION_TIME = 1200;
 
-
+/**
+ *  Provides functions to create and parse JWS and JWE
+ *
+ *  * [JSON Web Signature (JWS) - RFC7515](https://datatracker.ietf.org/doc/html/rfc7515)
+ *  * [JSON Web Encryption (JWE) - RFC7516](https://datatracker.ietf.org/doc/html/rfc7516)
+ */
 class JWT
 {
+    /**
+     *  get a private key JWK object from a private key PEM file
+     *
+     * @param string $file path of the private key PEM file
+     * @throws Exception
+     * @return object JWK object
+     */
     public static function getKeyJWK(string $file)
     {
         $jwk = JWKFactory::createFromKeyFile($file);
         return $jwk;
     }
 
+    /**
+     *  get a JWK object from JSON string
+     *
+     * @param string $json JSON string of the JWK
+     * @throws Exception
+     * @return object JWK object
+     */
     public static function getJWKFromJSON(string $json)
     {
         $jwk_obj = JWK::createFromJson($json);
         return $jwk_obj;
     }
 
+    /**
+     *  get a public cert JWK object from a public cert PEM file
+     *
+     * @param string $file path of the public cert PEM file
+     * @param string $use the use of certificate [sig|enc] 
+     * @throws Exception
+     * @return object JWK object
+     */
     public static function getCertificateJWK(string $file, string $use = 'sig')
     {
         $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => $use]);
@@ -107,12 +134,28 @@ class JWT
         return $jwk;
     }
 
+    /**
+     *  get a public cert JWK object from an object
+     *
+     * @param object $object object containing JWK values 
+     * @throws Exception
+     * @return object JWK object
+     */
     public static function getJWKSFromValues(object $values)
     {
         $jwks_obj = JWKSet::createFromKeyData($values);
         return $jwks_obj;
     }
 
+    /**
+     *  create a signed JWT (JWS) from given values
+     *
+     * @param array $header associative array for header
+     * @param array $payload associative array for payload
+     * @param object $jwk JWK object to use for signing JWS
+     * @throws Exception
+     * @return string of the JWS token
+     */
     public static function makeJWS(array $header, array $payload, object $jwk): string
     {
         //$jwk = self::getKeyJWK($file);
@@ -130,6 +173,13 @@ class JWT
         return $token;
     }
 
+    /**
+     *  get the payload of the JWS token
+     *
+     * @param string $token JWS token
+     * @throws Exception
+     * @return object payload string of the JWS token
+     */
     public static function getJWSPayload(string $token)
     {
         $serializerManager = new JWSSerializerManager([ new JWSSerializer() ]);
@@ -138,6 +188,14 @@ class JWT
         return $payload;
     }
 
+    /**
+     *  verify the signature of the JWS token
+     *
+     * @param string $token JWS token
+     * @param object $jwk JWK to which verify the signature of the token
+     * @throws Exception
+     * @return boolean true if the signature is verified
+     */
     public static function isVerified(string $token, object $jwk)
     {
 
@@ -161,10 +219,14 @@ class JWT
         return $isVerified;
     }
 
-    /*
-    * decryptJWS
-    * descrypts the token and return the embedded JWS
-    */
+    /**
+     *  descrypts the token and return the embedded JWS
+     *
+     * @param string $token the JWE token to be decrypted
+     * @param string $file path to PEM file of the private key to wich decrypt the JWE
+     * @throws Exception
+     * @return object the decrypted JWS object inside the JWE
+     */
     public static function decryptJWE(string $token, string $file)
     {
 
@@ -197,32 +259,54 @@ class JWT
         return $jws;
     }
 
-    /*
-    * private functions for Algorithms
-    */
 
+    /**
+     *  getSigAlgClassMap
+     *
+     * @throws Exception
+     * @return object
+     */
     private static function getSigAlgClassMap()
     {
         $algMap = json_decode(file_get_contents(__DIR__ . '/../../config/alg-sig.json'));
         return $algMap;
     }
 
+    /**
+     *  getKeyEncAlgClassMap
+     *
+     * @throws Exception
+     * @return object
+     */
     private static function getKeyEncAlgClassMap()
     {
         $algMap = json_decode(file_get_contents(__DIR__ . '/../../config/alg-key-enc.json'));
         return $algMap;
     }
 
+    /**
+     *  getContentEncAlgClassMap
+     *
+     * @throws Exception
+     * @return object
+     */
     private static function getContentEncAlgClassMap()
     {
         $algMap = json_decode(file_get_contents(__DIR__ . '/../../config/alg-content-enc.json'));
         return $algMap;
     }
 
-    /*
-    *   if $alg is set to an algorithm string, return manager for that,
-    *   alse $alg is null, return manager for all supported algorithms
-    */
+    /**
+     *  getAlgManager
+     *
+     *  if $alg is set to an algorithm string, return manager for that,
+     *  else $alg is null, return manager for all supported algorithms
+     *
+     * @param object $algClassMap class map of available algorithms
+     * @param string $alg algorithm to use or null
+     * @throws Exception
+     * @return object
+     */
     private static function getAlgManager(object $algClassMap, string $alg = null)
     {
         $algList = array();
@@ -241,6 +325,13 @@ class JWT
         return $algorithmManager;
     }
 
+    /**
+     *  getSigAlgManager
+     *
+     * @param string $alg algorithm to use or null
+     * @throws Exception
+     * @return object
+     */
     private static function getSigAlgManager(string $alg = null)
     {
         $algClassMap = JWT::getSigAlgClassMap();
@@ -248,6 +339,13 @@ class JWT
         return $algorithmManager;
     }
 
+    /**
+     *  getKeyEncAlgManager
+     *
+     * @param string $alg algorithm to use or null
+     * @throws Exception
+     * @return object
+     */
     private static function getKeyEncAlgManager(string $alg = null)
     {
         $algClassMap = JWT::getKeyEncAlgClassMap();
@@ -255,6 +353,13 @@ class JWT
         return $algorithmManager;
     }
 
+    /**
+     *  getContentEncAlgManager
+     *
+     * @param string $alg algorithm to use or null
+     * @throws Exception
+     * @return object
+     */
     private static function getContentEncAlgManager(string $alg = null)
     {
         $algClassMap = JWT::getContentEncAlgClassMap();

@@ -27,14 +27,35 @@ namespace SPID_CIE_OIDC_PHP\OIDC;
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use GuzzleHttp\Client;
 
+/**
+ *  Generates the Revocation Request
+ *
+ *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
+ *
+ */
 class RevocationRequest
 {
-    public function __construct($config)
+    /**
+     *  creates a new RevocationRequest instance
+     *
+     * @param object $config base configuration
+     * @throws Exception
+     * @return RevocationRequest
+     */
+    public function __construct(object $config)
     {
         $this->config = $config;
     }
 
-    public function send($revocation_endpoint, $token)
+    /**
+     *  send the revocation request
+     *
+     * @param string $revocation_endpoint revocation endpoint of the provider
+     * @param string $token token to be revoked
+     * @throws Exception
+     * @return object response returned from revocation
+     */
+    public function send(string $revocation_endpoint, string $token)
     {
         $client_id = $this->config->rp_client_id;
         $client_assertion = array(
@@ -91,6 +112,12 @@ class RevocationRequest
         return $this->response;
     }
 
+    /**
+     *  retrieves the response returned from previous revocation request
+     *
+     * @throws Exception
+     * @return object response returned from revocation
+     */
     public function getResponse()
     {
         return $this->response;
