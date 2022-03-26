@@ -24,13 +24,11 @@
 
 namespace SPID_CIE_OIDC_PHP\Core;
 
-
 /**
  *  Provides utility functions
  */
 class Util
 {
-
     /**
      *  generate a random code
      *

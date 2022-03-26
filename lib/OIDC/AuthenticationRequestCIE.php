@@ -28,7 +28,7 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
 use SPID_CIE_OIDC_PHP\Core\Util;
 
 /**
- *  Generates the Authentication Request for CIE 
+ *  Generates the Authentication Request for CIE
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
  *

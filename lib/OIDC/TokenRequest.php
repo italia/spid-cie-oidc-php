@@ -28,7 +28,7 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
 use GuzzleHttp\Client;
 
 /**
- *  Generates the Token Request 
+ *  Generates the Token Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
  *

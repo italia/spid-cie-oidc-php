@@ -108,7 +108,7 @@ class JWT
      *  get a public cert JWK object from a public cert PEM file
      *
      * @param string $file path of the public cert PEM file
-     * @param string $use the use of certificate [sig|enc] 
+     * @param string $use the use of certificate [sig|enc]
      * @throws Exception
      * @return object JWK object
      */
@@ -137,7 +137,7 @@ class JWT
     /**
      *  get a public cert JWK object from an object
      *
-     * @param object $object object containing JWK values 
+     * @param object $object object containing JWK values
      * @throws Exception
      * @return object JWK object
      */

@@ -22,7 +22,6 @@
  * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
-
 namespace SPID_CIE_OIDC_PHP\Core;
 
 use SPID_CIE_OIDC_PHP\Core\Util;
