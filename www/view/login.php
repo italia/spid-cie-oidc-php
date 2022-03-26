@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/spid-sp-access-button/css/spid-sp-access-button.min.css" />                
         <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/css/style.css" />
         <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/css/custom.css" />
+        <title>SPID CIE OIDC PHP</title>
     </head>
     <body>
         <div id="root">
