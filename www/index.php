@@ -28,7 +28,7 @@ use SPID_CIE_OIDC_PHP\Core\Database;
 use SPID_CIE_OIDC_PHP\Core\Logger;
 use SPID_CIE_OIDC_PHP\Core\Util;
 use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
-use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequestCIE;
+use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequest;
 use SPID_CIE_OIDC_PHP\OIDC\TokenRequest;
 use SPID_CIE_OIDC_PHP\OIDC\UserinfoRequest;
 use SPID_CIE_OIDC_PHP\OIDC\IntrospectionRequest;
@@ -154,7 +154,7 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
     // TODO : federation
     $authorization_endpoint = $op_metadata->{$op}->openid_provider->authorization_endpoint;
 
-    $authenticationRequest = new AuthenticationRequestCIE($config, $hooks);
+    $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
         $authorization_endpoint,
         $acr,

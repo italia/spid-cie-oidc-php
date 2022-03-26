@@ -181,26 +181,6 @@ Search.appendIndex(
             "summary": "creates\u0020the\u0020JWT\u0020to\u0020be\u0020returned\u0020from\u0020.well\u002Dknown\/openid\u002Dfederation\u0020endpoint",
             "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_getConfiguration"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequestCIE",
-            "name": "AuthenticationRequestCIE",
-            "summary": "Generates\u0020the\u0020Authentication\u0020Request\u0020for\u0020CIE",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequestCIE.html"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequestCIE\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "creates\u0020a\u0020new\u0020AuthenticationRequestCIE\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequestCIE.html#method___construct"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequestCIE\u003A\u003AgetRedirectURL\u0028\u0029",
-            "name": "getRedirectURL",
-            "summary": "creates\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider\u0020to\u0020which\u0020redirect\u0020the\u0020user",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequestCIE.html#method_getRedirectURL"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequestCIE\u003A\u003Asend\u0028\u0029",
-            "name": "send",
-            "summary": "redirect\u0020the\u0020browser\u0020with\u0020the\u0020authentication\u0020request\u0020to\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequestCIE.html#method_send"
-        },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\IntrospectionRequest",
             "name": "IntrospectionRequest",
             "summary": "Generates\u0020the\u0020Introspection\u0020Request",
@@ -370,6 +350,26 @@ Search.appendIndex(
             "name": "remove",
             "summary": "uninstall\u0020function\u0020called\u0020by\u0020\u0022composer\u0020uninstall\u0022\u0020command",
             "url": "classes/SPID-CIE-OIDC-PHP-Setup-Setup.html#method_remove"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest",
+            "name": "AuthenticationRequest",
+            "summary": "Generates\u0020the\u0020Authentication\u0020Request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020AuthenticationRequest\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest\u003A\u003AgetRedirectURL\u0028\u0029",
+            "name": "getRedirectURL",
+            "summary": "creates\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider\u0020to\u0020which\u0020redirect\u0020the\u0020user",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html#method_getRedirectURL"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "redirect\u0020the\u0020browser\u0020with\u0020the\u0020authentication\u0020request\u0020to\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html#method_send"
         },                {
             "fqsen": "\\",
             "name": "\\",

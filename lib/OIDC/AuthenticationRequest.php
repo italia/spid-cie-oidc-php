@@ -28,20 +28,20 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
 use SPID_CIE_OIDC_PHP\Core\Util;
 
 /**
- *  Generates the Authentication Request for CIE
+ *  Generates the Authentication Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
  *
  */
-class AuthenticationRequestCIE
+class AuthenticationRequest
 {
     /**
-     *  creates a new AuthenticationRequestCIE instance
+     *  creates a new AuthenticationRequest instance
      *
      * @param object $config base configuration
      * @param object $hooks hooks defined list
      * @throws Exception
-     * @return AuthenticationRequestCIE
+     * @return AuthenticationRequest
      */
     public function __construct(object $config, object $hooks = null)
     {
