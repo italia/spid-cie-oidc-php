@@ -24,6 +24,7 @@
 
 namespace SPID_CIE_OIDC_PHP\Federation;
 
+use SPID_CIE_OIDC_PHP\Core\Util;
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use SPID_CIE_OIDC_PHP\Core\Database;
 use GuzzleHttp\Client;
@@ -41,49 +42,17 @@ class EntityStatement
      *
      * @param object $config base configuration
      * @param Database $database instance of Database
-     * @param string $iss id of entity for wich resolve configuration 
-     * @param string $authority id of the trust authority
+     * @param string $entity id of entity for wich resolve configuration 
+     * @param string $trust_anchor id of the trust anchor authority
      * @throws Exception
      * @return EntityStatement
      */
-    public function __construct(object $config, Database $database, string $iss, string $authority)
+    public function __construct(object $config, Database $database, string $entity, string $trust_anchor)
     {
         $this->config = $config;
         $this->database = $database;
-        $this->iss = $iss;
-        $this->authority = $authority;
-
-        // acquire authority entity statement
-        $authority_entity_statement_url = $iss . "./well-known/openid-federation";
-        $authority_entity_statement = $this->http_client->get($authority_entity_statement_url);
-        $code = $authority_entity_statement->getStatusCode();
-
-        // grace period if authority statement is available on the store
-        if ($code != 200) {
-            // try to get authority statement from the store
-            $authority_entity_statement = $database->getFromStoreByURL($authority_entity_statement_url);
-            if($authority_entity_statement == null) {
-                throw new \Exception("Unable to reach " . $authority_entity_statement_url);
-            }
-
-        } else {
-            if(!JWT::isValid($authority_entity_statement)) {
-                throw new \Exception("Entity Statement not valid: " . $authority_entity_statement);
-            }
-
-            // save authority entity statement
-            $authority_entity_statement_payload = JWT::getJWSPayload($authority_entity_statement);
-            $authority_entity_statement_iat = $authority_entity_statement_payload->iat;
-            $database->saveToStore(
-                $this->authority, 
-                'openid-federation', 
-                $authority_entity_statement_url, 
-                $authority_entity_statement_payload->iat, 
-                $authority_entity_statement_payload->exp,
-                $authority_entity_statement_payload
-            );
-
-        }
+        $this->entity = $entity;
+        $this->trust_anchor = $trust_anchor;
 
         $this->http_client = new Client([
             'allow_redirects' => true,
@@ -94,36 +63,87 @@ class EntityStatement
     }
 
     /**
-     *  resolve the entity statement
+     *  resolve the entity statement recursively
      *
      * @param boolean $policy if true apply all authorities policies
      * @param boolean $decoded if true returns JSON instead of JWS
      * @throws Exception
      * @return mixed
      */
-    public function getConfiguration($policy = false, $decoded = false)
+    public function resolve($policy = false)
     {
-        $entity_statement_url = $iss . "./well-known/openid-federation";
-        
-        $entity_statement = $this->http_client->get($entity_statement_url);
-        
-        $code = $entity_statement->getStatusCode();
+        // acquire entity statement
+        $entity_statement_url = Util::stringEndsWith($this->entity, '/')? $this->entity : $this->entity.'/';
+        $entity_statement_url .= ".well-known/openid-federation";
+
+        $response = $this->http_client->get($entity_statement_url);
+        $code = $response->getStatusCode();
+
+        // grace period if statement is available on the store
         if ($code != 200) {
-            $reason = $entity_statement->getReasonPhrase();
-            throw new \Exception("Unable to reach " . $entity_statement_url . " - " . $reason);
+            $reason = $response->getReasonPhrase();
+
+            // try to get entity statement from the store
+            $entity_statement = $this->database->getFromStoreByURL($entity_statement_url);
+            if($entity_statement == null) {   
+                throw new \Exception("Unable to reach " . $entity_statement_url . " - " . $reason);
+            }
+
+        } else {
+            $entity_statement = (string) $response->getBody();
         }
 
-        // TODO: validate response
+        // validate response
         if(!JWT::isValid($entity_statement)) {
             throw new \Exception("Entity Statement not valid: " . $entity_statement);
         }
 
-        $payload = JWT::getJWSPayload($entity_statement);
+        // save entity statement to store
+        $entity_statement_payload = JWT::getJWSPayload($entity_statement);
+        
+        $this->database->saveToStore(
+            $this->entity, 
+            'openid-federation', 
+            $entity_statement_url, 
+            $entity_statement_payload->iat, 
+            $entity_statement_payload->exp,
+            $entity_statement_payload
+        );
 
-        $authority_hints = $payload->authority_hints;
+        $authority_hints = $entity_statement_payload->authority_hints;
+        if(!in_array($this->authority, $authority_hints)) {
+            throw new \Exception("Authority not hinted: " . $this->authority);
+        }
 
-        echo json_encode($authority_hints);
-        die();
+        // follow entity statement untill authority_hints
+        if($authority_hints==null ||
+            (is_array($authority_hints) && count($authority_hints==0))
+        ) {
+            foreach($authority_hints as $authority) {
+                $parent_entity_statement = new EntityStatement($this->config, $this->database, $authority, $this->trust_anchor);
+                $resolved_entity_statement = $parent_entity_statement->resolve($policy);
+            }
+
+        } else {
+            // trust anchor
+            
+        }
+        
 
     }
+
+
+    /**
+     *  get the configuration
+     *
+     * @param boolean $decoded if true returns JSON instead of JWS
+     * @throws Exception
+     * @return mixed
+     */
+    public function getConfiguration($decoded = false)
+    {
+
+    }
+
+
 }

@@ -92,4 +92,39 @@ class Util
         $b64 = strtr($data, '-_', '+/');
         return base64_decode($b64, $strict);
     }
+
+    /**
+     *  check if haystack string starts with needle string
+     *
+     * @param string $haystack the string to check
+     * @param string $needle the string to check for
+     * @param string $case if case sensitive
+     * @throws Exception
+     * @return boolean true if haystack starts with needle
+     */
+    public static function stringStartsWith(string $haystack, string $needle, $case=true) 
+    {
+        if ($case) {
+            return strpos($haystack, $needle, 0) === 0;
+        }
+        return stripos($haystack, $needle, 0) === 0;
+    }
+    
+    /**
+     *  check if haystack string ends with needle string
+     *
+     * @param string $haystack the string to check
+     * @param string $needle the string to check for
+     * @param string $case if case sensitive
+     * @throws Exception
+     * @return boolean true if haystack ends with needle
+     */
+    public static function stringEndsWith(string $haystack, string $needle, $case=true) 
+    {
+        $expectedPosition = strlen($haystack) - strlen($needle);
+        if ($case){
+            return strrpos($haystack, $needle, 0) === $expectedPosition;
+        }
+        return strripos($haystack, $needle, 0) === $expectedPosition;
+    }
 }

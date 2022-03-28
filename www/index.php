@@ -162,7 +162,22 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
         $f3->error(401, "Federation non supported: " . $fed);
     }
 
-    $authorization_endpoint = $op_metadata->{$op}->openid_provider->authorization_endpoint;
+    // Federation
+    /*
+    try {
+        $entity_statement = new EntityStatement($config, $database, $op, $fed);
+        $configuration = $entity_statement->resolve();
+
+    } catch(Exception $e) {
+        $f3->error(401, $e->getMessage());
+    }
+    */
+
+
+
+
+    
+    $authorization_endpoint = $op_metadata->{$op}->metadata->openid_provider->authorization_endpoint;
 
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
@@ -173,6 +188,8 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
         $nonce,
         Util::base64UrlEncode(str_pad($req_id, 32))
     );
+    
+
 });
 
 $f3->route('GET /oidc/rp/redirect', function ($f3) {
