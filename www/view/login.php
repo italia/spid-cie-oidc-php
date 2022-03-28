@@ -132,7 +132,7 @@
                                         </div>
                                         <div class="col-12 col-md-6 text-center">
                                             <li class="btn p-0 border-0 my-3">
-                                                <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8002/oidc/op/'); ?>?state=state123">
+                                                <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8002/oidc/op/'); ?>?state=state123">
                                                     <img class="img-fluid" src="<?php echo $baseurl; ?>/assets/img/cie_button.png" alt="Entra con CIE">
                                                     <span class="sr-only">Accedi con identità digitale CIE</span>
                                                 </a>

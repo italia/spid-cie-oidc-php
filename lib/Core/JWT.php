@@ -184,7 +184,7 @@ class JWT
     {
         $serializerManager = new JWSSerializerManager([ new JWSSerializer() ]);
         $jws = $serializerManager->unserialize($token);
-        $payload = $jws->getPayload();
+        $payload = json_decode($jws->getPayload());
         return $payload;
     }
 
@@ -218,6 +218,26 @@ class JWT
 
         return $isVerified;
     }
+
+    /**
+     *  verify if token is not expired and other stuff...
+     *
+     * @param string $token JWS token
+     * @throws Exception
+     * @return boolean true if the the token is valid
+     */
+     public static function isValid(string $token)
+     {
+ 
+         $isValid = true;
+         $payload = self::getJWSPayload($token);
+
+         if($payload->exp <= strtotime('now')) $isValid = false;
+ 
+         // add other validations here
+
+         return $isValid;
+     }
 
     /**
      *  descrypts the token and return the embedded JWS

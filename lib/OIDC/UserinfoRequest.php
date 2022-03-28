@@ -121,6 +121,6 @@ class UserinfoRequest
 
         $payload = JWT::getJWSPayload($decrypted);
 
-        return json_decode($payload);
+        return $payload;
     }
 }

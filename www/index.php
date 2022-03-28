@@ -27,7 +27,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use SPID_CIE_OIDC_PHP\Core\Database;
 use SPID_CIE_OIDC_PHP\Core\Logger;
 use SPID_CIE_OIDC_PHP\Core\Util;
+use SPID_CIE_OIDC_PHP\Federation\Federation;
 use SPID_CIE_OIDC_PHP\Federation\MyEntityStatement;
+use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
 use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequest;
 use SPID_CIE_OIDC_PHP\OIDC\TokenRequest;
 use SPID_CIE_OIDC_PHP\OIDC\UserinfoRequest;
@@ -47,6 +49,9 @@ $f3->set("HOOKS", $hooks);
 
 $op_metadata = json_decode(file_get_contents(__DIR__ . '/../config/op-metadata.json'));
 $f3->set("OP_METADATA", $op_metadata);
+
+$federation = new Federation($config, json_decode(file_get_contents(__DIR__ . '/../config/federation-authority.json')));
+$f3->set("FEDERATION", $federation);
 
 $database = new Database(__DIR__ . '/../data/db.sqlite');
 $f3->set("DATABASE", $database);
@@ -132,8 +137,9 @@ $f3->route('GET /oidc/rp/authz', function ($f3) {
     echo View::instance()->render('view/login.php');
 });
 
-$f3->route('GET /oidc/rp/authz/@op', function ($f3) {
+$f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
     $config = $f3->get("CONFIG");
+    $federation = $f3->get("FEDERATION");
     $op_metadata = $f3->get("OP_METADATA");
     $database = $f3->get("DATABASE");
     $hooks = $f3->get("HOOKS");
@@ -141,6 +147,7 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
 
     $logger->log('OIDC', 'GET /oidc/rp/authz/' . $f3->get('PARAMS.op'));
 
+    $fed = base64_decode($f3->get('PARAMS.fed'));
     $op = base64_decode($f3->get('PARAMS.op'));
     $state = $f3->get('GET.state');
     $acr = $config->rp_requested_acr;
@@ -151,7 +158,10 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
     $code_verifier = $request['code_verifier'];
     $nonce = $request['nonce'];
 
-    // TODO : federation
+    if(!$federation->isFederationSupported($fed)) {
+        $f3->error(401, "Federation non supported: " . $fed);
+    }
+
     $authorization_endpoint = $op_metadata->{$op}->openid_provider->authorization_endpoint;
 
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
