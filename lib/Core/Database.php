@@ -65,18 +65,22 @@ class Database
             );
 
             CREATE TABLE IF NOT EXISTS store (
-                issuer          STRING PRIMARY KEY,
-                type            STRING PRIMARY KEY,
+                issuer          STRING,
+                type            STRING,
+                url             STRING UNIQUE,
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
                 iat             DATETIME,
                 exp             DATETIME,
-                data            TEXT
+                data            TEXT,
+
+                PRIMARY KEY (issuer, type)
             );
         ");
 
         $this->db->exec("
             DELETE FROM log WHERE timestamp <= datetime('now', '-60 minutes');
             DELETE FROM request WHERE timestamp <= datetime('now', '-2 years');
+            DELETE FROM store WHERE timestamp <= datetime('now', '-24 hours');
         ");
     }
 
@@ -142,18 +146,19 @@ class Database
      * @param string $type type of object
      * @param string $iat "issued at" timestamp of object
      * @param string $exp "expire at" timestamp of object
-     * @param object $data json encoded string of object
+     * @param mixed $data json encoded string of object
      * @throws Exception
      * @return string the record id
      */
-    public function saveToStore(string $issuer, string $type, string $iat, string $exp, object $data)
+    public function saveToStore(string $issuer, string $type, string $url, string $iat, string $exp, $data)
     {
         $stmt = $this->db->prepare("
-            INSERT INTO store(issuer, type, iat, exp, data) 
-            VALUES(:issuer, :type, :iat, :exp, :data);
+            INSERT OR REPLACE INTO store(issuer, type, url, iat, exp, data) 
+            VALUES(:issuer, :type, :url, :iat, :exp, :data);
         ");
         $stmt->bindValue(':issuer', $issuer, SQLITE3_TEXT);
         $stmt->bindValue(':type', $type, SQLITE3_TEXT);
+        $stmt->bindValue(':url', $url, SQLITE3_TEXT);
         $stmt->bindValue(':iat', $iat, SQLITE3_TEXT);
         $stmt->bindValue(':exp', $exp, SQLITE3_TEXT);
         $stmt->bindValue(':data', json_encode($data), SQLITE3_TEXT);
@@ -170,29 +175,56 @@ class Database
      * @throws Exception
      * @return object the object
      */
-     public function getFromStore(string $issuer, string $type)
+    public function getFromStore(string $issuer, string $type)
+    {
+    $result = $this->query(
+        "
+        SELECT * FROM store
+        WHERE issuer = :issuer
+        AND type = :type;",
+
+        array(
+            ":issuer" => $issuer,
+            ":type" => $type
+        )
+    );
+
+    $data = null;
+    if (count($result) == 1) {
+        $data = $result[0];
+        $data = json_decode($data['data']);
+    }
+    
+    return $data;
+    }
+
+    /**
+     *  get an object from store by url
+     *
+     * @param string $url url where the object is issued
+     * @throws Exception
+     * @return object the object
+     */
+     public function getFromStoreByURL(string $url)
      {
-        $result = $this->query(
-            "
-            SELECT * FROM store
-            WHERE issuer = :issuer
-            AND type = :type;",
-
-            array(
-                ":issuer" => $issuer,
-                ":type" => $type
-            )
-        );
-
-        $data = null;
-        if (count($result) == 1) {
-            $data = $result[0];
-            $data = json_decode($data);
-        }
-        
-        return $data;
+     $result = $this->query(
+         "
+         SELECT * FROM store
+         WHERE url = :url;",
+ 
+         array(
+             ":url" => $url
+         )
+     );
+ 
+     $data = null;
+     if (count($result) == 1) {
+         $data = $result[0];
+         $data = json_decode($data['data']);
      }
-
+     
+     return $data;
+     }
 
     /**
      *  executes a SQL query to retrieve values (SELECT)

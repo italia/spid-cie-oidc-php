@@ -9,4 +9,6 @@ error_log
 /www/assets/spid-sp-access-button/
 /www/doc
 /.phpdoc/
+/.phpunit.cache/
+tests.sqlite
 
