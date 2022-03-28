@@ -63,6 +63,15 @@ class Database
                 nonce           STRING,
                 code_verifier   STRING
             );
+
+            CREATE TABLE IF NOT EXISTS store (
+                issuer          STRING PRIMARY KEY,
+                type            STRING PRIMARY KEY,
+                timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
+                iat             DATETIME,
+                exp             DATETIME,
+                data            TEXT
+            );
         ");
 
         $this->db->exec("
@@ -125,6 +134,65 @@ class Database
 
         return $data;
     }
+
+    /**
+     *  save an object to the store
+     *
+     * @param string $issuer client_id owner of the data
+     * @param string $type type of object
+     * @param string $iat "issued at" timestamp of object
+     * @param string $exp "expire at" timestamp of object
+     * @param object $data json encoded string of object
+     * @throws Exception
+     * @return string the record id
+     */
+    public function saveToStore(string $issuer, string $type, string $iat, string $exp, object $data)
+    {
+        $stmt = $this->db->prepare("
+            INSERT INTO store(issuer, type, iat, exp, data) 
+            VALUES(:issuer, :type, :iat, :exp, :data);
+        ");
+        $stmt->bindValue(':issuer', $issuer, SQLITE3_TEXT);
+        $stmt->bindValue(':type', $type, SQLITE3_TEXT);
+        $stmt->bindValue(':iat', $iat, SQLITE3_TEXT);
+        $stmt->bindValue(':exp', $exp, SQLITE3_TEXT);
+        $stmt->bindValue(':data', json_encode($data), SQLITE3_TEXT);
+        $stmt->execute();
+        $id = $this->db->lastInsertRowid();
+        return $id;
+    }
+
+    /**
+     *  get an object from store
+     *
+     * @param string $issuer client_id owner of the data
+     * @param string $type type of object
+     * @throws Exception
+     * @return object the object
+     */
+     public function getFromStore(string $issuer, string $type)
+     {
+        $result = $this->query(
+            "
+            SELECT * FROM store
+            WHERE issuer = :issuer
+            AND type = :type;",
+
+            array(
+                ":issuer" => $issuer,
+                ":type" => $type
+            )
+        );
+
+        $data = null;
+        if (count($result) == 1) {
+            $data = $result[0];
+            $data = json_decode($data);
+        }
+        
+        return $data;
+     }
+
 
     /**
      *  executes a SQL query to retrieve values (SELECT)
