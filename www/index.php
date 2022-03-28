@@ -27,7 +27,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use SPID_CIE_OIDC_PHP\Core\Database;
 use SPID_CIE_OIDC_PHP\Core\Logger;
 use SPID_CIE_OIDC_PHP\Core\Util;
-use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
+use SPID_CIE_OIDC_PHP\Federation\MyEntityStatement;
 use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequest;
 use SPID_CIE_OIDC_PHP\OIDC\TokenRequest;
 use SPID_CIE_OIDC_PHP\OIDC\UserinfoRequest;
@@ -48,8 +48,8 @@ $f3->set("HOOKS", $hooks);
 $op_metadata = json_decode(file_get_contents(__DIR__ . '/../config/op-metadata.json'));
 $f3->set("OP_METADATA", $op_metadata);
 
-$db = new Database(__DIR__ . '/../data/db.sqlite');
-$f3->set("DB", $db);
+$database = new Database(__DIR__ . '/../data/db.sqlite');
+$f3->set("DATABASE", $database);
 
 $logger = new Logger($config);
 $f3->set("LOGGER", $logger);
@@ -99,11 +99,11 @@ $f3->route('GET /.well-known/openid-federation', function ($f3) {
 
     $logger->log('OIDC', 'GET /.well-known/openid-federation');
 
-    $entityStatement = new EntityStatement($config);
+    $myEntityStatement = new MyEntityStatement($config);
     $decoded = $f3->get("GET.decoded");
     $mediaType = $decoded == 'Y' ? 'application/json' : 'application/jwt';
     header('Content-Type: ' . $mediaType);
-    echo $entityStatement->getConfiguration($decoded == 'Y');
+    echo $myEntityStatement->getConfiguration($decoded == 'Y');
 });
 
 $f3->route('GET /oidc/rp/authz', function ($f3) {
@@ -135,7 +135,7 @@ $f3->route('GET /oidc/rp/authz', function ($f3) {
 $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_metadata = $f3->get("OP_METADATA");
-    $db = $f3->get("DB");
+    $database = $f3->get("DATABASE");
     $hooks = $f3->get("HOOKS");
     $logger = $f3->get("LOGGER");
 
@@ -146,8 +146,8 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
     $acr = $config->rp_requested_acr;
     $user_attributes = $config->rp_spid_user_attributes;
     $redirect_uri = $config->rp_redirect_uri;
-    $req_id = $db->createRequest($op, $redirect_uri, $state, $acr, $user_attributes);
-    $request = $db->getRequest($req_id);
+    $req_id = $database->createRequest($op, $redirect_uri, $state, $acr, $user_attributes);
+    $request = $database->getRequest($req_id);
     $code_verifier = $request['code_verifier'];
     $nonce = $request['nonce'];
 
@@ -168,7 +168,7 @@ $f3->route('GET /oidc/rp/authz/@op', function ($f3) {
 $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_metadata = $f3->get("OP_METADATA");
-    $db = $f3->get("DB");
+    $database = $f3->get("DATABASE");
     $hooks = $f3->get("HOOKS");
     $logger = $f3->get("LOGGER");
 
@@ -188,7 +188,7 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $iss = $f3->get("GET.iss");
 
     // recover parameters from saved request
-    $request = $db->getRequest($req_id);
+    $request = $database->getRequest($req_id);
     $op = $request['op_id'];
     $redirect_uri = $request['redirect_uri'];
     $state = $request['state'];
