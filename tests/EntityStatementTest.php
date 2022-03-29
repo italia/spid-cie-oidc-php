@@ -36,7 +36,7 @@ class EntityStatementTest extends TestCase
         )));
         $es->initFromObject($config);
 
-        $this->assertEquals($config, $es->getConfiguration());
+        $this->assertEquals($config, $es->getPayload());
 
         $method = $this->getPrivateMethod('EntityStatement', 'applyPolicyModifierValue');
 
@@ -56,8 +56,8 @@ class EntityStatementTest extends TestCase
            )
         )));
 
-        $this->assertNotEquals($config, $es->getConfiguration());
-        $this->assertEquals($new_config, $es->getConfiguration());
+        $this->assertNotEquals($config, $es->getPayload());
+        $this->assertEquals($new_config, $es->getPayload());
     }
 
     /**
@@ -77,7 +77,7 @@ class EntityStatementTest extends TestCase
         )));
         $es->initFromObject($config);
 
-        $this->assertEquals($config, $es->getConfiguration());
+        $this->assertEquals($config, $es->getPayload());
 
         $method = $this->getPrivateMethod('EntityStatement', 'applyPolicyModifierAdd');
 
@@ -97,8 +97,8 @@ class EntityStatementTest extends TestCase
            )
         )));
 
-        $this->assertNotEquals($config, $es->getConfiguration());
-        $this->assertEquals($new_config, $es->getConfiguration());
+        $this->assertNotEquals($config, $es->getPayload());
+        $this->assertEquals($new_config, $es->getPayload());
     }
 
 

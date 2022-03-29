@@ -44,8 +44,10 @@ class EntityStatement
      */
     public function __construct(string $token = null)
     {
-        $this->token = $token;
-        $this->payload = EntityStatement::parse($token);
+        if ($token != null) {
+            $this->token = $token;
+            $this->payload = EntityStatement::parse($token);
+        }
     }
 
     /**
