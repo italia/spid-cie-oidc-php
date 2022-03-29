@@ -64,7 +64,7 @@ class AuthenticationRequest
     public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
         $client_id = $this->config->rp_client_id;
-        $redirect_uri = Util::stringEndsWith($client_id, '/')? $client_id : $client_id.'/';
+        $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
         $redirect_uri .= 'oidc/rp/redirect';
         $response_type = 'code';
         $scope = 'openid';

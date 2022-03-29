@@ -15,8 +15,8 @@ class FederationTest extends TestCase
     {
         $config = (object) array();
         $fed_config = (object) array(
-            "https://registry.spid.gov.it"=> array(),
-            "http://127.0.0.1:8000"=> array()
+            "https://registry.spid.gov.it" => array(),
+            "http://127.0.0.1:8000" => array()
         );
 
         $federation = new Federation($config, $fed_config);

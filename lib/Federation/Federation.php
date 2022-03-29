@@ -51,7 +51,7 @@ class Federation
     /**
      *  check if federation is supported
      *
-     * @param string $federation entity id of federation 
+     * @param string $federation entity id of federation
      * @throws Exception
      * @return boolean if federation is supported
      */

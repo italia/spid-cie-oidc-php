@@ -21,10 +21,10 @@ class JWTTest extends TestCase
         $jwk = JWT::getKeyJWK('./cert/rp.pem');
 
         $payload = array(
-            "exp"=> strtotime('+1 hour'),
-            "iat"=> strtotime('now'),
-            "iss"=> 'https://iss',
-            "sub"=> 'sub'
+            "exp" => strtotime('+1 hour'),
+            "iat" => strtotime('now'),
+            "iss" => 'https://iss',
+            "sub" => 'sub'
         );
 
         $token = JWT::makeJWS($header, $payload, $jwk);
@@ -32,10 +32,10 @@ class JWTTest extends TestCase
         $this->assertTrue(JWT::isValid($token));
 
         $payload2 = array(
-            "exp"=> strtotime('-1 hour'),
-            "iat"=> strtotime('now'),
-            "iss"=> 'https://iss',
-            "sub"=> 'sub'
+            "exp" => strtotime('-1 hour'),
+            "iat" => strtotime('now'),
+            "iss" => 'https://iss',
+            "sub" => 'sub'
         );
 
         $token2 = JWT::makeJWS($header, $payload2, $jwk);

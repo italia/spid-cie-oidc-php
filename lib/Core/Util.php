@@ -102,14 +102,14 @@ class Util
      * @throws Exception
      * @return boolean true if haystack starts with needle
      */
-    public static function stringStartsWith(string $haystack, string $needle, $case=true) 
+    public static function stringStartsWith(string $haystack, string $needle, $case = true)
     {
         if ($case) {
             return strpos($haystack, $needle, 0) === 0;
         }
         return stripos($haystack, $needle, 0) === 0;
     }
-    
+
     /**
      *  check if haystack string ends with needle string
      *
@@ -119,10 +119,10 @@ class Util
      * @throws Exception
      * @return boolean true if haystack ends with needle
      */
-    public static function stringEndsWith(string $haystack, string $needle, $case=true) 
+    public static function stringEndsWith(string $haystack, string $needle, $case = true)
     {
         $expectedPosition = strlen($haystack) - strlen($needle);
-        if ($case){
+        if ($case) {
             return strrpos($haystack, $needle, 0) === $expectedPosition;
         }
         return strripos($haystack, $needle, 0) === $expectedPosition;

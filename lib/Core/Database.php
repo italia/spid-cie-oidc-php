@@ -184,7 +184,6 @@ class Database
             SELECT * FROM store
             WHERE issuer = :issuer
             AND type = :type;",
-
             array(
                 ":issuer" => $issuer,
                 ":type" => $type
@@ -196,7 +195,7 @@ class Database
             $data = $result[0];
             $data = json_decode($data['data']);
         }
-        
+
         return $data;
     }
 
@@ -207,26 +206,25 @@ class Database
      * @throws Exception
      * @return object the object
      */
-     public function getFromStoreByURL(string $url)
-     {
+    public function getFromStoreByURL(string $url)
+    {
         $result = $this->query(
             "
             SELECT * FROM store
             WHERE url = :url;",
-    
             array(
-                ":url" => $url
+               ":url" => $url
             )
         );
-    
+
         $data = null;
         if (count($result) == 1) {
             $data = $result[0];
             $data = json_decode($data['data']);
         }
-        
+
         return $data;
-     }
+    }
 
     /**
      *  executes a SQL query to retrieve values (SELECT)
@@ -278,7 +276,7 @@ class Database
     public function dump($table)
     {
         $dump = $this->query("SELECT * FROM " . $table . " ORDER BY timestamp DESC;");
-        foreach($dump as $k=>$v) {
+        foreach ($dump as $k => $v) {
             $dump[$k]['value'] = json_decode($dump[$k]['value']);
         }
         return $dump;
@@ -294,11 +292,11 @@ class Database
      * @throws Exception
      * @return array result of the save
      */
-    public function log(string $context, string $tag, $value='', string $severity='INFO')
+    public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
     {
         $severity_available = ['DEBUG', 'INFO', 'NOTICE', 'WARNING', 'ERROR', 'CRITICAL'];
-        if(!in_array($severity, $severity_available)) {
-            $this->log("Severity ". $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
+        if (!in_array($severity, $severity_available)) {
+            $this->log("Severity " . $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
             $severity = 'DEBUG';
         }
         $this->exec("

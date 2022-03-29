@@ -226,18 +226,20 @@ class JWT
      * @throws Exception
      * @return boolean true if the the token is valid
      */
-     public static function isValid(string $token)
-     {
- 
-         $isValid = true;
-         $payload = self::getJWSPayload($token);
+    public static function isValid(string $token)
+    {
 
-         if($payload->exp <= strtotime('now')) $isValid = false;
- 
-         // add other validations here
+        $isValid = true;
+        $payload = self::getJWSPayload($token);
 
-         return $isValid;
-     }
+        if ($payload->exp <= strtotime('now')) {
+            $isValid = false;
+        }
+
+        // add other validations here
+
+        return $isValid;
+    }
 
     /**
      *  descrypts the token and return the embedded JWS

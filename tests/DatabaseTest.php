@@ -15,7 +15,7 @@ class DatabaseTest extends TestCase
     public function test_Store()
     {
         $database = new Database("tests/tests.sqlite");
-        
+
         $type = 'openid-federation';
         $url = 'https://iss/.well-known/openid-federation';
         $object = array(

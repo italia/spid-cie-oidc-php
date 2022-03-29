@@ -157,7 +157,7 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
     $code_verifier = $request['code_verifier'];
     $nonce = $request['nonce'];
 
-    if(!$federation->isFederationSupported($fed)) {
+    if (!$federation->isFederationSupported($fed)) {
         $f3->error(401, "Federation non supported: " . $fed);
     }
 
@@ -165,8 +165,7 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
     try {
         $trustchain = new TrustChain($config, $database, $op, $fed);
         $configuration = $trustchain->resolve();
-
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
     }
 
@@ -188,8 +187,6 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
         Util::base64UrlEncode(str_pad($req_id, 32))
     );
     */
-    
-
 });
 
 $f3->route('GET /oidc/rp/redirect', function ($f3) {
