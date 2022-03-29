@@ -48,8 +48,10 @@ class Database
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS log (
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
+                context         STRING,
                 tag             STRING,
-                value           STRING
+                value           STRING,
+                severity        STRING
             );
 
             CREATE TABLE IF NOT EXISTS request (
@@ -78,7 +80,7 @@ class Database
         ");
 
         $this->db->exec("
-            DELETE FROM log WHERE timestamp <= datetime('now', '-60 minutes');
+            DELETE FROM log WHERE timestamp <= datetime('now', '-60 minutes') AND severity <> 'CRITICAL';
             DELETE FROM request WHERE timestamp <= datetime('now', '-2 years');
             DELETE FROM store WHERE timestamp <= datetime('now', '-24 hours');
         ");
@@ -177,25 +179,25 @@ class Database
      */
     public function getFromStore(string $issuer, string $type)
     {
-    $result = $this->query(
-        "
-        SELECT * FROM store
-        WHERE issuer = :issuer
-        AND type = :type;",
+        $result = $this->query(
+            "
+            SELECT * FROM store
+            WHERE issuer = :issuer
+            AND type = :type;",
 
-        array(
-            ":issuer" => $issuer,
-            ":type" => $type
-        )
-    );
+            array(
+                ":issuer" => $issuer,
+                ":type" => $type
+            )
+        );
 
-    $data = null;
-    if (count($result) == 1) {
-        $data = $result[0];
-        $data = json_decode($data['data']);
-    }
-    
-    return $data;
+        $data = null;
+        if (count($result) == 1) {
+            $data = $result[0];
+            $data = json_decode($data['data']);
+        }
+        
+        return $data;
     }
 
     /**
@@ -207,23 +209,23 @@ class Database
      */
      public function getFromStoreByURL(string $url)
      {
-     $result = $this->query(
-         "
-         SELECT * FROM store
-         WHERE url = :url;",
- 
-         array(
-             ":url" => $url
-         )
-     );
- 
-     $data = null;
-     if (count($result) == 1) {
-         $data = $result[0];
-         $data = json_decode($data['data']);
-     }
-     
-     return $data;
+        $result = $this->query(
+            "
+            SELECT * FROM store
+            WHERE url = :url;",
+    
+            array(
+                ":url" => $url
+            )
+        );
+    
+        $data = null;
+        if (count($result) == 1) {
+            $data = $result[0];
+            $data = json_decode($data['data']);
+        }
+        
+        return $data;
      }
 
     /**
@@ -275,25 +277,38 @@ class Database
      */
     public function dump($table)
     {
-        return $this->query("SELECT * FROM " . $table);
+        $dump = $this->query("SELECT * FROM " . $table . " ORDER BY timestamp DESC;");
+        foreach($dump as $k=>$v) {
+            $dump[$k]['value'] = json_decode($dump[$k]['value']);
+        }
+        return $dump;
     }
 
     /**
      *  saves a record on the log table
      *
+     * @param string $context context for the log record
      * @param string $tag tag for the log record
      * @param mixed $value value for the log record
+     * @param string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
      * @throws Exception
      * @return array result of the save
      */
-    public function log($tag, $value)
+    public function log(string $context, string $tag, $value='', string $severity='INFO')
     {
+        $severity_available = ['DEBUG', 'INFO', 'NOTICE', 'WARNING', 'ERROR', 'CRITICAL'];
+        if(!in_array($severity, $severity_available)) {
+            $this->log("Severity ". $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
+            $severity = 'DEBUG';
+        }
         $this->exec("
-            INSERT INTO log(tag, value)
-            VALUES(:tag, :value);
+            INSERT INTO log(context, tag, value, severity)
+            VALUES(:context, :tag, :value, :severity);
         ", array(
+            ":context" => $context,
             ":tag" => $tag,
-            ":value" => json_encode($value)
+            ":value" => json_encode($value),
+            ":severity" => $severity
         ));
     }
 }

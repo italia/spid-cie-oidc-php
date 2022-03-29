@@ -28,8 +28,8 @@ use SPID_CIE_OIDC_PHP\Core\Database;
 use SPID_CIE_OIDC_PHP\Core\Logger;
 use SPID_CIE_OIDC_PHP\Core\Util;
 use SPID_CIE_OIDC_PHP\Federation\Federation;
-use SPID_CIE_OIDC_PHP\Federation\MyEntityStatement;
 use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
+use SPID_CIE_OIDC_PHP\Federation\TrustChain;
 use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequest;
 use SPID_CIE_OIDC_PHP\OIDC\TokenRequest;
 use SPID_CIE_OIDC_PHP\OIDC\UserinfoRequest;
@@ -104,11 +104,10 @@ $f3->route('GET /.well-known/openid-federation', function ($f3) {
 
     $logger->log('OIDC', 'GET /.well-known/openid-federation');
 
-    $myEntityStatement = new MyEntityStatement($config);
     $decoded = $f3->get("GET.decoded");
     $mediaType = $decoded == 'Y' ? 'application/json' : 'application/jwt';
     header('Content-Type: ' . $mediaType);
-    echo $myEntityStatement->getConfiguration($decoded == 'Y');
+    echo EntityStatement::makeFromConfig($config, $decoded == 'Y');
 });
 
 $f3->route('GET /oidc/rp/authz', function ($f3) {
@@ -163,20 +162,20 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
     }
 
     // Federation
-    /*
     try {
-        $entity_statement = new EntityStatement($config, $database, $op, $fed);
-        $configuration = $entity_statement->resolve();
+        $trustchain = new TrustChain($config, $database, $op, $fed);
+        $configuration = $trustchain->resolve();
 
     } catch(Exception $e) {
         $f3->error(401, $e->getMessage());
     }
-    */
+
+    header('Content-Type: application/json');
+    echo json_encode($configuration);
+    die();
 
 
-
-
-    
+    /*
     $authorization_endpoint = $op_metadata->{$op}->metadata->openid_provider->authorization_endpoint;
 
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
@@ -188,6 +187,7 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
         $nonce,
         Util::base64UrlEncode(str_pad($req_id, 32))
     );
+    */
     
 
 });
@@ -222,15 +222,15 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $code_verifier = $request['code_verifier'];
 
     // TODO : federation
-    $token_endpoint = $op_metadata->{$op}->openid_provider->token_endpoint;
-    $userinfo_endpoint = $op_metadata->{$op}->openid_provider->userinfo_endpoint;
+    $token_endpoint = $op_metadata->{$op}->metadata->openid_provider->token_endpoint;
+    $userinfo_endpoint = $op_metadata->{$op}->metadata->openid_provider->userinfo_endpoint;
 
     try {
         $tokenRequest = new TokenRequest($config, $hooks);
         $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
         $access_token = $tokenResponse->access_token;
 
-        $userinfoRequest = new UserinfoRequest($config, $op_metadata->{$op}->openid_provider, $hooks);
+        $userinfoRequest = new UserinfoRequest($config, $op_metadata->{$op}->metadata->openid_provider, $hooks);
         $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
 
         $f3->set('SESSION.auth', array(
@@ -262,7 +262,7 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
     }
 
     // TODO : federation
-    $introspection_endpoint = $op_metadata->{$op}->openid_provider->introspection_endpoint;
+    $introspection_endpoint = $op_metadata->{$op}->metadata->openid_provider->introspection_endpoint;
 
     $introspectionRequest = new IntrospectionRequest($config);
     $introspectionResponse = $introspectionRequest->send($introspection_endpoint, $access_token);
@@ -284,7 +284,7 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
     }
 
     // TODO : federation
-    $revocation_endpoint = $op_metadata->{$op}->openid_provider->revocation_endpoint;
+    $revocation_endpoint = $op_metadata->{$op}->metadata->openid_provider->revocation_endpoint;
 
     try {
         $revocationRequest = new RevocationRequest($config);
@@ -301,5 +301,16 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
 //----------------------------------------------------------------------------------------
 
 
+// 4 DEBUG
+
+$f3->route('GET /oidc/dump/@table', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $database = $f3->get("DATABASE");
+    $table = $f3->get("PARAMS.table");
+
+    $dump = $database->dump($table);
+    header("Content-Type: application/json");
+    echo json_encode($dump);
+});
 
 $f3->run();
