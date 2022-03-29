@@ -200,14 +200,12 @@ class EntityStatement
 
     private function applyPolicyModifierAdd($entity_type, $claim, $policy)
     {
+        $claim_val = $this->payload->metadata->$entity_type->$claim;
         if (!is_array($policy)) {
             $policy = [$policy];
         }
         foreach ($policy as $p) {
-            if (
-                is_array($this->payload->metadata->$entity_type->$claim)
-                && !in_array($p, $this->payload->metadata->$entity_type->$claim)
-            ) {
+            if (is_array($claim_val) && !in_array($p, $claim_val)) {
                 $this->payload->metadata->$entity_type->$claim[] = $p;
             } else {
                 $this->payload->metadata->$entity_type->$claim = $p;
@@ -217,21 +215,41 @@ class EntityStatement
 
     private function applyPolicyModifierDefault($entity_type, $claim, $policy)
     {
+        $claim_val = $this->payload->metadata->$entity_type->$claim;
+        if ($claim_val == null || $claim_val == '' || $claim_val == array()) {
+            $this->payload->metadata->$entity_type->$claim = $policy;
+        }
     }
 
     private function applyPolicyModifierOneOf($entity_type, $claim, $policy)
     {
+        $claim_val = $this->payload->metadata->$entity_type->$claim;
+        if ($claim_val != null && !in_array($claim_val, $policy)) {
+            throw new \Exception("Failed trust policy (" . $claim . " must be one of " . json_encode($policy) . ")");
+        }
     }
 
     private function applyPolicyModifierSubsetOf($entity_type, $claim, $policy)
     {
+        $claim_val = $this->payload->metadata->$entity_type->$claim;
+        if (!is_array($claim_val) || !(array_intersect($claim_val, $policy) === $claim_val)) {
+            throw new \Exception("Failed trust policy (" . $claim . " must be subset of " . json_encode($policy) . ")");
+        }
     }
 
     private function applyPolicyModifierSupersetOf($entity_type, $claim, $policy)
     {
+        $claim_val = $this->payload->metadata->$entity_type->$claim;
+        if (!is_array($claim_val) || !(array_intersect($policy, $claim_val) === $policy)) {
+            throw new \Exception("Failed trust policy (" . $claim . " must be superset of " . json_encode($policy) . ")");
+        }
     }
 
     private function applyPolicyModifierEssential($entity_type, $claim, $policy)
     {
+        $claim_val = $this->payload->metadata->$entity_type->$claim;
+        if ($policy == true && ($claim_val == null || $claim_val == '')) {
+            throw new \Exception("Failed trust policy (" . $claim . " must have a value)");
+        }
     }
 }
