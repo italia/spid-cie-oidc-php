@@ -38,7 +38,7 @@ class EntityStatement
     /**
      *  creates a new EntityStatement instance
      *
-     * @param string $token entity statement JWS token 
+     * @param string $token entity statement JWS token
      * @throws Exception
      * @return EntityStatement
      */
@@ -110,7 +110,8 @@ class EntityStatement
      * @throws Exception
      * @return EntityStatement
      */
-    public function initFromObject(object $object) {
+    public function initFromObject(object $object)
+    {
         // copy by value, not assign by ref
         $this->payload = json_decode(json_encode($object));
         return $this;
@@ -122,7 +123,8 @@ class EntityStatement
      * @throws Exception
      * @return mixed the entity statement payload
      */
-     public function getPayload() {
+    public function getPayload()
+    {
         return $this->payload;
     }
 
@@ -133,8 +135,9 @@ class EntityStatement
      * @throws Exception
      * @return mixed
      */
-    public static function parse($token) {
-        if(!JWT::isValid($token)) {
+    public static function parse($token)
+    {
+        if (!JWT::isValid($token)) {
             throw new \Exception("entity statement non valid");
         }
         return JWT::getJWSPayload($token);
@@ -147,36 +150,37 @@ class EntityStatement
      * @throws Exception
      * @return mixed
      */
-    public function applyPolicy(EntityStatement $federation_entity_statement) {
+    public function applyPolicy(EntityStatement $federation_entity_statement)
+    {
         $payload = $federation_entity_statement->getPayload();
         $policy = $payload->metadata_policy;
 
-        foreach($policy as $entity_type=>$entity_policy) { 
-            if($this->payload->metadata->$entity_type!=null) {          
-                foreach($entity_policy as $policy_claim=>$policy_rule) {
-                    if($this->payload->metadata->$entity_type->$policy_claim!=null) {
-                        foreach($policy_rule as $policy_modifier=>$policy_value) {
-                            switch($policy_modifier) {
-                                case 'value':   
-                                    $this->applyPolicyModifierValue($entity_type, $policy_claim, $policy_value); 
+        foreach ($policy as $entity_type => $entity_policy) {
+            if ($this->payload->metadata->$entity_type != null) {
+                foreach ($entity_policy as $policy_claim => $policy_rule) {
+                    if ($this->payload->metadata->$entity_type->$policy_claim != null) {
+                        foreach ($policy_rule as $policy_modifier => $policy_value) {
+                            switch ($policy_modifier) {
+                                case 'value':
+                                    $this->applyPolicyModifierValue($entity_type, $policy_claim, $policy_value);
                                     break;
-                                case 'add':     
-                                    $this->applyPolicyModifierAdd($entity_type, $policy_claim, $policy_value); 
+                                case 'add':
+                                    $this->applyPolicyModifierAdd($entity_type, $policy_claim, $policy_value);
                                     break;
-                                case 'default': 
-                                    $this->applyPolicyModifierDefault($entity_type, $policy_claim, $policy_value); 
+                                case 'default':
+                                    $this->applyPolicyModifierDefault($entity_type, $policy_claim, $policy_value);
                                     break;
-                                case 'one_of':  
-                                    $this->applyPolicyModifierOneOf($entity_type, $policy_claim, $policy_value); 
+                                case 'one_of':
+                                    $this->applyPolicyModifierOneOf($entity_type, $policy_claim, $policy_value);
                                     break;
-                                case 'subset_of': 
-                                    $this->applyPolicyModifierSubsetOf($entity_type, $policy_claim, $policy_value); 
+                                case 'subset_of':
+                                    $this->applyPolicyModifierSubsetOf($entity_type, $policy_claim, $policy_value);
                                     break;
-                                case 'superset_of': 
-                                    $this->applyPolicyModifierSupersetOf($entity_type, $policy_claim, $policy_value); 
+                                case 'superset_of':
+                                    $this->applyPolicyModifierSupersetOf($entity_type, $policy_claim, $policy_value);
                                     break;
-                                case 'essential': 
-                                    $this->applyPolicyModifierEssential($entity_type, $policy_claim, $policy_value); 
+                                case 'essential':
+                                    $this->applyPolicyModifierEssential($entity_type, $policy_claim, $policy_value);
                                     break;
                             }
                         }
@@ -187,16 +191,18 @@ class EntityStatement
     }
 
 
-    private function applyPolicyModifierValue($entity_type, $claim, $policy) {
+    private function applyPolicyModifierValue($entity_type, $claim, $policy)
+    {
         $this->payload->metadata->$entity_type->$claim = $policy;
     }
 
-    private function applyPolicyModifierAdd($entity_type, $claim, $policy) {
-        if(!is_array($policy)) {
+    private function applyPolicyModifierAdd($entity_type, $claim, $policy)
+    {
+        if (!is_array($policy)) {
             $policy = [$policy];
         }
-        foreach($policy as $p) {
-            if(
+        foreach ($policy as $p) {
+            if (
                 is_array($this->payload->metadata->$entity_type->$claim)
                 && !in_array($p, $this->payload->metadata->$entity_type->$claim)
             ) {
@@ -205,26 +211,25 @@ class EntityStatement
                 $this->payload->metadata->$entity_type->$claim = $p;
             }
         }
-
     }
 
-    private function applyPolicyModifierDefault($entity_type, $claim, $policy) {
-        
+    private function applyPolicyModifierDefault($entity_type, $claim, $policy)
+    {
     }
 
-    private function applyPolicyModifierOneOf($entity_type, $claim, $policy) {
-        
+    private function applyPolicyModifierOneOf($entity_type, $claim, $policy)
+    {
     }
 
-    private function applyPolicyModifierSubsetOf($entity_type, $claim, $policy) {
-        
+    private function applyPolicyModifierSubsetOf($entity_type, $claim, $policy)
+    {
     }
 
-    private function applyPolicyModifierSupersetOf($entity_type, $claim, $policy) {
-        
+    private function applyPolicyModifierSupersetOf($entity_type, $claim, $policy)
+    {
     }
 
-    private function applyPolicyModifierEssential($entity_type, $claim, $policy) {
-        
+    private function applyPolicyModifierEssential($entity_type, $claim, $policy)
+    {
     }
 }
