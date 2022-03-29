@@ -127,4 +127,13 @@ class Util
         }
         return strripos($haystack, $needle, 0) === $expectedPosition;
     }
+
+
+
+    public static function debug($object)
+    {
+        header('Content-Type: application/json');
+        echo json_encode($object);
+        die();
+    }
 }
