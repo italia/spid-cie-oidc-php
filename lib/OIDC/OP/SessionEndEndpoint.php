@@ -23,15 +23,15 @@
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
- 
+
 use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 
 /**
  *  Session End Endpoint
  *
  */
-class SessionEndEndpoint {
-
+class SessionEndEndpoint
+{
     public $name = "Session End Endpoint";
 
     /**
@@ -42,7 +42,8 @@ class SessionEndEndpoint {
      * @throws Exception
      * @return SessionEndEndpoint
      */
-    public function __construct(object $config, Database $database) {
+    public function __construct(object $config, Database $database)
+    {
         $this->config = $config;
         $this->database = $database;
     }
@@ -53,53 +54,51 @@ class SessionEndEndpoint {
      * @param object $request object containing the request parameters
      * @throws Exception
      */
-    public function process(object $request) {
+    public function process(object $request)
+    {
         $id_token_hint = $request->id_token_hint;
         $post_logout_redirect_uri = $_GET['post_logout_redirect_uri'];
-    
-        if($id_token_hint) {
-            if($this->database->checkIdToken($id_token_hint)) {
+
+        if ($id_token_hint) {
+            if ($this->database->checkIdToken($id_token_hint)) {
                 $request = $this->database->getRequestByIdToken($id_token_hint);
                 $this->database->deleteRequest($request['req_id']);
-        
             } else {
                 http_response_code(400);
-                if($this->config['debug']) {
+                if ($this->config['debug']) {
                     echo "ERROR: id_token not valid";
                     $this->database->log("SessionEndEndpoint", "SESSION_END_ERR", "id_token not valid");
-                } 
+                }
             }
-
         } else {
             $client_id = null;
             $clients = $this->config['clients'];
-            foreach($clients as $id=>$client_config) {
-                if(in_array($post_logout_redirect_uri, $client_config['post_logout_redirect_uri'])) {
+            foreach ($clients as $id => $client_config) {
+                if (in_array($post_logout_redirect_uri, $client_config['post_logout_redirect_uri'])) {
                     $client_id = $id;
                     break;
                 }
             }
 
-            if($client_id!=null) {
+            if ($client_id != null) {
                 $request = $this->database->getRequestByClientID($client_id);
-                foreach($request as $r) {
+                foreach ($request as $r) {
                     $req_id = $r['req_id'];
                     $this->database->deleteRequest($req_id);
                 }
-
             } else {
                 http_response_code(400);
-                if($this->config['debug']) {
+                if ($this->config['debug']) {
                     echo "ERROR: client_id not found for post_logout_redirect_uri";
                     $this->database->log("SessionEndEndpoint", "SESSION_END_ERR", "client_id not found for post_logout_redirect_uri");
-                } 
+                }
             }
         }
 
         $this->database->log("SessionEndEndpoint", "SESSION END", $post_logout_redirect_uri);
         $logout_url = $this->config['spid-php-proxy']['logout_url'];
-        $logout_url.= '?client_id='.$this->config['spid-php-proxy']['client_id'];
-        $logout_url.= '&redirect_uri='.urlencode($post_logout_redirect_uri);
-        header('Location: '.$logout_url); 
+        $logout_url .= '?client_id=' . $this->config['spid-php-proxy']['client_id'];
+        $logout_url .= '&redirect_uri=' . urlencode($post_logout_redirect_uri);
+        header('Location: ' . $logout_url);
     }
 }

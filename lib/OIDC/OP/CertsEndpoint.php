@@ -23,17 +23,16 @@
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
- 
+
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
-
 
 /**
  *  Certs Endpoint
  *
  */
-class CertsEndpoint {
-
+class CertsEndpoint
+{
     public $name = "Certs Endpoint";
 
     /**
@@ -44,7 +43,8 @@ class CertsEndpoint {
      * @throws Exception
      * @return CertsEndpoint
      */
-    public function __construct(object $config, Database $database) {
+    public function __construct(object $config, Database $database)
+    {
         $this->config = $config;
         $this->database = $database;
     }
@@ -54,10 +54,10 @@ class CertsEndpoint {
      *
      * @throws Exception
      */
-    public function process() {
+    public function process()
+    {
 
         try {
-
             $jwk_pem = $this->config['jwt_public_cert'];
             $jwk = JWT::getCertificateJWK($jwk_pem);
 
@@ -77,14 +77,12 @@ class CertsEndpoint {
 
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($cert);
-    
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             http_response_code(400);
-            if($this->config['debug']) {
-                echo "ERROR: ".$e->getMessage();
+            if ($this->config['debug']) {
+                echo "ERROR: " . $e->getMessage();
                 $this->database->log("CertsEndpoint", "CERTS_ERR", $e->getMessage());
-            } 
+            }
         }
     }
-
 }

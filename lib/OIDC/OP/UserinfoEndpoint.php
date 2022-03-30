@@ -23,15 +23,15 @@
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
- 
+
 use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 
 /**
  *  Userinfo Endpoint
  *
  */
-class UserinfoEndpoint {
-
+class UserinfoEndpoint
+{
     public $name = "Userinfo Endpoint";
 
     /**
@@ -42,7 +42,8 @@ class UserinfoEndpoint {
      * @throws Exception
      * @return UserinfoEndpoint
      */
-    public function __construct(object $config, Database $database) {
+    public function __construct(object $config, Database $database)
+    {
         $this->config = $config;
         $this->database = $database;
     }
@@ -52,36 +53,38 @@ class UserinfoEndpoint {
      *
      * @throws Exception
      */
-    public function process() {
+    public function process()
+    {
         try {
             $bearer = $this->getBearerToken();
-            if($bearer==null || $bearer=='') throw new Exception('access_denied');
-            $this->database->log("UserinfoEndpoint", "USERINFO", "Bearer: ".$bearer);
+            if ($bearer == null || $bearer == '') {
+                throw new Exception('access_denied');
+            }
+            $this->database->log("UserinfoEndpoint", "USERINFO", "Bearer: " . $bearer);
             $userinfo = (array) $this->database->getUserinfo($bearer);
             $userinfo['sub'] = $userinfo['fiscalNumber'];
             $this->database->log("UserinfoEndpoint", "USERINFO", $userinfo);
 
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($userinfo);
-
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             http_response_code(400);
-            if($this->config['debug']) {
-                echo "ERROR: ".$e->getMessage();
+            if ($this->config['debug']) {
+                echo "ERROR: " . $e->getMessage();
                 $this->database->log("UserinfoEndpoint", "USERINFO_ERR", $e->getMessage());
-            } 
+            }
         }
     }
 
-    /** 
+    /**
      * Get hearder Authorization
      */
-    private function getAuthorizationHeader(){
+    private function getAuthorizationHeader()
+    {
         $headers = null;
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
-        }
-        else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
@@ -99,7 +102,8 @@ class UserinfoEndpoint {
     /**
      * get access token from header
      */
-    private function getBearerToken() {
+    private function getBearerToken()
+    {
         $headers = $this->getAuthorizationHeader();
         // HEADER: Get the access token from the header
         if (!empty($headers)) {

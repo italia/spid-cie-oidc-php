@@ -29,8 +29,8 @@ use SPID_CIE_OIDC_PHP\Core\Util;
 /**
  *  Provides functions to saves and retrieves data from a SQLite storage database for OP
  */
-class Database {
-
+class Database
+{
     /**
      *  creates a new Database instance
      *
@@ -38,9 +38,12 @@ class Database {
      * @throws Exception
      * @return Database
      */
-    public function __construct($db_file) {
+    public function __construct($db_file)
+    {
         $this->db = new SQLite3($db_file);
-        if(!$this->db) { die("Error while connecting to db.sqlite"); }
+        if (!$this->db) {
+            die("Error while connecting to db.sqlite");
+        }
 
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS token (
@@ -81,7 +84,8 @@ class Database {
      * @throws Exception
      * @return string the request id
      */
-    public function createRequest(string $client_id, string $redirect_uri, string $state='', string $nonce='') {
+    public function createRequest(string $client_id, string $redirect_uri, string $state = '', string $nonce = '')
+    {
         $code = uniqid();
         $stmt = $this->db->prepare("
             INSERT INTO token(client_id, redirect_uri, state, nonce) 
@@ -106,7 +110,8 @@ class Database {
      * @throws Exception
      * @return string the request id
      */
-    public function updateRequest(string $client_id, string $redirect_uri, string $state='', string $nonce='') {
+    public function updateRequest(string $client_id, string $redirect_uri, string $state = '', string $nonce = '')
+    {
         $req_id = null;
         $result = $this->query("
             SELECT req_id FROM token 
@@ -120,7 +125,7 @@ class Database {
             ":redirect_uri" => $redirect_uri
         ));
 
-        if(count($result)==1) {
+        if (count($result) == 1) {
             $req_id = $result[0]['req_id'];
             $stmt = $this->db->prepare("
                 UPDATE token 
@@ -142,8 +147,10 @@ class Database {
      * @throws Exception
      * @return array the request
      */
-    public function getRequest(string $req_id) {
-        $result = $this->query("
+    public function getRequest(string $req_id)
+    {
+        $result = $this->query(
+            "
             SELECT client_id, redirect_uri, state, nonce FROM token
             WHERE req_id = :req_id;",
             array(":req_id" => $req_id)
@@ -164,8 +171,10 @@ class Database {
      * @throws Exception
      * @return array the request
      */
-    public function getRequestByCode(string $code) {
-        $result = $this->query("
+    public function getRequestByCode(string $code)
+    {
+        $result = $this->query(
+            "
             SELECT req_id, client_id, redirect_uri, state, nonce FROM token
             WHERE code = :code;",
             array(":code" => $code)
@@ -187,8 +196,10 @@ class Database {
      * @throws Exception
      * @return array the request
      */
-    public function getRequestByIdToken(string $id_token) {
-        $result = $this->query("
+    public function getRequestByIdToken(string $id_token)
+    {
+        $result = $this->query(
+            "
             SELECT req_id, client_id, redirect_uri, state, nonce FROM token
             WHERE id_token = :id_token;",
             array(":id_token" => $id_token)
@@ -210,8 +221,10 @@ class Database {
      * @throws Exception
      * @return array the requests
      */
-    public function getRequestByClientID(string $client_id) {
-        $result = $this->query("
+    public function getRequestByClientID(string $client_id)
+    {
+        $result = $this->query(
+            "
             SELECT req_id, client_id, redirect_uri, state, nonce FROM token
             WHERE client_id = :client_id;",
             array(":client_id" => $client_id)
@@ -227,7 +240,8 @@ class Database {
      * @throws Exception
      * @return string the generated authcode
      */
-    public function createAuthorizationCode(string $req_id) {
+    public function createAuthorizationCode(string $req_id)
+    {
         $code = uniqid();
         $stmt = $this->db->prepare("
             UPDATE token 
@@ -249,7 +263,8 @@ class Database {
      * @throws Exception
      * @return boolean true if the auth code exists
      */
-    public function checkAuthorizationCode(string $client_id, string $redirect_uri, string $code) {
+    public function checkAuthorizationCode(string $client_id, string $redirect_uri, string $code)
+    {
         $check = false;
         $result = $this->query("
             SELECT req_id FROM token 
@@ -262,7 +277,9 @@ class Database {
             ":code" => $code
         ));
 
-        if(count($result)==1) $check = true;
+        if (count($result) == 1) {
+            $check = true;
+        }
         return $check;
     }
 
@@ -273,9 +290,10 @@ class Database {
      * @param string $id_token the id_token to save
      * @throws Exception
      */
-    public function saveIdToken(string $req_id, string $id_token) {
+    public function saveIdToken(string $req_id, string $id_token)
+    {
         $this->exec(
-            "UPDATE token SET id_token=:id_token WHERE req_id=:req_id", 
+            "UPDATE token SET id_token=:id_token WHERE req_id=:req_id",
             array(
                 ":id_token" => $id_token,
                 ":req_id" => $req_id
@@ -290,7 +308,8 @@ class Database {
      * @throws Exception
      * @return boolean true if the id_token exists
      */
-    public function checkIdToken(string $id_token) {
+    public function checkIdToken(string $id_token)
+    {
         $check = false;
         $result = $this->query("
             SELECT req_id FROM token 
@@ -299,7 +318,9 @@ class Database {
             ":id_token" => $id_token
         ));
 
-        if(count($result)==1) $check = true;
+        if (count($result) == 1) {
+            $check = true;
+        }
         return $check;
     }
 
@@ -310,7 +331,8 @@ class Database {
      * @throws Exception
      * @return string the generated access_token
      */
-    public function createAccessToken(string $code) {
+    public function createAccessToken(string $code)
+    {
         $access_token = uniqid();
         $stmt = $this->db->prepare("
             UPDATE token
@@ -330,9 +352,10 @@ class Database {
      * @param string $access_token the access_token
      * @throws Exception
      */
-    public function saveAccessToken(string $req_id, string $access_token) {
+    public function saveAccessToken(string $req_id, string $access_token)
+    {
         $this->exec(
-            "UPDATE token SET access_token=:access_token WHERE req_id=:req_id", 
+            "UPDATE token SET access_token=:access_token WHERE req_id=:req_id",
             array(
                 ":access_token" => $access_token,
                 ":req_id" => $req_id
@@ -347,7 +370,8 @@ class Database {
      * @throws Exception
      * @return boolean true if the access_token exists
      */
-    public function checkAccessToken(string $access_token) {
+    public function checkAccessToken(string $access_token)
+    {
         $check = false;
         $result = $this->query("
             SELECT req_id FROM token 
@@ -356,7 +380,9 @@ class Database {
             ":access_token" => $access_token
         ));
 
-        if(count($result)==1) $check = true;
+        if (count($result) == 1) {
+            $check = true;
+        }
         return $check;
     }
 
@@ -367,9 +393,10 @@ class Database {
      * @param array $userinfo the user info
      * @throws Exception
      */
-    public function saveUserinfo(string $req_id, array $userinfo) {
+    public function saveUserinfo(string $req_id, array $userinfo)
+    {
         $this->exec(
-            "UPDATE token SET userinfo=:userinfo WHERE req_id=:req_id", 
+            "UPDATE token SET userinfo=:userinfo WHERE req_id=:req_id",
             array(
                 ":userinfo" => json_encode($userinfo),
                 ":req_id" => $req_id
@@ -384,7 +411,8 @@ class Database {
      * @return array $userinfo the user info
      * @throws Exception
      */
-    public function getUserinfo(string $access_token) {
+    public function getUserinfo(string $access_token)
+    {
         $userinfo = $this->query(
             "SELECT userinfo FROM token WHERE access_token=:access_token",
             array(":access_token" => $access_token)
@@ -398,7 +426,8 @@ class Database {
      * @param string $req_id the request id
      * @throws Exception
      */
-    public function deleteRequest(string $req_id) {
+    public function deleteRequest(string $req_id)
+    {
         return $this->exec(
             "DELETE FROM token WHERE req_id=:req_id",
             array(":req_id" => $req_id)
@@ -413,14 +442,15 @@ class Database {
      * @throws Exception
      * @return array result of the query
      */
-    function query($sql, $values=array()) {
+    function query($sql, $values = array())
+    {
         $result = array();
         $stmt = $this->db->prepare($sql);
-        foreach($values as $key=>$value) {
+        foreach ($values as $key => $value) {
             $stmt->bindValue($key, $value, SQLITE3_TEXT);
         }
         $query = $stmt->execute();
-        while($row = $query->fetchArray(SQLITE3_ASSOC)) {
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = $row;
         }
         return $result;
@@ -434,9 +464,10 @@ class Database {
      * @throws Exception
      * @return array result of the query
      */
-    function exec($sql, $values=array()) {
+    function exec($sql, $values = array())
+    {
         $stmt = $this->db->prepare($sql);
-        foreach($values as $key=>$value) {
+        foreach ($values as $key => $value) {
             $stmt->bindValue($key, $value, SQLITE3_TEXT);
         }
         $result = $stmt->execute();
@@ -450,8 +481,9 @@ class Database {
      * @throws Exception
      * @return array result of the dump
      */
-    function dump($table) {
-        return $this->query("SELECT * FROM ".$table);
+    function dump($table)
+    {
+        return $this->query("SELECT * FROM " . $table);
     }
 
     /**
@@ -464,21 +496,21 @@ class Database {
      * @throws Exception
      * @return array result of the save
      */
-     public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
-     {
-         $severity_available = ['DEBUG', 'INFO', 'NOTICE', 'WARNING', 'ERROR', 'CRITICAL'];
-         if (!in_array($severity, $severity_available)) {
-             $this->log("Severity " . $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
-             $severity = 'DEBUG';
-         }
-         $this->exec("
+    public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
+    {
+        $severity_available = ['DEBUG', 'INFO', 'NOTICE', 'WARNING', 'ERROR', 'CRITICAL'];
+        if (!in_array($severity, $severity_available)) {
+            $this->log("Severity " . $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
+            $severity = 'DEBUG';
+        }
+        $this->exec("
              INSERT INTO log(context, tag, value, severity)
              VALUES(:context, :tag, :value, :severity);
          ", array(
-             ":context" => $context,
-             ":tag" => $tag,
-             ":value" => json_encode($value),
-             ":severity" => $severity
-         ));
-     }
+            ":context" => $context,
+            ":tag" => $tag,
+            ":value" => json_encode($value),
+            ":severity" => $severity
+        ));
+    }
 }

@@ -1,16 +1,16 @@
 <?php
 
 use PHPUnit\Framework\TestCase as TestCase;
-use SPID_CIE_OIDC_PHP\Core\Database;
+use SPID_CIE_OIDC_PHP\OIDC\RP\Database;
 
 /**
- * @covers SPID_CIE_OIDC_PHP\Core\Database
+ * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database
  */
-class DatabaseTest extends TestCase
+class RPDatabaseTest extends TestCase
 {
     /**
-     * @covers SPID_CIE_OIDC_PHP\Core\Database::saveToStore
-     * @covers SPID_CIE_OIDC_PHP\Core\Database::getFromStore
+     * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::saveToStore
+     * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::getFromStore
      */
     public function test_Store()
     {
