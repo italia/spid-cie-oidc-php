@@ -26,7 +26,7 @@ namespace SPID_CIE_OIDC_PHP\Federation;
 
 use SPID_CIE_OIDC_PHP\Core\Util;
 use SPID_CIE_OIDC_PHP\Core\JWT;
-use SPID_CIE_OIDC_PHP\Core\Database;
+use SPID_CIE_OIDC_PHP\OIDC\RP\Database;
 use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
 use GuzzleHttp\Client;
 

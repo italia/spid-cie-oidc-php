@@ -22,12 +22,12 @@
  * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
-namespace SPID_CIE_OIDC_PHP\Core;
+namespace SPID_CIE_OIDC_PHP\OIDC\RP;
 
 use SPID_CIE_OIDC_PHP\Core\Util;
 
 /**
- *  Provides functions to saves and retrieves data from a SQLite storage database
+ *  Provides functions to saves and retrieves data from a SQLite storage database for RP
  */
 class Database
 {

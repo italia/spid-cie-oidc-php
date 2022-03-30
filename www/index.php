@@ -24,17 +24,17 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use SPID_CIE_OIDC_PHP\Core\Database;
 use SPID_CIE_OIDC_PHP\Core\Logger;
 use SPID_CIE_OIDC_PHP\Core\Util;
 use SPID_CIE_OIDC_PHP\Federation\Federation;
 use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
 use SPID_CIE_OIDC_PHP\Federation\TrustChain;
-use SPID_CIE_OIDC_PHP\OIDC\AuthenticationRequest;
-use SPID_CIE_OIDC_PHP\OIDC\TokenRequest;
-use SPID_CIE_OIDC_PHP\OIDC\UserinfoRequest;
-use SPID_CIE_OIDC_PHP\OIDC\IntrospectionRequest;
-use SPID_CIE_OIDC_PHP\OIDC\RevocationRequest;
+use SPID_CIE_OIDC_PHP\OIDC\RP\Database as RP_Database;
+use SPID_CIE_OIDC_PHP\OIDC\RP\AuthenticationRequest;
+use SPID_CIE_OIDC_PHP\OIDC\RP\TokenRequest;
+use SPID_CIE_OIDC_PHP\OIDC\RP\UserinfoRequest;
+use SPID_CIE_OIDC_PHP\OIDC\RP\IntrospectionRequest;
+use SPID_CIE_OIDC_PHP\OIDC\RP\RevocationRequest;
 
 $f3 = \Base::instance();
 
@@ -47,14 +47,11 @@ $f3->set("CONFIG", $config);
 $hooks = json_decode(file_get_contents(__DIR__ . '/../config/hooks.json'));
 $f3->set("HOOKS", $hooks);
 
-$op_metadata = json_decode(file_get_contents(__DIR__ . '/../config/op-metadata.json'));
-$f3->set("OP_METADATA", $op_metadata);
-
 $federation = new Federation($config, json_decode(file_get_contents(__DIR__ . '/../config/federation-authority.json')));
 $f3->set("FEDERATION", $federation);
 
-$database = new Database(__DIR__ . '/../data/db.sqlite');
-$f3->set("DATABASE", $database);
+$rp_database = new RP_Database(__DIR__ . '/../data/db_rp.sqlite');
+$f3->set("RP_DATABASE", $rp_database);
 
 $logger = new Logger($config);
 $f3->set("LOGGER", $logger);
@@ -95,7 +92,7 @@ $f3->set('ONERROR', function ($f3) {
 
 
 //----------------------------------------------------------------------------------------
-// Routes
+// Routes for Relying Party
 //----------------------------------------------------------------------------------------
 
 $f3->route('GET /.well-known/openid-federation', function ($f3) {
@@ -139,8 +136,7 @@ $f3->route('GET /oidc/rp/authz', function ($f3) {
 $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
     $config = $f3->get("CONFIG");
     $federation = $f3->get("FEDERATION");
-    $op_metadata = $f3->get("OP_METADATA");
-    $database = $f3->get("DATABASE");
+    $rp_database = $f3->get("RP_DATABASE");
     $hooks = $f3->get("HOOKS");
     $logger = $f3->get("LOGGER");
 
@@ -152,8 +148,8 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
     $acr = $config->rp_requested_acr;
     $user_attributes = $config->rp_spid_user_attributes;
     $redirect_uri = $config->rp_redirect_uri;
-    $req_id = $database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
-    $request = $database->getRequest($req_id);
+    $req_id = $rp_database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
+    $request = $rp_database->getRequest($req_id);
     $code_verifier = $request['code_verifier'];
     $nonce = $request['nonce'];
 
@@ -163,7 +159,7 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -184,8 +180,7 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
 
 $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $config = $f3->get("CONFIG");
-    $op_metadata = $f3->get("OP_METADATA");
-    $database = $f3->get("DATABASE");
+    $rp_database = $f3->get("RP_DATABASE");
     $hooks = $f3->get("HOOKS");
     $logger = $f3->get("LOGGER");
 
@@ -205,7 +200,7 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $iss = $f3->get("GET.iss");
 
     // recover parameters from saved request
-    $request = $database->getRequest($req_id);
+    $request = $rp_database->getRequest($req_id);
     $ta_id = $request['ta_id'];
     $op_id = $request['op_id'];
     $redirect_uri = $request['redirect_uri'];
@@ -214,7 +209,7 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -253,8 +248,7 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
 
 $f3->route('GET /oidc/rp/introspection', function ($f3) {
     $config = $f3->get("CONFIG");
-    $op_metadata = $f3->get("OP_METADATA");
-    $database = $f3->get("DATABASE");
+    $rp_database = $f3->get("RP_DATABASE");
     $auth = $f3->get("SESSION.auth");
 
     $ta_id = $auth['ta_id'];
@@ -267,7 +261,7 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -288,8 +282,7 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
 
 $f3->route('GET /oidc/rp/logout', function ($f3) {
     $config = $f3->get("CONFIG");
-    $op_metadata = $f3->get("OP_METADATA");
-    $database = $f3->get("DATABASE");
+    $rp_database = $f3->get("RP_DATABASE");
     $auth = $f3->get("SESSION.auth");
 
     $ta_id = $auth['ta_id'];
@@ -302,7 +295,7 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -325,16 +318,19 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
 //----------------------------------------------------------------------------------------
 
 
-// 4 DEBUG
+//----------------------------------------------------------------------------------------
+// Routes for Proxy OIDC Provider
+//----------------------------------------------------------------------------------------
 
-$f3->route('GET /oidc/dump/@table', function ($f3) {
-    $config = $f3->get("CONFIG");
-    $database = $f3->get("DATABASE");
-    $table = $f3->get("PARAMS.table");
-
-    $dump = $database->dump($table);
-    header("Content-Type: application/json");
-    echo json_encode($dump);
+$f3->route('GET /oidc/op/certs', function ($f3) {
+    //$handler = new CertsEndpoint
 });
+
+//----------------------------------------------------------------------------------------
+
+
+
+
+
 
 $f3->run();
