@@ -113,9 +113,8 @@ class UserinfoRequest
 
         // TODO: verify response against OP public key
         // TODO: select key by kid
-        $key = $this->op_metadata->jwks->keys[0];
-        $jwk = JWT::getJWKFromJSON(json_encode($key));
-        if (!JWT::isVerified($decrypted, $jwk)) {
+        $jwks = $this->op_metadata->jwks;
+        if (!JWT::isSignatureVerified($decrypted, $jwks)) {
             throw new \Exception("Impossibile stabilire l'autenticità della risposta");
         }
 

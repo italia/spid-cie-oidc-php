@@ -39,14 +39,17 @@ class EntityStatement
      *  creates a new EntityStatement instance
      *
      * @param string $token entity statement JWS token
+     * @param string $iss issuer
      * @throws Exception
      * @return EntityStatement
      */
-    public function __construct(string $token = null)
+    public function __construct(string $token = null, string $iss = string)
     {
         if ($token != null) {
             $this->token = $token;
-            $this->payload = EntityStatement::parse($token);
+            $this->iss = $iss;
+            $this->payload = JWT::getJWSPayload($this->token);
+            $this->validate($token);
         }
     }
 
@@ -131,18 +134,34 @@ class EntityStatement
     }
 
     /**
-     *  verify token and returns parsed json payload
+     *  validate token
      *
      * @param string $token entity statement JWS token
      * @throws Exception
      * @return mixed
      */
-    public static function parse($token)
+    public function validate()
     {
-        if (!JWT::isValid($token)) {
-            throw new \Exception("entity statement non valid");
+        $jwks = $this->payload->jwks;
+
+        // verify signature
+        /*
+        if (!JWT::isSignatureVerified($this->token, $jwks)) {
+            throw new \Exception("signature verification failed");
         }
-        return JWT::getJWSPayload($token);
+        */
+
+        // verify if token is not expired and valid
+        if (!JWT::isValid($this->token)) {
+            throw new \Exception("entity statement not valid");
+        }
+
+        // if issuer is correct
+        /*
+        if ($this->payload->iss != $this->iss) {
+            throw new \Exception("issuer not valid");
+        }
+        */
     }
 
     /**

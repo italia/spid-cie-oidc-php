@@ -112,11 +112,11 @@ class TrustChain
 
         // validate
         try {
-            $this->leaf_entity_statement = new EntityStatement($entity_statement_token);
+            $this->leaf_entity_statement = new EntityStatement($entity_statement_token, $this->entity);
             $entity_statement_payload = $this->leaf_entity_statement->getPayload();
         } catch (\Exception $e) {
-            $this->database->log("TrustChain", "entity statement for " . $this->entity . " not valid", $entity_statement, "ERROR");
-            throw new \Exception("Entity statement for " . $this->entity . " not valid: " . $entity_statement);
+            $this->database->log("TrustChain", "entity statement for " . $this->entity . " not valid: " . $e->getMessage(), $entity_statement_token, "ERROR");
+            throw new \Exception("Entity statement for " . $this->entity . " not valid: " . $e->getMessage());
         }
 
         // not save to store if in grace period
@@ -170,11 +170,11 @@ class TrustChain
 
             // validate
             try {
-                $this->federation_entity_statement = new EntityStatement($federation_entity_statement_token);
+                $this->federation_entity_statement = new EntityStatement($federation_entity_statement_token, $this->trust_anchor);
                 //$federation_entity_statement_payload = $this->federation_entity_statement->getPayload();
             } catch (\Exception $e) {
-                $this->database->log("TrustChain", "federation entity statement for " . $this->leaf . " not valid", $federation_entity_statement_token, "ERROR");
-                throw new \Exception("Federation entity statement for " . $this->leaf . " not valid: " . $federation_entity_statement_token);
+                $this->database->log("TrustChain", "federation entity statement for " . $this->leaf . " not valid: ". $e->getMessage(), $federation_entity_statement_token, "ERROR");
+                throw new \Exception("Federation entity statement for " . $this->leaf . " not valid: " . $e->getMessage());
             }
 
             return $this->federation_entity_statement;

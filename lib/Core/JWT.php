@@ -25,6 +25,7 @@
 namespace SPID_CIE_OIDC_PHP\Core;
 
 use Jose\Component\Core\JWK;
+use Jose\Component\Core\JWKSet;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\JWSBuilder;
@@ -192,31 +193,20 @@ class JWT
      *  verify the signature of the JWS token
      *
      * @param string $token JWS token
-     * @param object $jwk JWK to which verify the signature of the token
+     * @param object $jwks JWK SET to which verify the signature of the token
      * @throws Exception
      * @return boolean true if the signature is verified
      */
-    public static function isVerified(string $token, object $jwk)
+    public static function isSignatureVerified(string $token, object $jwks_obj)
     {
-
+        $jwks = JWKSet::createFromJson(json_encode($jwks_obj));
         $algorithmManager = JWT::getSigAlgManager();
         $jwsVerifier = new JWSVerifier($algorithmManager);
         $serializerManager = new JWSSerializerManager([ new JWSSerializer() ]);
         $jws = $serializerManager->unserialize($token);
 
-        $isVerified = $jwsVerifier->verifyWithKey($jws, $jwk, 0);
-
-        /*
-        $jwsLoader = new JWSLoader(
-            $serializerManager,
-            $jwsVerifier,
-            $headerCheckerManager
-        );
-
-        $jws = $jwsLoader->loadAndVerifyWithKey($token, $jwk, $signature, $payload);
-        */
-
-        return $isVerified;
+        $isSignatureVerified = $jwsVerifier->verifyWithKeySet($jws, $jwks, 0);
+        return $isSignatureVerified;
     }
 
     /**
@@ -232,7 +222,13 @@ class JWT
         $isValid = true;
         $payload = self::getJWSPayload($token);
 
-        if ($payload->exp <= strtotime('now')) {
+        // max clock skew 5min
+        if ($payload->iat >= strtotime('+5 minutes')) {
+            $isValid = false;
+        }
+
+        // max clock skew 5min
+        if ($payload->exp <= strtotime('+5 minutes')) {
             $isValid = false;
         }
 
