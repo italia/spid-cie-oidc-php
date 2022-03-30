@@ -69,7 +69,7 @@ class IntrospectionRequest
             "jti" => 'spid-cie-php-oidc_' . uniqid(),
             "iss" => $client_id,
             "sub" => $client_id,
-            "aud" => $token_endpoint,
+            "aud" => $introspection_endpoint,
             "iat" => strtotime("now"),
             "exp" => strtotime("+180 seconds")
         );
@@ -99,6 +99,7 @@ class IntrospectionRequest
         );
 
         $response = $this->http_client->post($introspection_endpoint, [ 'form_params' => $data ]);
+
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();

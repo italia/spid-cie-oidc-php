@@ -136,7 +136,7 @@ $f3->route('GET /oidc/rp/authz', function ($f3) {
     echo View::instance()->render('view/login.php');
 });
 
-$f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
+$f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
     $config = $f3->get("CONFIG");
     $federation = $f3->get("FEDERATION");
     $op_metadata = $f3->get("OP_METADATA");
@@ -146,24 +146,24 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
 
     $logger->log('OIDC', 'GET /oidc/rp/authz/' . $f3->get('PARAMS.op'));
 
-    $fed = base64_decode($f3->get('PARAMS.fed'));
-    $op = base64_decode($f3->get('PARAMS.op'));
+    $ta_id = base64_decode($f3->get('PARAMS.ta'));
+    $op_id = base64_decode($f3->get('PARAMS.op'));
     $state = $f3->get('GET.state');
     $acr = $config->rp_requested_acr;
     $user_attributes = $config->rp_spid_user_attributes;
     $redirect_uri = $config->rp_redirect_uri;
-    $req_id = $database->createRequest($op, $redirect_uri, $state, $acr, $user_attributes);
+    $req_id = $database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
     $request = $database->getRequest($req_id);
     $code_verifier = $request['code_verifier'];
     $nonce = $request['nonce'];
 
-    if (!$federation->isFederationSupported($fed)) {
-        $f3->error(401, "Federation non supported: " . $fed);
+    if (!$federation->isFederationSupported($ta_id)) {
+        $f3->error(401, "Federation non supported: " . $ta_id);
     }
 
-    // Federation
+    // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($config, $database, $op, $fed);
+        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -206,30 +206,42 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
 
     // recover parameters from saved request
     $request = $database->getRequest($req_id);
-    $op = $request['op_id'];
+    $ta_id = $request['ta_id'];
+    $op_id = $request['op_id'];
     $redirect_uri = $request['redirect_uri'];
     $state = $request['state'];
     $code_verifier = $request['code_verifier'];
 
-    // TODO : federation
-    $token_endpoint = $op_metadata->{$op}->metadata->openid_provider->token_endpoint;
-    $userinfo_endpoint = $op_metadata->{$op}->metadata->openid_provider->userinfo_endpoint;
+    // resolve entity statement on federation
+    try {
+        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $configuration = $trustchain->resolve();
+    } catch (Exception $e) {
+        $f3->error(401, $e->getMessage());
+    }
+
+    $token_endpoint = $configuration->metadata->openid_provider->token_endpoint;
+    $userinfo_endpoint = $configuration->metadata->openid_provider->userinfo_endpoint;
 
     try {
         $tokenRequest = new TokenRequest($config, $hooks);
         $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
         $access_token = $tokenResponse->access_token;
 
-        $userinfoRequest = new UserinfoRequest($config, $op_metadata->{$op}->metadata->openid_provider, $hooks);
+        $userinfoRequest = new UserinfoRequest($config, $configuration->metadata->openid_provider, $hooks);
         $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
 
         $f3->set('SESSION.auth', array(
-            "op" => $op,
+            "ta_id" => $ta_id,
+            "op_id" => $op_id,
             "access_token" => $access_token,
             "redirect_uri" => $redirect_uri,
             "userinfo" => $userinfoResponse,
             "state" => $state
         ));
+
+        $userinfoResponse->trust_anchor_id = $ta_id;
+        $userinfoResponse->provider_id = $op_id;
 
         $responseHandlerClass = $config->rp_response_handler;
         $responseHandler = new $responseHandlerClass($config);
@@ -242,20 +254,34 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
 $f3->route('GET /oidc/rp/introspection', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_metadata = $f3->get("OP_METADATA");
+    $database = $f3->get("DATABASE");
     $auth = $f3->get("SESSION.auth");
 
-    $op = $auth['op'];
+    $ta_id = $auth['ta_id'];
+    $op_id = $auth['op_id'];
     $access_token = $auth['access_token'];
 
     if ($access_token == null) {
         $f3->error("Session not found");
     }
 
-    // TODO : federation
-    $introspection_endpoint = $op_metadata->{$op}->metadata->openid_provider->introspection_endpoint;
+    // resolve entity statement on federation
+    try {
+        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $configuration = $trustchain->resolve();
+    } catch (Exception $e) {
+        $f3->error(401, $e->getMessage());
+    }
 
-    $introspectionRequest = new IntrospectionRequest($config);
-    $introspectionResponse = $introspectionRequest->send($introspection_endpoint, $access_token);
+    try {
+        $introspection_endpoint = $configuration->metadata->openid_provider->introspection_endpoint;
+        $introspectionRequest = new IntrospectionRequest($config);
+        $introspectionResponse = $introspectionRequest->send($introspection_endpoint, $access_token);
+
+    } catch(\Exception $e) {
+        $f3->error(401, $e->getMessage());
+    }
+
 
     header('ContentType: application/json');
     echo json_encode($introspectionResponse);
@@ -264,17 +290,26 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
 $f3->route('GET /oidc/rp/logout', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_metadata = $f3->get("OP_METADATA");
+    $database = $f3->get("DATABASE");
     $auth = $f3->get("SESSION.auth");
 
-    $op = $auth['op'];
+    $ta_id = $auth['ta_id'];
+    $op_id = $auth['op_id'];
     $access_token = $auth['access_token'];
 
     if ($access_token == null) {
         $f3->reroute('/oidc/rp/authz');
     }
 
-    // TODO : federation
-    $revocation_endpoint = $op_metadata->{$op}->metadata->openid_provider->revocation_endpoint;
+    // resolve entity statement on federation
+    try {
+        $trustchain = new TrustChain($config, $database, $op_id, $ta_id);
+        $configuration = $trustchain->resolve();
+    } catch (Exception $e) {
+        $f3->error(401, $e->getMessage());
+    }
+
+    $revocation_endpoint = $configuration->metadata->openid_provider->revocation_endpoint;
 
     try {
         $revocationRequest = new RevocationRequest($config);

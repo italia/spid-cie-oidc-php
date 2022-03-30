@@ -57,6 +57,7 @@ class Database
             CREATE TABLE IF NOT EXISTS request (
                 req_id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
+                ta_id           STRING,
                 op_id           STRING,
                 redirect_uri    STRING,
                 state           STRING,
@@ -89,7 +90,8 @@ class Database
     /**
      *  creates a record for an authentication request
      *
-     * @param string $op_id client_id of provider to which send the request
+     * @param string $ta_id id of the trust anchor to wich the provider to which send the request belongs to
+     * @param string $op_id id of the provider to which send the request
      * @param string $redirect_uri URL to which return after authentication
      * @param string $state value of the state param sent with the request
      * @param int[] $acr array of int values of the acr params to sent with the request
@@ -97,12 +99,13 @@ class Database
      * @throws Exception
      * @return string the request id
      */
-    public function createRequest(string $op_id, string $redirect_uri, string $state = '', array $acr = [], array $user_attributes = [])
+    public function createRequest(string $ta_id, string $op_id, string $redirect_uri, string $state = '', array $acr = [], array $user_attributes = [])
     {
         $stmt = $this->db->prepare("
-            INSERT INTO request(op_id, redirect_uri, state, acr, user_attributes, nonce, code_verifier) 
-            VALUES(:op_id, :redirect_uri, :state, :acr, :user_attributes, :nonce, :code_verifier);
+            INSERT INTO request(ta_id, op_id, redirect_uri, state, acr, user_attributes, nonce, code_verifier) 
+            VALUES(:ta_id, :op_id, :redirect_uri, :state, :acr, :user_attributes, :nonce, :code_verifier);
         ");
+        $stmt->bindValue(':ta_id', $ta_id, SQLITE3_TEXT);
         $stmt->bindValue(':op_id', $op_id, SQLITE3_TEXT);
         $stmt->bindValue(':redirect_uri', $redirect_uri, SQLITE3_TEXT);
         $stmt->bindValue(':state', $state, SQLITE3_TEXT);
