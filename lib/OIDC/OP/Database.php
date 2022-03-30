@@ -442,7 +442,7 @@ class Database
      * @throws Exception
      * @return array result of the query
      */
-    function query($sql, $values = array())
+    public function query($sql, $values = array())
     {
         $result = array();
         $stmt = $this->db->prepare($sql);
@@ -464,7 +464,7 @@ class Database
      * @throws Exception
      * @return array result of the query
      */
-    function exec($sql, $values = array())
+    public function exec($sql, $values = array())
     {
         $stmt = $this->db->prepare($sql);
         foreach ($values as $key => $value) {
@@ -481,7 +481,7 @@ class Database
      * @throws Exception
      * @return array result of the dump
      */
-    function dump($table)
+    public function dump($table)
     {
         return $this->query("SELECT * FROM " . $table);
     }
