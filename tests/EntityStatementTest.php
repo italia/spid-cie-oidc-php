@@ -23,8 +23,9 @@ class EntityStatementTest extends TestCase
      */
     public function test_applyPolicyModifierValue()
     {
-        $es = new EntityStatement();
+        $es = new EntityStatement(null, "https://iss");
         $config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "subject_types_supported" => array(
@@ -47,6 +48,7 @@ class EntityStatementTest extends TestCase
         ));
 
         $new_config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "subject_types_supported" => array(
@@ -65,8 +67,9 @@ class EntityStatementTest extends TestCase
      */
     public function test_applyPolicyModifierAdd()
     {
-        $es = new EntityStatement();
+        $es = new EntityStatement(null, "https://iss");
         $config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "subject_types_supported" => array(
@@ -88,6 +91,7 @@ class EntityStatementTest extends TestCase
         ));
 
         $new_config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "subject_types_supported" => array(
@@ -106,8 +110,9 @@ class EntityStatementTest extends TestCase
      */
     public function test_applyPolicyModifierDefault()
     {
-        $es = new EntityStatement();
+        $es = new EntityStatement(null, "https://iss");
         $config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "logo_uri" => null,
@@ -141,6 +146,7 @@ class EntityStatementTest extends TestCase
         ));
 
         $new_config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "logo_uri" => "https://logo_default",
@@ -160,6 +166,7 @@ class EntityStatementTest extends TestCase
     public function test_applyPolicyModifierOneOf()
     {
         $config1 = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "id_token_signing_alg" => "ES384"
@@ -168,6 +175,7 @@ class EntityStatementTest extends TestCase
         )));
 
         $config2 = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "id_token_signing_alg" => "ES256"
@@ -177,7 +185,7 @@ class EntityStatementTest extends TestCase
 
         $method = $this->getPrivateMethod('EntityStatement', 'applyPolicyModifierOneOf');
 
-        $es1 = new EntityStatement();
+        $es1 = new EntityStatement(null, "https://iss");
         $es1->initFromObject($config1);
         $this->assertEquals($config1, $es1->getPayload());
 
@@ -191,7 +199,7 @@ class EntityStatementTest extends TestCase
             $this->fail("Must not be throw exception");
         }
 
-        $es2 = new EntityStatement();
+        $es2 = new EntityStatement(null, "https://iss");
         $es2->initFromObject($config2);
         $this->assertEquals($config2, $es2->getPayload());
 
@@ -211,6 +219,7 @@ class EntityStatementTest extends TestCase
     public function test_applyPolicyModifierSubsetOf()
     {
         $config1 = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "token_endpoint_auth_signing_alg_values_supported" => array(
@@ -223,6 +232,7 @@ class EntityStatementTest extends TestCase
         )));
 
         $config2 = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "token_endpoint_auth_signing_alg_values_supported" => array(
@@ -239,7 +249,7 @@ class EntityStatementTest extends TestCase
 
         $method = $this->getPrivateMethod('EntityStatement', 'applyPolicyModifierSubsetOf');
 
-        $es1 = new EntityStatement();
+        $es1 = new EntityStatement(null, "https://iss");
         $es1->initFromObject($config1);
         $this->assertEquals($config1, $es1->getPayload());
 
@@ -253,7 +263,7 @@ class EntityStatementTest extends TestCase
             $this->fail("Must not be throw exception");
         }
 
-        $es2 = new EntityStatement();
+        $es2 = new EntityStatement(null, "https://iss");
         $es2->initFromObject($config2);
         $this->assertEquals($config2, $es2->getPayload());
 
@@ -273,6 +283,7 @@ class EntityStatementTest extends TestCase
     public function test_applyPolicyModifierSupersetOf()
     {
         $config1 = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "token_endpoint_auth_signing_alg_values_supported" => array(
@@ -288,6 +299,7 @@ class EntityStatementTest extends TestCase
         )));
 
         $config2 = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "token_endpoint_auth_signing_alg_values_supported" => array(
@@ -301,7 +313,7 @@ class EntityStatementTest extends TestCase
 
         $method = $this->getPrivateMethod('EntityStatement', 'applyPolicyModifierSupersetOf');
 
-        $es1 = new EntityStatement();
+        $es1 = new EntityStatement(null, "https://iss");
         $es1->initFromObject($config1);
         $this->assertEquals($config1, $es1->getPayload());
 
@@ -315,7 +327,7 @@ class EntityStatementTest extends TestCase
             $this->fail("Must not be throw exception");
         }
 
-        $es2 = new EntityStatement();
+        $es2 = new EntityStatement(null, "https://iss");
         $es2->initFromObject($config2);
         $this->assertEquals($config2, $es2->getPayload());
 
@@ -335,6 +347,7 @@ class EntityStatementTest extends TestCase
     public function test_applyPolicyModifierEssential()
     {
         $config = json_decode(json_encode(array(
+            "iss" => "https://iss",
            "metadata" => array(
                "openid_provider" => array(
                    "authorization_endpoint" => ""
@@ -344,7 +357,7 @@ class EntityStatementTest extends TestCase
 
         $method = $this->getPrivateMethod('EntityStatement', 'applyPolicyModifierEssential');
 
-        $es = new EntityStatement();
+        $es = new EntityStatement(null, "https://iss");
         $es->initFromObject($config);
         $this->assertEquals($config, $es->getPayload());
 
