@@ -169,13 +169,7 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
         $f3->error(401, $e->getMessage());
     }
 
-    header('Content-Type: application/json');
-    echo json_encode($configuration);
-    die();
-
-
-    /*
-    $authorization_endpoint = $op_metadata->{$op}->metadata->openid_provider->authorization_endpoint;
+    $authorization_endpoint = $configuration->metadata->openid_provider->authorization_endpoint;
 
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
@@ -186,7 +180,6 @@ $f3->route('GET /oidc/rp/authz/@fed/@op', function ($f3) {
         $nonce,
         Util::base64UrlEncode(str_pad($req_id, 32))
     );
-    */
 });
 
 $f3->route('GET /oidc/rp/redirect', function ($f3) {
