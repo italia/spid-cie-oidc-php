@@ -277,8 +277,7 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
         $introspection_endpoint = $configuration->metadata->openid_provider->introspection_endpoint;
         $introspectionRequest = new IntrospectionRequest($config);
         $introspectionResponse = $introspectionRequest->send($introspection_endpoint, $access_token);
-
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         $f3->error(401, $e->getMessage());
     }
 

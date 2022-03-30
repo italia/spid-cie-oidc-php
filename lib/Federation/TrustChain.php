@@ -173,7 +173,7 @@ class TrustChain
                 $this->federation_entity_statement = new EntityStatement($federation_entity_statement_token, $this->trust_anchor);
                 //$federation_entity_statement_payload = $this->federation_entity_statement->getPayload();
             } catch (\Exception $e) {
-                $this->database->log("TrustChain", "federation entity statement for " . $this->leaf . " not valid: ". $e->getMessage(), $federation_entity_statement_token, "ERROR");
+                $this->database->log("TrustChain", "federation entity statement for " . $this->leaf . " not valid: " . $e->getMessage(), $federation_entity_statement_token, "ERROR");
                 throw new \Exception("Federation entity statement for " . $this->leaf . " not valid: " . $e->getMessage());
             }
 
