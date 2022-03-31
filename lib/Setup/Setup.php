@@ -495,7 +495,7 @@ class Setup
         file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config));
 
         // set link to www
-        $cmd_link = $config['www_dir']
+        $cmd_link = $config['www_dir'];
         if ($config['service_name'] != '') {
             $cmd_link .= "/" . $config['service_name'];
         }
