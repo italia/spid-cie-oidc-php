@@ -64,13 +64,13 @@ class Setup
 
         // retrieve path and inputs
         $_home_dir = PHP_OS_FAMILY === "Windows" ? getenv("HOMEDRIVE") . getenv("HOMEPATH") : getenv("HOME");
-        $_www_dir = $_home_dir . "/public_html";
+        $_www_dir = "/var/www/html";
         $_install_dir = getcwd();
-        $_service_name = "oidc";
+        $_service_name = "";
 
-        $_rp_client_id = "https://localhost";
+        $_rp_client_id = "https://localhost:8002";
         $_rp_client_name = "Name of Relying Party";
-        $_rp_authority_hint = "https://registry.spid.gov.it";
+        $_rp_authority_hint = "http://localhost:8000/";
         $_rp_contact = "rp@example.it";
 
         $_rp_url = "https://www.organization.org";

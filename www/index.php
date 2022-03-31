@@ -64,7 +64,7 @@ $logger = new Logger($config);
 $f3->set("LOGGER", $logger);
 
 $service_name = trim($config->service_name);
-$f3->set('BASEURL', ($service_name=='')? '' : '/'.$service_name);
+$f3->set('BASEURL', ($service_name == '') ? '' : '/' . $service_name);
 //----------------------------------------------------------------------------------------
 
 
@@ -106,9 +106,11 @@ $f3->route([
     'GET /.well-known/openid-federation',
     'GET /@domain/.well-known/openid-federation'
 ], function ($f3) {
-    $domain = $f3->get("PARAMS.domain")? $f3->get("PARAMS.domain") : 'default';
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
     $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
-    if(!$config) $f3->error(400, "Domain not found");
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
     $logger = $f3->get("LOGGER");
     $logger->log('OIDC', 'GET /.well-known/openid-federation');
@@ -123,9 +125,11 @@ $f3->route([
     'GET /oidc/rp/authz',
     'GET /oidc/rp/@domain/authz'
 ], function ($f3) {
-    $domain = $f3->get("PARAMS.domain")? $f3->get("PARAMS.domain") : 'default';
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
     $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
-    if(!$config) $f3->error(400, "Domain not found");
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
     $logger = $f3->get("LOGGER");
     $logger->log('VIEW', 'GET /oidc/rp/authz');
@@ -153,9 +157,11 @@ $f3->route([
     'GET /oidc/rp/authz/@ta/@op',
     'GET /oidc/rp/@domain/authz/@ta/@op'
 ], function ($f3) {
-    $domain = $f3->get("PARAMS.domain")? $f3->get("PARAMS.domain") : 'default';
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
     $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
-    if(!$config) $f3->error(400, "Domain not found");
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
     $federation = $f3->get("FEDERATION");
     $rp_database = $f3->get("RP_DATABASE");
@@ -201,12 +207,14 @@ $f3->route([
 });
 
 $f3->route([
-    'GET /oidc/rp/redirect', 
+    'GET /oidc/rp/redirect',
     'GET /oidc/rp/@domain/redirect'
 ], function ($f3) {
-    $domain = $f3->get("PARAMS.domain")? $f3->get("PARAMS.domain") : 'default';
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
     $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
-    if(!$config) $f3->error(400, "Domain not found");
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
     $rp_database = $f3->get("RP_DATABASE");
     $hooks = $f3->get("HOOKS");
@@ -274,12 +282,14 @@ $f3->route([
 });
 
 $f3->route([
-    'GET /oidc/rp/introspection', 
-    'GET /oidc/rp/@domain/introspection', 
+    'GET /oidc/rp/introspection',
+    'GET /oidc/rp/@domain/introspection',
 ], function ($f3) {
-    $domain = $f3->get("PARAMS.domain")? $f3->get("PARAMS.domain") : 'default';
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
     $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
-    if(!$config) $f3->error(400, "Domain not found");
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
     $rp_database = $f3->get("RP_DATABASE");
     $auth = $f3->get("SESSION.auth");
@@ -314,12 +324,14 @@ $f3->route([
 });
 
 $f3->route([
-    'GET /oidc/rp/logout', 
+    'GET /oidc/rp/logout',
     'GET /oidc/rp/@domain/logout'
 ], function ($f3) {
-    $domain = $f3->get("PARAMS.domain")? $f3->get("PARAMS.domain") : 'default';
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
     $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
-    if(!$config) $f3->error(400, "Domain not found");
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
     $rp_database = $f3->get("RP_DATABASE");
     $auth = $f3->get("SESSION.auth");
@@ -365,7 +377,7 @@ $f3->route('GET /oidc/proxy/certs', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_database = $f3->get("OP_DATABASE");
 
-    $handler = new CertsEndpoint($config, $op_database); 
+    $handler = new CertsEndpoint($config, $op_database);
     $handler->process();
 });
 
@@ -374,7 +386,7 @@ $f3->route('GET /oidc/proxy/authorization', function ($f3) {
     $op_database = $f3->get("OP_DATABASE");
 
     try {
-        $handler = new AuthenticationEndpoint($config, $op_database); 
+        $handler = new AuthenticationEndpoint($config, $op_database);
         $handler->process((object) array(
             "scope"          => $_GET["scope"],
             "response_type"  => $_GET["response_type"],
@@ -383,8 +395,7 @@ $f3->route('GET /oidc/proxy/authorization', function ($f3) {
             "state"          => $_GET["state"],
             "nonce"          => $_GET["nonce"]
         ));
-
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         $f3->error(400, $e->getMessage());
     }
 });
