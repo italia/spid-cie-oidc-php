@@ -9,9 +9,9 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700;900&display=swap" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-        <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/spid-sp-access-button/css/spid-sp-access-button.min.css" />                
-        <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/css/style.css" />
-        <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/css/custom.css" />
+        <link rel="stylesheet" href="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/css/spid-sp-access-button.min.css" />                
+        <link rel="stylesheet" href="<?php echo $BASEURL; ?>/assets/css/style.css" />
+        <link rel="stylesheet" href="<?php echo $BASEURL; ?>/assets/css/custom.css" />
         <title>SPID CIE OIDC PHP</title>
     </head>
     <body>
@@ -20,7 +20,7 @@
                 <div class="bg-transparent my-header" id="page-header">
                     <div class="row align-items-sm-center">
                         <div class="col-auto pr-0 pr-md-2">
-                            <img src="<?php echo $baseurl; ?>/assets/img/logo.png" alt="" class="logo my-2">
+                            <img src="<?php echo $BASEURL; ?>/assets/img/logo.png" alt="" class="logo my-2">
                         </div>
                         <div class="col">
                             <h1>
@@ -70,37 +70,37 @@
                                
                                             <!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * begin * -->
                                             <a href="#" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
-                                                <span class="italia-it-button-icon"><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-ico-circle-bb.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" /></span>
+                                                <span class="italia-it-button-icon"><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-ico-circle-bb.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" /></span>
                                                 <span class="italia-it-button-text">Entra con SPID</span>
                                             </a>
                                             <div id="spid-idp-button-medium-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
                                                 <ul id="spid-idp-list-medium-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp">       
                                                     <li class="spid-idp-button-link" data-idp="arubaid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=ArubaPEC S.p.A."><span class="spid-sr-only">Aruba ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-arubaid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-arubaid.png'; this.onerror=null;" alt="Aruba ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=ArubaPEC S.p.A."><span class="spid-sr-only">Aruba ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-arubaid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-arubaid.png'; this.onerror=null;" alt="Aruba ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="infocertid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=InfoCert S.p.A."><span class="spid-sr-only">Infocert ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-infocertid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-infocertid.png'; this.onerror=null;" alt="Infocert ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=InfoCert S.p.A."><span class="spid-sr-only">Infocert ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-infocertid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-infocertid.png'; this.onerror=null;" alt="Infocert ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="intesaid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=IN.TE.S.A. S.p.A."><span class="spid-sr-only">Intesa ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-intesaid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-intesaid.png'; this.onerror=null;" alt="Intesa ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=IN.TE.S.A. S.p.A."><span class="spid-sr-only">Intesa ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-intesaid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-intesaid.png'; this.onerror=null;" alt="Intesa ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="lepidaid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Lepida S.p.A."><span class="spid-sr-only">Lepida ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-lepidaid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-lepidaid.png'; this.onerror=null;" alt="Lepida ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Lepida S.p.A."><span class="spid-sr-only">Lepida ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-lepidaid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-lepidaid.png'; this.onerror=null;" alt="Lepida ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="namirialid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Namirial"><span class="spid-sr-only">Namirial ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-namirialid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-namirialid.png'; this.onerror=null;" alt="Namirial ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Namirial"><span class="spid-sr-only">Namirial ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-namirialid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-namirialid.png'; this.onerror=null;" alt="Namirial ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="posteid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Poste Italiane SpA"><span class="spid-sr-only">Poste ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-posteid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-posteid.png'; this.onerror=null;" alt="Poste ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Poste Italiane SpA"><span class="spid-sr-only">Poste ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-posteid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-posteid.png'; this.onerror=null;" alt="Poste ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="sielteid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Sielte S.p.A."><span class="spid-sr-only">Sielte ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-sielteid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-sielteid.png'; this.onerror=null;" alt="Sielte ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Sielte S.p.A."><span class="spid-sr-only">Sielte ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-sielteid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-sielteid.png'; this.onerror=null;" alt="Sielte ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="spiditalia">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Register.it S.p.A."><span class="spid-sr-only">SPIDItalia Register.it</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-spiditalia.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-spiditalia.png'; this.onerror=null;" alt="SpidItalia" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=Register.it S.p.A."><span class="spid-sr-only">SPIDItalia Register.it</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-spiditalia.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-spiditalia.png'; this.onerror=null;" alt="SpidItalia" /></a>
                                                     </li>
                                                     <li class="spid-idp-button-link" data-idp="timid">
-                                                        <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=TI Trust Technologies srl"><span class="spid-sr-only">Tim ID</span><img src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-timid.svg" onerror="this.src='<?php echo $baseurl; ?>/assets/spid-sp-access-button/img/spid-idp-timid.png'; this.onerror=null;" alt="Tim ID" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8000/oidc/op/'); ?>?state=TI Trust Technologies srl"><span class="spid-sr-only">Tim ID</span><img src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-timid.svg" onerror="this.src='<?php echo $BASEURL; ?>/assets/spid-sp-access-button/img/spid-idp-timid.png'; this.onerror=null;" alt="Tim ID" /></a>
                                                     </li>
                                                     <li class="spid-idp-support-link">
                                                         <a href="https://www.spid.gov.it">Maggiori informazioni</a>
@@ -116,7 +116,7 @@
                                             <!-- AGID - SPID IDP BUTTON MEDIUM "ENTRA CON SPID" * end * -->
                                         
                                         </div>
-                                        <img id="spid-agid" class="img-fluid mx-auto" src="<?php echo $baseurl; ?>/assets/img/spid-agid-logo-lb.png" alt="Logo SPID - AGID - Agenzia per l'Italia Digitale">
+                                        <img id="spid-agid" class="img-fluid mx-auto" src="<?php echo $BASEURL; ?>/assets/img/spid-agid-logo-lb.png" alt="Logo SPID - AGID - Agenzia per l'Italia Digitale">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="panel-cie" role="tabpanel" aria-labelledby="tab-cie">
@@ -132,14 +132,14 @@
                                         </div>
                                         <div class="col-12 col-md-6 text-center">
                                             <li class="btn p-0 border-0 my-3">
-                                                <a href="<?php echo $baseurl; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8002/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8002/oidc/op/'); ?>?state=state123">
-                                                    <img class="img-fluid" src="<?php echo $baseurl; ?>/assets/img/cie_button.png" alt="Entra con CIE">
+                                                <a href="<?php echo $BASEURL; ?>/oidc/rp/authz/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8002/'); ?>/<?php echo base64_encode('http://spid-cie-oidc-test.linfaservice.it:8002/oidc/op/'); ?>?state=state123">
+                                                    <img class="img-fluid" src="<?php echo $BASEURL; ?>/assets/img/cie_button.png" alt="Entra con CIE">
                                                     <span class="sr-only">Accedi con identità digitale CIE</span>
                                                 </a>
                                             </li>
                                         </div>
                                     </div>
-                                    <img class="img-fluid mx-auto" src="<?php echo $baseurl; ?>/assets/img/MI_logo.png" alt="Logo del Ministero dell’Interno">
+                                    <img class="img-fluid mx-auto" src="<?php echo $BASEURL; ?>/assets/img/MI_logo.png" alt="Logo del Ministero dell’Interno">
                                 </div>
                             </div>
                         </div>
@@ -161,7 +161,7 @@
             </footer>
         </div>
 
-        <script type="text/javascript" src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/js/jquery.min.js"></script><script type="text/javascript" src="<?php echo $baseurl; ?>/assets/spid-sp-access-button/js/spid-sp-access-button.min.js"></script>
+        <script type="text/javascript" src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/js/jquery.min.js"></script><script type="text/javascript" src="<?php echo $BASEURL; ?>/assets/spid-sp-access-button/js/spid-sp-access-button.min.js"></script>
         <script>
             $(document).ready(function(){
                 var rootList = $("#spid-idp-list-small-root-get");

@@ -4,8 +4,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
-        <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/css/style.css" />
-        <link rel="stylesheet" href="<?php echo $baseurl; ?>/assets/css/custom.css" />
+        <link rel="stylesheet" href="<?php echo $BASEURL; ?>/assets/css/style.css" />
+        <link rel="stylesheet" href="<?php echo $BASEURL; ?>/assets/css/custom.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" /> 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700;900&display=swap" />
@@ -17,7 +17,7 @@
                 <div class="bg-transparent my-header" id="page-header">
                     <div class="row align-items-sm-center">
                         <div class="col-auto pr-0 pr-md-2">
-                            <img src="<?php echo $baseurl; ?>/assets/img/logo.png" alt="" class="logo my-2">
+                            <img src="<?php echo $BASEURL; ?>/assets/img/logo.png" alt="" class="logo my-2">
                         </div>
                         <div class="col">
                             <h1>
