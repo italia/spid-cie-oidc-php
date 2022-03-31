@@ -121,8 +121,13 @@ class JWT
         $x5c    = $jwk_obj->get('x5c')[0];
         $x5c    = preg_replace("/\s+/", "", $x5c);
 
+        $x5cData = openssl_x509_parse(file_get_contents($file), false);
+        $organizationIdentifier = $x5cData['issuer']['organizationIdentifier'];
+        $serialNumber = $x5cData['serialNumber'];
+        $kid = hash('sha256', $organizationIdentifier.'.'.$serialNumber);
+
         $jwk = array(
-            'kid'       => '1',
+            'kid'       => $kid,
             'kty'       => $jwk_obj->get('kty'),
             'n'         => $jwk_obj->get('n'),
             'e'         => $jwk_obj->get('e'),
