@@ -417,7 +417,7 @@ class Setup
         }
 
         // create vhost directory if not exists
-        if (!file_exists($config['www_dir'])) {
+        if (!file_exists($config['www_dir'] && $service_name!='')) {
             echo $colors->getColoredString("\nWebroot directory not found. Making directory " .
                     $config['www_dir'], "yellow");
             echo $colors->getColoredString("\nPlease remember to configure your virtual host.\n\n", "yellow");
