@@ -95,8 +95,8 @@ class Setup
         $_rp_fpa_organization_email_address = "";
         $_rp_fpa_organization_telephone_number = "";
 
-        $config = file_exists('config/rp-config.json') ?
-        json_decode(file_get_contents('config/rp-config.json'), true) : array();
+        $config = file_exists('config/config.json') ?
+        json_decode(file_get_contents('config/config.json'), true) : array();
 
         $config['production'] = false;
 
@@ -492,10 +492,13 @@ class Setup
             $config['rp_cert_public'] = $config['install_dir'] . "/cert/rp.crt";
         }
 
-        file_put_contents($config['install_dir'] . "/config/rp-config.json", json_encode($config));
+        file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config));
 
         // set link to www
-        $cmd_link = $config['www_dir'] . "/" . $config['service_name'];
+        $cmd_link = $config['www_dir']
+        if ($config['service_name'] != '') {
+            $cmd_link .= "/" . $config['service_name'];
+        }
         if (!file_exists($cmd_link)) {
             echo $colors->getColoredString("\nCreate symlink... ", "white");
             $cmd_target = $config['install_dir'] . "/www";
@@ -556,8 +559,8 @@ class Setup
     {
         $filesystem = new Filesystem();
         $colors = new Colors();
-        $config = file_exists('config/rp-config.json') ?
-                json_decode(file_get_contents('config/rp-config.json'), true) : array();
+        $config = file_exists('config/config.json') ?
+                json_decode(file_get_contents('config/config.json'), true) : array();
 
         // retrieve path and inputs
         $_install_dir = getcwd();
