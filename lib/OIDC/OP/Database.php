@@ -40,7 +40,7 @@ class Database
      */
     public function __construct($db_file)
     {
-        $this->db = new SQLite3($db_file);
+        $this->db = new \SQLite3($db_file);
         if (!$this->db) {
             die("Error while connecting to db.sqlite");
         }
@@ -63,8 +63,10 @@ class Database
 
             CREATE TABLE IF NOT EXISTS log (
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
+                context         STRING,
                 tag             STRING,
-                value           STRING
+                value           STRING,
+                severity        STRING
             );
         ");
 

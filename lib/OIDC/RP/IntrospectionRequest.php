@@ -64,7 +64,7 @@ class IntrospectionRequest
      */
     public function send(string $introspection_endpoint, string $token)
     {
-        $client_id = $this->config->rp_client_id;
+        $client_id = $this->config->client_id;
         $client_assertion = array(
             "jti" => 'spid-cie-php-oidc_' . uniqid(),
             "iss" => $client_id,
@@ -75,7 +75,7 @@ class IntrospectionRequest
         );
         $client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
 
-        $crt = $this->config->rp_cert_public;
+        $crt = $this->config->cert_public;
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -86,7 +86,7 @@ class IntrospectionRequest
             "x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config->rp_cert_private;
+        $key = $this->config->cert_private;
         $key_jwk = JWT::getKeyJWK($key);
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);

@@ -32,8 +32,6 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
  */
 class AuthenticationEndpoint
 {
-    public $name = "Authentication Endpoint";
-
     /**
      *  creates a new AuthenticationEndpoint instance
      *
@@ -69,19 +67,19 @@ class AuthenticationEndpoint
 
         try {
             if (strpos($scope, 'openid') < 0) {
-                throw new Exception('invalid_scope');
+                throw new \Exception('invalid_scope');
             }
             if (strpos($scope, 'profile') < 0) {
-                throw new Exception('invalid_scope');
+                throw new \Exception('invalid_scope');
             }
             if ($response_type != 'code') {
-                throw new Exception('invalid_request');
+                throw new \Exception('invalid_request');
             }
             if (!in_array($client_id, array_keys($clients))) {
-                throw new Exception('invalid_client');
+                throw new \Exception('invalid_client');
             }
             if (!in_array($redirect_uri, $clients[$client_id]['redirect_uri'])) {
-                throw new Exception('invalid_redirect_uri');
+                throw new \Exception('invalid_redirect_uri');
             }
 
             $req_id = $this->database->updateRequest($client_id, $redirect_uri, $state, $nonce);
@@ -89,17 +87,16 @@ class AuthenticationEndpoint
                 $req_id = $this->database->createRequest($client_id, $redirect_uri, $state, $nonce);
             }
 
-            $url = $this->config['spid-php-proxy']['login_url']
+            $url = '/' . $config->service_name . '/oidc/rp/authz'
             . '?client_id=' . $this->config['spid-php-proxy']['client_id']
             . '&level=' . $this->config['clients'][$client_id]['level']
             . '&redirect_uri=' . $this->config['spid-php-proxy']['redirect_uri']
             . '&state=' . base64_encode($req_id);
 
             header('Location: ' . $url);
-        } catch (Exception $e) {
-            if ($this->config['debug'] || $e->getMessage() == 'invalid_redirect_uri') {
-                http_response_code(400);
-                echo "ERROR: " . $e->getMessage();
+        } catch (\Exception $e) {
+            if (!$this->config->production || $e->getMessage() == 'invalid_redirect_uri') {
+                throw $e;
             } else {
                 $return = $redirect_uri;
                 if (strpos($return, '?') > -1) {

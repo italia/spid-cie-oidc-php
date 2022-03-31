@@ -69,7 +69,7 @@ class TokenRequest
      */
     public function send(string $token_endpoint, string $auth_code, string $code_verifier, $refresh = false, string $refresh_token = null)
     {
-        $client_id = $this->config->rp_client_id;
+        $client_id = $this->config->client_id;
         $client_assertion = array(
             "jti" => 'spid-cie-php-oidc_' . uniqid(),
             "iss" => $client_id,
@@ -82,7 +82,7 @@ class TokenRequest
         $code = $auth_code;
         $grant_type = ($refresh && $refresh_token != null) ? 'refresh_token' : 'authorization_code';
 
-        $crt = $this->config->rp_cert_public;
+        $crt = $this->config->cert_public;
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -93,7 +93,7 @@ class TokenRequest
             "x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config->rp_cert_private;
+        $key = $this->config->cert_private;
         $key_jwk = JWT::getKeyJWK($key);
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);

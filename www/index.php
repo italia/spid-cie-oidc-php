@@ -35,25 +35,32 @@ use SPID_CIE_OIDC_PHP\OIDC\RP\TokenRequest;
 use SPID_CIE_OIDC_PHP\OIDC\RP\UserinfoRequest;
 use SPID_CIE_OIDC_PHP\OIDC\RP\IntrospectionRequest;
 use SPID_CIE_OIDC_PHP\OIDC\RP\RevocationRequest;
+use SPID_CIE_OIDC_PHP\OIDC\OP\Database as OP_Database;
+use SPID_CIE_OIDC_PHP\OIDC\OP\CertsEndpoint;
+use SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint;
 
 $f3 = \Base::instance();
 
 //----------------------------------------------------------------------------------------
 // Available configurations / objects
 //----------------------------------------------------------------------------------------
-$rp_config = json_decode(file_get_contents(__DIR__ . '/../config/rp-config.json'));
-$f3->set("RP_CONFIG", $rp_config);
+
+$config = json_decode(file_get_contents(__DIR__ . '/../config/config.json'));
+$f3->set("CONFIG", $config);
+
+$rp_database = new RP_Database(__DIR__ . '/../data/store-rp.sqlite');
+$f3->set("RP_DATABASE", $rp_database);
+
+$op_database = new OP_Database(__DIR__ . '/../data/store-op.sqlite');
+$f3->set("OP_DATABASE", $op_database);
+
+$federation = new Federation($config, json_decode(file_get_contents(__DIR__ . '/../config/federation-authority.json')));
+$f3->set("FEDERATION", $federation);
 
 $hooks = json_decode(file_get_contents(__DIR__ . '/../config/hooks.json'));
 $f3->set("HOOKS", $hooks);
 
-$federation = new Federation($rp_config, json_decode(file_get_contents(__DIR__ . '/../config/federation-authority.json')));
-$f3->set("FEDERATION", $federation);
-
-$rp_database = new RP_Database(__DIR__ . '/../data/db_rp.sqlite');
-$f3->set("RP_DATABASE", $rp_database);
-
-$logger = new Logger($rp_config);
+$logger = new Logger($config);
 $f3->set("LOGGER", $logger);
 //----------------------------------------------------------------------------------------
 
@@ -80,37 +87,49 @@ if (
 }
 
 $f3->set('ONERROR', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
+    $config = $f3->get("CONFIG");
     $error_description = $f3->get('ERROR.text');
-    $f3->set('baseurl', '/' . $rp_config->service_name);
+    $f3->set('baseurl', '/' . $config->service_name);
     $f3->set('error_description', $error_description);
     echo View::instance()->render('view/error.php');
     die();
 });
 
 
-
-
 //----------------------------------------------------------------------------------------
-// Routes for Relying Party
+// Routes for @domain Relying Party
 //----------------------------------------------------------------------------------------
 
-$f3->route('GET /.well-known/openid-federation', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
+$f3->route([
+    'GET /.well-known/openid-federation',
+    'GET /@domain/.well-known/openid-federation'
+], function ($f3) {
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
+
     $logger = $f3->get("LOGGER");
-
     $logger->log('OIDC', 'GET /.well-known/openid-federation');
 
     $decoded = $f3->get("GET.decoded");
     $mediaType = $decoded == 'Y' ? 'application/json' : 'application/jwt';
     header('Content-Type: ' . $mediaType);
-    echo EntityStatement::makeFromConfig($rp_config, $decoded == 'Y');
+    echo EntityStatement::makeFromConfig($config, $decoded == 'Y');
 });
 
-$f3->route('GET /oidc/rp/authz', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
-    $logger = $f3->get("LOGGER");
+$f3->route([
+    'GET /oidc/rp/authz',
+    'GET /oidc/rp/@domain/authz'
+], function ($f3) {
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
 
+    $logger = $f3->get("LOGGER");
     $logger->log('VIEW', 'GET /oidc/rp/authz');
 
     $auth = $f3->get('SESSION.auth');
@@ -123,18 +142,26 @@ $f3->route('GET /oidc/rp/authz', function ($f3) {
         $userinfoResponse = $auth['userinfo'];
         $redirect_uri = $auth['redirect_uri'];
         $state = $auth['state'];
-        $responseHandlerClass = $rp_config->rp_response_handler;
-        $responseHandler = new $responseHandlerClass($rp_config);
+        $responseHandlerClass = $config->response_handler;
+        $responseHandler = new $responseHandlerClass($config);
         $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
         die();
     }
 
-    $f3->set('baseurl', '/' . $rp_config->service_name);
+    $f3->set('baseurl', '/' . ($f3->get("CONFIG")->service_name));
     echo View::instance()->render('view/login.php');
 });
 
-$f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
+$f3->route([
+    'GET /oidc/rp/authz/@ta/@op',
+    'GET /oidc/rp/@domain/authz/@ta/@op'
+], function ($f3) {
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
+
     $federation = $f3->get("FEDERATION");
     $rp_database = $f3->get("RP_DATABASE");
     $hooks = $f3->get("HOOKS");
@@ -145,9 +172,9 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
     $ta_id = base64_decode($f3->get('PARAMS.ta'));
     $op_id = base64_decode($f3->get('PARAMS.op'));
     $state = $f3->get('GET.state');
-    $acr = $rp_config->rp_requested_acr;
-    $user_attributes = $rp_config->rp_spid_user_attributes;
-    $redirect_uri = $rp_config->rp_redirect_uri;
+    $acr = $config->requested_acr;
+    $user_attributes = $config->spid_user_attributes;
+    $redirect_uri = $config->redirect_uri;
     $req_id = $rp_database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
     $request = $rp_database->getRequest($req_id);
     $code_verifier = $request['code_verifier'];
@@ -159,7 +186,7 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($rp_config, $rp_database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -167,7 +194,7 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
 
     $authorization_endpoint = $configuration->metadata->openid_provider->authorization_endpoint;
 
-    $authenticationRequest = new AuthenticationRequest($rp_config, $hooks);
+    $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
         $authorization_endpoint,
         $acr,
@@ -178,8 +205,16 @@ $f3->route('GET /oidc/rp/authz/@ta/@op', function ($f3) {
     );
 });
 
-$f3->route('GET /oidc/rp/redirect', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
+$f3->route([
+    'GET /oidc/rp/redirect',
+    'GET /oidc/rp/@domain/redirect'
+], function ($f3) {
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
+
     $rp_database = $f3->get("RP_DATABASE");
     $hooks = $f3->get("HOOKS");
     $logger = $f3->get("LOGGER");
@@ -189,7 +224,7 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $error = $f3->get("GET.error");
     if ($error != null) {
         $error_description = $f3->get("GET.error_description");
-        $f3->set('baseurl', '/' . $rp_config->service_name);
+        $f3->set('baseurl', '/' . $f3->get("CONFIG")->service_name);
         $f3->set('error_description', $error_description);
         echo View::instance()->render('view/error.php');
         die();
@@ -209,7 +244,7 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($rp_config, $rp_database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -219,11 +254,11 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
     $userinfo_endpoint = $configuration->metadata->openid_provider->userinfo_endpoint;
 
     try {
-        $tokenRequest = new TokenRequest($rp_config, $hooks);
+        $tokenRequest = new TokenRequest($config, $hooks);
         $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
         $access_token = $tokenResponse->access_token;
 
-        $userinfoRequest = new UserinfoRequest($rp_config, $configuration->metadata->openid_provider, $hooks);
+        $userinfoRequest = new UserinfoRequest($config, $configuration->metadata->openid_provider, $hooks);
         $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
 
         $f3->set('SESSION.auth', array(
@@ -238,16 +273,24 @@ $f3->route('GET /oidc/rp/redirect', function ($f3) {
         $userinfoResponse->trust_anchor_id = $ta_id;
         $userinfoResponse->provider_id = $op_id;
 
-        $responseHandlerClass = $rp_config->rp_response_handler;
-        $responseHandler = new $responseHandlerClass($rp_config);
+        $responseHandlerClass = $config->response_handler;
+        $responseHandler = new $responseHandlerClass($config);
         $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
     } catch (Exception $e) {
         $f3->error($e->getCode(), $e->getMessage());
     }
 });
 
-$f3->route('GET /oidc/rp/introspection', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
+$f3->route([
+    'GET /oidc/rp/introspection',
+    'GET /oidc/rp/@domain/introspection',
+], function ($f3) {
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
+
     $rp_database = $f3->get("RP_DATABASE");
     $auth = $f3->get("SESSION.auth");
 
@@ -261,7 +304,7 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($rp_config, $rp_database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -269,7 +312,7 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
 
     try {
         $introspection_endpoint = $configuration->metadata->openid_provider->introspection_endpoint;
-        $introspectionRequest = new IntrospectionRequest($rp_config);
+        $introspectionRequest = new IntrospectionRequest($config);
         $introspectionResponse = $introspectionRequest->send($introspection_endpoint, $access_token);
     } catch (\Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -280,8 +323,16 @@ $f3->route('GET /oidc/rp/introspection', function ($f3) {
     echo json_encode($introspectionResponse);
 });
 
-$f3->route('GET /oidc/rp/logout', function ($f3) {
-    $rp_config = $f3->get("RP_CONFIG");
+$f3->route([
+    'GET /oidc/rp/logout',
+    'GET /oidc/rp/@domain/logout'
+], function ($f3) {
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")->rp_proxy_clients->$domain;
+    if (!$config) {
+        $f3->error(400, "Domain not found");
+    }
+
     $rp_database = $f3->get("RP_DATABASE");
     $auth = $f3->get("SESSION.auth");
 
@@ -295,7 +346,7 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
 
     // resolve entity statement on federation
     try {
-        $trustchain = new TrustChain($rp_config, $rp_database, $op_id, $ta_id);
+        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
         $configuration = $trustchain->resolve();
     } catch (Exception $e) {
         $f3->error(401, $e->getMessage());
@@ -304,7 +355,7 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
     $revocation_endpoint = $configuration->metadata->openid_provider->revocation_endpoint;
 
     try {
-        $revocationRequest = new RevocationRequest($rp_config);
+        $revocationRequest = new RevocationRequest($config);
         $revocationResponse = $revocationRequest->send($revocation_endpoint, $access_token);
     } catch (Exception $e) {
         // do not null
@@ -322,8 +373,31 @@ $f3->route('GET /oidc/rp/logout', function ($f3) {
 // Routes for Proxy OIDC Provider
 //----------------------------------------------------------------------------------------
 
-$f3->route('GET /oidc/op/certs', function ($f3) {
-    //$handler = new CertsEndpoint
+$f3->route('GET /oidc/proxy/certs', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_database = $f3->get("OP_DATABASE");
+
+    $handler = new CertsEndpoint($config, $op_database);
+    $handler->process();
+});
+
+$f3->route('GET /oidc/proxy/authorization', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_database = $f3->get("OP_DATABASE");
+
+    try {
+        $handler = new AuthenticationEndpoint($config, $op_database);
+        $handler->process((object) array(
+            "scope"          => $_GET["scope"],
+            "response_type"  => $_GET["response_type"],
+            "client_id"      => $_GET["client_id"],
+            "redirect_uri"   => $_GET["redirect_uri"],
+            "state"          => $_GET["state"],
+            "nonce"          => $_GET["nonce"]
+        ));
+    } catch (\Exception $e) {
+        $f3->error(400, $e->getMessage());
+    }
 });
 
 //----------------------------------------------------------------------------------------

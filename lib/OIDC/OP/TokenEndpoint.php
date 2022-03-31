@@ -90,22 +90,22 @@ class TokenEndpoint
             $this->database->log("TokenEndpoint", "TOKEN", var_export($_POST, true));
 
             if (strpos($scope, 'openid') < 0) {
-                throw new Exception('invalid_scope');
+                throw new \Exception('invalid_scope');
             }
             if (strpos($scope, 'profile') < 0) {
-                throw new Exception('invalid_scope');
+                throw new \Exception('invalid_scope');
             }
             if ($grant_type != 'authorization_code') {
-                throw new Exception('invalid_request');
+                throw new \Exception('invalid_request');
             }
             if (!in_array($client_id, array_keys($clients))) {
-                throw new Exception('invalid_client');
+                throw new \Exception('invalid_client');
             }
             if (!in_array($redirect_uri, $clients[$client_id]['redirect_uri'])) {
-                throw new Exception('invalid_redirect_uri');
+                throw new \Exception('invalid_redirect_uri');
             }
             if (!$this->database->checkAuthorizationCode($client_id, $redirect_uri, $code)) {
-                throw new Exception('invalid_code');
+                throw new \Exception('invalid_code');
             }
 
             $access_token = $this->database->createAccessToken($code);
@@ -132,7 +132,7 @@ class TokenEndpoint
                 "expires_in" => 1800,
                 "id_token" => $id_token
             ));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             http_response_code(400);
             if ($this->config['debug']) {
                 echo "ERROR: " . $e->getMessage();

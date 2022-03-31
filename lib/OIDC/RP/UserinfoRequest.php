@@ -104,10 +104,10 @@ class UserinfoRequest
             }
         }
 
-        $file_key = $this->config->rp_cert_private;
+        $file_key = $this->config->cert_private;
         $jws = JWT::decryptJWE($jwe, $file_key);
 
-        $file_cert = $this->config->rp_cert_public;
+        $file_cert = $this->config->cert_public;
         $decrypted = $jws->getPayload();
         $decrypted = str_replace("\"", "", $decrypted);
 

@@ -63,7 +63,7 @@ class AuthenticationRequest
      */
     public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
-        $client_id = $this->config->rp_client_id;
+        $client_id = $this->config->client_id;
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
         $redirect_uri .= 'oidc/rp/redirect';
         $response_type = 'code';
@@ -118,7 +118,7 @@ class AuthenticationRequest
             "state" => $state
         );
 
-        $crt = $this->config->rp_cert_public;
+        $crt = $this->config->cert_public;
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -129,7 +129,7 @@ class AuthenticationRequest
             "x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config->rp_cert_private;
+        $key = $this->config->cert_private;
         $key_jwk = JWT::getKeyJWK($key);
         $signed_request = JWT::makeJWS($header, $request, $key_jwk);
 

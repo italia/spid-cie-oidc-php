@@ -58,7 +58,7 @@ class UserinfoEndpoint
         try {
             $bearer = $this->getBearerToken();
             if ($bearer == null || $bearer == '') {
-                throw new Exception('access_denied');
+                throw new \Exception('access_denied');
             }
             $this->database->log("UserinfoEndpoint", "USERINFO", "Bearer: " . $bearer);
             $userinfo = (array) $this->database->getUserinfo($bearer);
@@ -67,7 +67,7 @@ class UserinfoEndpoint
 
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($userinfo);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             http_response_code(400);
             if ($this->config['debug']) {
                 echo "ERROR: " . $e->getMessage();
