@@ -127,15 +127,21 @@ class Setup
             }
         }
 
-        if(!isset($config['rp_proxy_clients'])) $config['rp_proxy_clients'] = array();
-        if(!isset($config['rp_proxy_clients']['default'])) $config['rp_proxy_clients']['default'] = array();
+        if (!isset($config['rp_proxy_clients'])) {
+            $config['rp_proxy_clients'] = array();
+        }
+        if (!isset($config['rp_proxy_clients']['default'])) {
+            $config['rp_proxy_clients']['default'] = array();
+        }
 
         if (!isset($config['rp_proxy_clients']['default']['client_id'])) {
             echo "Please insert client_id (" .
             $colors->getColoredString($_rp_client_id, "green") . "): ";
             $config['rp_proxy_clients']['default']['client_id'] = str_replace("'", "\'", readline());
-            if ($config['rp_proxy_clients']['default']['client_id'] == null 
-                || $config['rp_proxy_clients']['default']['client_id'] == "") {
+            if (
+                $config['rp_proxy_clients']['default']['client_id'] == null
+                || $config['rp_proxy_clients']['default']['client_id'] == ""
+            ) {
                     $config['rp_proxy_clients']['default']['client_id'] = $_rp_client_id;
             }
         }
@@ -144,8 +150,10 @@ class Setup
             echo "Please insert client_name (" .
             $colors->getColoredString($_rp_client_name, "green") . "): ";
             $config['rp_proxy_clients']['default']['client_name'] = str_replace("'", "\'", readline());
-            if ($config['rp_proxy_clients']['default']['client_name'] == null 
-                || $config['rp_proxy_clients']['default']['client_name'] == "") {
+            if (
+                $config['rp_proxy_clients']['default']['client_name'] == null
+                || $config['rp_proxy_clients']['default']['client_name'] == ""
+            ) {
                     $config['rp_proxy_clients']['default']['client_name'] = $_rp_client_name;
             }
         }
@@ -154,8 +162,10 @@ class Setup
             echo "Please insert authority_hint (" .
             $colors->getColoredString($_rp_authority_hint, "green") . "): ";
             $config['rp_proxy_clients']['default']['authority_hint'] = str_replace("'", "\'", readline());
-            if ($config['rp_proxy_clients']['default']['authority_hint'] == null 
-                || $config['rp_proxy_clients']['default']['authority_hint'] == "") {
+            if (
+                $config['rp_proxy_clients']['default']['authority_hint'] == null
+                || $config['rp_proxy_clients']['default']['authority_hint'] == ""
+            ) {
                     $config['rp_proxy_clients']['default']['authority_hint'] = $_rp_authority_hint;
             }
         }
@@ -164,8 +174,10 @@ class Setup
             echo "Please insert contact email (" .
             $colors->getColoredString($_rp_contact, "green") . "): ";
             $config['rp_proxy_clients']['default']['contact'] = str_replace("'", "\'", readline());
-            if ($config['rp_proxy_clients']['default']['contact'] == null 
-                || $config['rp_proxy_clients']['default']['contact'] == "") {
+            if (
+                $config['rp_proxy_clients']['default']['contact'] == null
+                || $config['rp_proxy_clients']['default']['contact'] == ""
+            ) {
                 $config['rp_proxy_clients']['default']['contact'] = $_rp_contact;
             }
         }
@@ -189,8 +201,10 @@ class Setup
                     echo "Please insert your Organization's IPA Code (" .
                         $colors->getColoredString($_rp_code, "green") . "): ";
                     $config['rp_proxy_clients']['default']['code'] = readline();
-                    if ($config['rp_proxy_clients']['default']['code'] == null 
-                        || $config['rp_proxy_clients']['default']['code'] == "") {
+                    if (
+                        $config['rp_proxy_clients']['default']['code'] == null
+                        || $config['rp_proxy_clients']['default']['code'] == ""
+                    ) {
                             $config['rp_proxy_clients']['default']['code'] = $_rp_code;
                     }
                     $config['rp_proxy_clients']['default']['code_type'] = "IPACode";
@@ -390,8 +404,10 @@ class Setup
             echo "Please insert redirect_uri (" .
               $colors->getColoredString($_rp_redirect_uri, "green") . "): ";
             $config['rp_proxy_clients']['default']['redirect_uri'] = str_replace("'", "\'", readline());
-            if ($config['rp_proxy_clients']['default']['redirect_uri'] == null 
-                || $config['rp_proxy_clients']['default']['redirect_uri'] == "") {
+            if (
+                $config['rp_proxy_clients']['default']['redirect_uri'] == null
+                || $config['rp_proxy_clients']['default']['redirect_uri'] == ""
+            ) {
                     $config['rp_proxy_clients']['default']['redirect_uri'] = $_rp_redirect_uri;
             }
         }
@@ -440,13 +456,13 @@ class Setup
 
         echo "\n\n";
 
-        if (!file_exists('config')) {
-            echo $colors->getColoredString("\nConfig directory not found. Making directory ./config", "yellow");
-            $filesystem->mkdir('config');
+        if (!file_exists($config['install_dir'] . '/config')) {
+            echo $colors->getColoredString("\nConfig directory not found. Making directory config", "yellow");
+            $filesystem->mkdir($config['install_dir'] . '/config');
         }
 
         // create vhost directory if not exists
-        if (!file_exists($config['www_dir']) && $config['service_name']!='') {
+        if (!file_exists($config['www_dir']) && $config['service_name'] != '') {
             echo $colors->getColoredString("\nWebroot directory not found. Making directory " .
                     $config['www_dir'], "yellow");
             echo $colors->getColoredString("\nPlease remember to configure your virtual host.\n\n", "yellow");
@@ -529,7 +545,7 @@ class Setup
 
         // set link to www
         $cmd_link = $config['www_dir'];
-        if($config['service_name']!='') {
+        if ($config['service_name'] != '') {
             $cmd_link .= "/" . $config['service_name'];
         }
         if (!file_exists($cmd_link)) {
