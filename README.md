@@ -43,7 +43,13 @@ where <i>service_name</i> is the service name configured during setup
 
 ## Docker
 
-> TODO: Not available until v1.0.0 release
+Start the basic example project is as simple as run:
+```
+docker pull linfaservice/spid-cie-oidc-php
+docker run -it -p 8002:80 -v $(pwd)/config:/var/www/spid-cie-oidc-php/config linfaservice/spid-cie-oidc-php
+```
+On the first run the setup will ask for configurations.
+All configurations will be saved in the ./config directory.
 
 
 ## Contribute
