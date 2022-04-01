@@ -543,6 +543,10 @@ class Setup
 
         file_put_contents($config['install_dir'] . "/config/federation-authority.json", $authority_config);
 
+        // copy base default configurations
+        copy($config['install_dir'] . "/config_sample/alg*", $config['install_dir'] . "/config");
+        copy($config['install_dir'] . "/config_sample/hooks*", $config['install_dir'] . "/config");
+
         // set link to www
         $cmd_link = $config['www_dir'];
         if ($config['service_name'] != '') {

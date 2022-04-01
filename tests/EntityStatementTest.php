@@ -13,7 +13,8 @@ class EntityStatementTest extends TestCase
      */
     public function test_makeFromConfig()
     {
-        $config = json_decode(file_get_contents(__DIR__ . '/../config/rp-config.json'));
+        $config = json_decode(file_get_contents(__DIR__ . '/../config_sample/config.json'));
+        $config = $config->rp_proxy_clients->default;
         $metadata = EntityStatement::makeFromConfig($config);
         $this->assertNotEmpty($metadata, "EntityStatement cannot be empty");
     }
