@@ -4,5 +4,8 @@
     },
     "http://127.0.0.1:8000": {
         "organization_name": "Federazione Test"
+    },
+    "http://localhost:8000": {
+        "organization_name": "Federazione Test"
     }
 }
