@@ -127,76 +127,84 @@ class Setup
             }
         }
 
-        if (!isset($config['rp_client_id'])) {
+        if(!isset($config['rp_proxy_clients'])) $config['rp_proxy_clients'] = array();
+        if(!isset($config['rp_proxy_clients']['default'])) $config['rp_proxy_clients']['default'] = array();
+
+        if (!isset($config['rp_proxy_clients']['default']['client_id'])) {
             echo "Please insert client_id (" .
             $colors->getColoredString($_rp_client_id, "green") . "): ";
-            $config['rp_client_id'] = str_replace("'", "\'", readline());
-            if ($config['rp_client_id'] == null || $config['rp_client_id'] == "") {
-                $config['rp_client_id'] = $_rp_client_id;
+            $config['rp_proxy_clients']['default']['client_id'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['client_id'] == null 
+                || $config['rp_proxy_clients']['default']['client_id'] == "") {
+                    $config['rp_proxy_clients']['default']['client_id'] = $_rp_client_id;
             }
         }
 
-        if (!isset($config['rp_client_name'])) {
+        if (!isset($config['rp_proxy_clients']['default']['client_name'])) {
             echo "Please insert client_name (" .
             $colors->getColoredString($_rp_client_name, "green") . "): ";
-            $config['rp_client_name'] = str_replace("'", "\'", readline());
-            if ($config['rp_client_name'] == null || $config['rp_client_name'] == "") {
-                $config['rp_client_name'] = $_rp_client_name;
+            $config['rp_proxy_clients']['default']['client_name'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['client_name'] == null 
+                || $config['rp_proxy_clients']['default']['client_name'] == "") {
+                    $config['rp_proxy_clients']['default']['client_name'] = $_rp_client_name;
             }
         }
 
-        if (!isset($config['rp_authority_hint'])) {
+        if (!isset($config['rp_proxy_clients']['default']['authority_hint'])) {
             echo "Please insert authority_hint (" .
             $colors->getColoredString($_rp_authority_hint, "green") . "): ";
-            $config['rp_authority_hint'] = str_replace("'", "\'", readline());
-            if ($config['rp_authority_hint'] == null || $config['rp_authority_hint'] == "") {
-                $config['rp_authority_hint'] = $_rp_authority_hint;
+            $config['rp_proxy_clients']['default']['authority_hint'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['authority_hint'] == null 
+                || $config['rp_proxy_clients']['default']['authority_hint'] == "") {
+                    $config['rp_proxy_clients']['default']['authority_hint'] = $_rp_authority_hint;
             }
         }
 
-        if (!isset($config['rp_contact'])) {
+        if (!isset($config['rp_proxy_clients']['default']['contact'])) {
             echo "Please insert contact email (" .
             $colors->getColoredString($_rp_contact, "green") . "): ";
-            $config['rp_contact'] = str_replace("'", "\'", readline());
-            if ($config['rp_contact'] == null || $config['rp_contact'] == "") {
-                $config['rp_contact'] = $_rp_contact;
+            $config['rp_proxy_clients']['default']['contact'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['contact'] == null 
+                || $config['rp_proxy_clients']['default']['contact'] == "") {
+                $config['rp_proxy_clients']['default']['contact'] = $_rp_contact;
             }
         }
 
-        if (!isset($config['rp_is_pa'])) {
+        if (!isset($config['rp_proxy_clients']['default']['is_pa'])) {
             echo "Is your Organization a Public Administration (" .
             $colors->getColoredString("Y", "green") . "): ";
-            $config['rp_is_pa'] = readline();
-            $config['rp_is_pa'] = ($config['rp_is_pa'] != null &&
-                    strtoupper($config['rp_is_pa']) == "N") ? false : true;
+            $config['rp_proxy_clients']['default']['is_pa'] = readline();
+            $config['rp_proxy_clients']['default']['is_pa'] = ($config['rp_proxy_clients']['default']['is_pa'] != null &&
+                    strtoupper($config['rp_proxy_clients']['default']['is_pa']) == "N") ? false : true;
         }
 
 
-        switch ($config['rp_is_pa']) {
+        switch ($config['rp_proxy_clients']['default']['is_pa']) {
             case true:
                 if (
-                    !isset($config['rp_code_type'])
-                    || !isset($config['rp_code'])
-                    || $config['rp_code_type'] != 'IPACode'
+                    !isset($config['rp_proxy_clients']['default']['code_type'])
+                    || !isset($config['rp_proxy_clients']['default']['code'])
+                    || $config['rp_proxy_clients']['default']['code_type'] != 'IPACode'
                 ) {
                     echo "Please insert your Organization's IPA Code (" .
                         $colors->getColoredString($_rp_code, "green") . "): ";
-                    $config['rp_code'] = readline();
-                    if ($config['rp_code'] == null || $config['rp_code'] == "") {
-                        $config['rp_code'] = $_rp_code;
+                    $config['rp_proxy_clients']['default']['code'] = readline();
+                    if ($config['rp_proxy_clients']['default']['code'] == null 
+                        || $config['rp_proxy_clients']['default']['code'] == "") {
+                            $config['rp_proxy_clients']['default']['code'] = $_rp_code;
                     }
-                    $config['rp_code_type'] = "IPACode";
-                    $config['rp_organization_identifier'] = "PA:IT-" . $config['rp_code'];
+                    $config['rp_proxy_clients']['default']['code_type'] = "IPACode";
+                    $config['rp_proxy_clients']['default']['organization_identifier'] = "PA:IT-" . $config['rp_proxy_clients']['default']['code'];
                 }
                 break;
 
             case false:
                 if (
-                    !isset($config['rp_code_type'])
-                    || !isset($config['rp_code'])
+                    !isset($config['rp_proxy_clients']['default']['code_type'])
+                    || !isset($config['rp_proxy_clients']['default']['code'])
                     || (
-                        $config['rp_code_type'] != 'VATNumber'
-                        && $config['rp_code_type'] != 'FiscalCode'
+                        $config['rp_proxy_clients']['default']['code_type'] != 'VATNumber'
+                        && $config['rp_proxy_clients']['default']['code_type'] != 'FiscalCode'
                     )
                 ) {
                     echo "Please insert 1 for VATNumber or 2 for FiscalCode (" .
@@ -209,205 +217,226 @@ class Setup
                         echo "Your Organization Code type is not correctly set. It must be 1 (VATNumber) or 2 (FiscalCode). Please retry installation.\n";
                         die();
                     }
-                    $config['rp_code_type'] = $_rp_code_typ_choice == 1 ? 'VATNumber' : 'FiscalCode';
-                    echo "Please insert your Organization's " . $config['rp_code_type'] . " (" .
+                    $config['rp_proxy_clients']['default']['code_type'] = $_rp_code_typ_choice == 1 ? 'VATNumber' : 'FiscalCode';
+                    echo "Please insert your Organization's " . $config['rp_proxy_clients']['default']['code_type'] . " (" .
                         $colors->getColoredString($_rp_code, "green") . "): ";
-                    $config['rp_code'] = readline();
-                    if ($config['rp_code'] == null || $config['rp_code'] == "") {
-                        $config['rp_code'] = $_rp_code;
+                    $config['rp_proxy_clients']['default']['code'] = readline();
+                    if ($config['rp_proxy_clients']['default']['code'] == null || $config['rp_proxy_clients']['default']['code'] == "") {
+                        $config['rp_proxy_clients']['default']['code'] = $_rp_code;
                     }
-                    $config['rp_organization_identifier'] = ($_rp_code_typ_choice == 1 ? "VATIT-" : "CF:IT-") . $config['rp_code'];
-                    $_rp_fpa_id_codice = $config['rp_code'];
+                    $config['rp_proxy_clients']['default']['organization_identifier'] = ($_rp_code_typ_choice == 1 ? "VATIT-" : "CF:IT-") . $config['rp_proxy_clients']['default']['code'];
+                    $_rp_fpa_id_codice = $config['rp_proxy_clients']['default']['code'];
                 }
 
-                if (!isset($config['rp_fpa_id_paese'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_id_paese'])) {
                     echo "Please insert your IdPaese for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_id_paese, "green") . "): ";
-                    $config['rp_fpa_id_paese'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_id_paese'] == null || $config['rp_fpa_id_paese'] == "") {
-                        $config['rp_fpa_id_paese'] = $_rp_fpa_id_paese;
+                    $config['rp_proxy_clients']['default']['fpa_id_paese'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_id_paese'] == null || $config['rp_proxy_clients']['default']['fpa_id_paese'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_id_paese'] = $_rp_fpa_id_paese;
                     }
                 }
 
-                if (!isset($config['rp_fpa_id_codice'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_id_codice'])) {
                     echo "Please insert your IdCodice for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_id_codice, "green") . "): ";
-                    $config['rp_fpa_id_codice'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_id_codice'] == null || $config['rp_fpa_id_codice'] == "") {
-                        $config['rp_fpa_id_codice'] = $_rp_fpa_id_codice;
+                    $config['rp_proxy_clients']['default']['fpa_id_codice'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_id_codice'] == null || $config['rp_proxy_clients']['default']['fpa_id_codice'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_id_codice'] = $_rp_fpa_id_codice;
                     }
                 }
 
-                if (!isset($config['rp_fpa_denominazione'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_denominazione'])) {
                     echo "Please insert your Denominazione for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_denominazione, "green") . "): ";
-                    $config['rp_fpa_denominazione'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_denominazione'] == null || $config['rp_fpa_denominazione'] == "") {
-                        $config['rp_fpa_denominazione'] = $_rp_fpa_denominazione;
+                    $config['rp_proxy_clients']['default']['fpa_denominazione'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_denominazione'] == null || $config['rp_proxy_clients']['default']['fpa_denominazione'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_denominazione'] = $_rp_fpa_denominazione;
                     }
                 }
 
-                if (!isset($config['rp_fpa_indirizzo'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_indirizzo'])) {
                     echo "Please insert your Indirizzo for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_indirizzo, "green") . "): ";
-                    $config['rp_fpa_indirizzo'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_indirizzo'] == null || $config['rp_fpa_indirizzo'] == "") {
-                        $config['rp_fpa_indirizzo'] = $_rp_fpa_indirizzo;
+                    $config['rp_proxy_clients']['default']['fpa_indirizzo'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_indirizzo'] == null || $config['rp_proxy_clients']['default']['fpa_indirizzo'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_indirizzo'] = $_rp_fpa_indirizzo;
                     }
                 }
 
-                if (!isset($config['rp_fpa_numero_civico'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_numero_civico'])) {
                     echo "Please insert your NumeroCivico for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_numero_civico, "green") . "): ";
-                    $config['rp_fpa_numero_civico'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_numero_civico'] == null || $config['rp_fpa_numero_civico'] == "") {
-                        $config['rp_fpa_numero_civico'] = $_rp_fpa_numero_civico;
+                    $config['rp_proxy_clients']['default']['fpa_numero_civico'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_numero_civico'] == null || $config['rp_proxy_clients']['default']['fpa_numero_civico'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_numero_civico'] = $_rp_fpa_numero_civico;
                     }
                 }
 
-                if (!isset($config['rp_fpa_cap'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_cap'])) {
                     echo "Please insert your CAP for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_cap, "green") . "): ";
-                    $config['rp_fpa_cap'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_cap'] == null || $config['rp_fpa_cap'] == "") {
-                        $config['rp_fpa_cap'] = $_rp_fpa_cap;
+                    $config['rp_proxy_clients']['default']['fpa_cap'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_cap'] == null || $config['rp_proxy_clients']['default']['fpa_cap'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_cap'] = $_rp_fpa_cap;
                     }
                 }
 
-                if (!isset($config['rp_fpa_comune'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_comune'])) {
                     echo "Please insert your Comune for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_comune, "green") . "): ";
-                    $config['rp_fpa_comune'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_comune'] == null || $config['rp_fpa_comune'] == "") {
-                        $config['rp_fpa_comune'] = $_rp_fpa_comune;
+                    $config['rp_proxy_clients']['default']['fpa_comune'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_comune'] == null || $config['rp_proxy_clients']['default']['fpa_comune'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_comune'] = $_rp_fpa_comune;
                     }
                 }
 
-                if (!isset($config['rp_fpa_provincia'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_provincia'])) {
                     echo "Please insert your Provincia for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_provincia, "green") . "): ";
-                    $config['rp_fpa_provincia'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_provincia'] == null || $config['rp_fpa_provincia'] == "") {
-                        $config['rp_fpa_provincia'] = $_rp_fpa_provincia;
+                    $config['rp_proxy_clients']['default']['fpa_provincia'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_provincia'] == null || $config['rp_proxy_clients']['default']['fpa_provincia'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_provincia'] = $_rp_fpa_provincia;
                     }
                 }
 
-                if (!isset($config['rp_fpa_nazione'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_nazione'])) {
                     echo "Please insert your Nazione for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_nazione, "green") . "): ";
-                    $config['rp_fpa_nazione'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_nazione'] == null || $config['rp_fpa_nazione'] == "") {
-                        $config['rp_fpa_nazione'] = $_rp_fpa_nazione;
+                    $config['rp_proxy_clients']['default']['fpa_nazione'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_nazione'] == null || $config['rp_proxy_clients']['default']['fpa_nazione'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_nazione'] = $_rp_fpa_nazione;
                     }
                 }
 
-                if (!isset($config['rp_fpa_organization_name'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_organization_name'])) {
                     echo "Please insert your OrganizationName for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_organization_name, "green") . "): ";
-                    $config['rp_fpa_organization_name'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_organization_name'] == null || $config['rp_fpa_organization_name'] == "") {
-                        $config['rp_fpa_organization_name'] = $_rp_fpa_organization_name;
+                    $config['rp_proxy_clients']['default']['fpa_organization_name'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_organization_name'] == null || $config['rp_proxy_clients']['default']['fpa_organization_name'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_organization_name'] = $_rp_fpa_organization_name;
                     }
                 }
 
-                if (!isset($config['rp_fpa_organization_email_address'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_organization_email_address'])) {
                     echo "Please insert your OrganizationEmailAddress for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_organization_email_address, "green") . "): ";
-                    $config['rp_fpa_organization_email_address'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_organization_email_address'] == null || $config['rp_fpa_organization_email_address'] == "") {
-                        $config['rp_fpa_organization_email_address'] = $_rp_fpa_organization_email_address;
+                    $config['rp_proxy_clients']['default']['fpa_organization_email_address'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_organization_email_address'] == null || $config['rp_proxy_clients']['default']['fpa_organization_email_address'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_organization_email_address'] = $_rp_fpa_organization_email_address;
                     }
                 }
 
-                if (!isset($config['rp_fpa_organization_telephone_number'])) {
+                if (!isset($config['rp_proxy_clients']['default']['fpa_organization_telephone_number'])) {
                     echo "Please insert your OrganizationTelephoneNumber for CessionarioCommittente (" .
                     $colors->getColoredString($_rp_fpa_organization_telephone_number, "green") . "): ";
-                    $config['rp_fpa_organization_telephone_number'] = str_replace("'", "\'", readline());
-                    if ($config['rp_fpa_organization_telephone_number'] == null || $config['rp_fpa_organization_telephone_number'] == "") {
-                        $config['rp_fpa_organization_telephone_number'] = $_rp_fpa_organization_telephone_number;
+                    $config['rp_proxy_clients']['default']['fpa_organization_telephone_number'] = str_replace("'", "\'", readline());
+                    if ($config['rp_proxy_clients']['default']['fpa_organization_telephone_number'] == null || $config['rp_proxy_clients']['default']['fpa_organization_telephone_number'] == "") {
+                        $config['rp_proxy_clients']['default']['fpa_organization_telephone_number'] = $_rp_fpa_organization_telephone_number;
                     }
                 }
 
                 break;
 
             default:
-                echo "Your Organization type is not correctly set. Please retry installation. Found: " . $config['rp_is_pa'] . "\n";
+                echo "Your Organization type is not correctly set. Please retry installation. Found: " . $config['rp_proxy_clients']['default']['is_pa'] . "\n";
                 die();
                 break;
         }
 
-        if (!isset($config['rp_country_name'])) {
+        if (!isset($config['rp_proxy_clients']['default']['country_name'])) {
             echo "Please insert your Organization's Country ISO 3166-1 code (" .
             $colors->getColoredString($_rp_country_name, "green") . "): ";
-            $config['rp_country_name'] = readline();
-            if ($config['rp_country_name'] == null || $config['rp_country_name'] == "") {
-                $config['rp_country_name'] = $_rp_country_name;
+            $config['rp_proxy_clients']['default']['country_name'] = readline();
+            if ($config['rp_proxy_clients']['default']['country_name'] == null || $config['rp_proxy_clients']['default']['country_name'] == "") {
+                $config['rp_proxy_clients']['default']['country_name'] = $_rp_country_name;
             }
         }
 
-        if (!isset($config['rp_locality_name'])) {
+        if (!isset($config['rp_proxy_clients']['default']['locality_name'])) {
             echo "Please insert your Organization's Locality Name (" .
             $colors->getColoredString($_rp_locality_name, "green") . "): ";
-            $config['rp_locality_name'] = readline();
-            if ($config['rp_locality_name'] == null || $config['rp_locality_name'] == "") {
-                $config['rp_locality_name'] = $_rp_locality_name;
+            $config['rp_proxy_clients']['default']['locality_name'] = readline();
+            if ($config['rp_proxy_clients']['default']['locality_name'] == null || $config['rp_proxy_clients']['default']['locality_name'] == "") {
+                $config['rp_proxy_clients']['default']['locality_name'] = $_rp_locality_name;
             }
         }
 
-        if (!isset($config['rp_email'])) {
+        if (!isset($config['rp_proxy_clients']['default']['email'])) {
             echo "Please insert Organization Contact Email Address (" .
               $colors->getColoredString($_rp_email, "green") . "): ";
-            $config['rp_email'] = str_replace("'", "\'", readline());
-            if ($config['rp_email'] == null || $config['rp_email'] == "") {
-                $config['rp_email'] = $_rp_email;
+            $config['rp_proxy_clients']['default']['email'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['email'] == null || $config['rp_proxy_clients']['default']['email'] == "") {
+                $config['rp_proxy_clients']['default']['email'] = $_rp_email;
             }
         }
 
-        if (!isset($config['rp_telephone'])) {
+        if (!isset($config['rp_proxy_clients']['default']['telephone'])) {
             echo "Please insert Organization Contact Telephone Number (" .
               $colors->getColoredString($_rp_telephone, "green") . "): ";
-            $config['rp_telephone'] = str_replace("'", "\'", readline());
-            if ($config['rp_telephone'] == null || $config['rp_telephone'] == "") {
-                $config['rp_telephone'] = $_rp_telephone;
+            $config['rp_proxy_clients']['default']['telephone'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['telephone'] == null || $config['rp_proxy_clients']['default']['telephone'] == "") {
+                $config['rp_proxy_clients']['default']['telephone'] = $_rp_telephone;
             }
         }
 
+        // TODO: let insert from user
+        $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
+        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('name', 'familyName', 'fiscalNumber');
 
+        $_rp_redirect_uri = '/' . $config['service_name'] . '/test.php';
+
+        if (!isset($config['rp_proxy_clients']['default']['redirect_uri'])) {
+            echo "Please insert redirect_uri (" .
+              $colors->getColoredString($_rp_redirect_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['redirect_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['redirect_uri'] == null 
+                || $config['rp_proxy_clients']['default']['redirect_uri'] == "") {
+                    $config['rp_proxy_clients']['default']['redirect_uri'] = $_rp_redirect_uri;
+            }
+        }
+
+        $config['rp_proxy_clients']['default']['response_handler'] = "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain";
 
 
         echo $colors->getColoredString("\nCurrent directory: " . $config['install_dir'], "yellow");
         echo $colors->getColoredString("\nWeb root directory: " . $config['www_dir'], "yellow");
         echo $colors->getColoredString("\nService Name: " . $config['service_name'], "yellow");
-        echo $colors->getColoredString("\nclient_id: " . $config['rp_client_id'], "yellow");
-        echo $colors->getColoredString("\nclient_name: " . $config['rp_client_name'], "yellow");
-        echo $colors->getColoredString("\nauthority_hint: " . $config['rp_authority_hint'], "yellow");
-        echo $colors->getColoredString("\ncontact: " . $config['rp_contact'], "yellow");
+        echo $colors->getColoredString("\nclient_id: " . $config['rp_proxy_clients']['default']['client_id'], "yellow");
+        echo $colors->getColoredString("\nclient_name: " . $config['rp_proxy_clients']['default']['client_name'], "yellow");
+        echo $colors->getColoredString("\nauthority_hint: " . $config['rp_proxy_clients']['default']['authority_hint'], "yellow");
+        echo $colors->getColoredString("\ncontact: " . $config['rp_proxy_clients']['default']['contact'], "yellow");
         echo $colors->getColoredString("\nIs organization a Public Administration: ", "yellow");
-        echo $colors->getColoredString(($config['rp_is_pa']) ? "Y" : "N", "yellow");
-        echo $colors->getColoredString("\nOrganization Code Type: " . $config['rp_code_type'], "yellow");
-        echo $colors->getColoredString("\nOrganization Code: " . $config['rp_code'], "yellow");
-        echo $colors->getColoredString("\nOrganization Identifier: " . $config['rp_organization_identifier'], "yellow");
-        echo $colors->getColoredString("\nCertificate CountryName: " . $config['rp_country_name'], "yellow");
-        echo $colors->getColoredString("\nCertificate LocalityName: " . $config['rp_locality_name'], "yellow");
-        echo $colors->getColoredString("\nOrganization Contact Email Address: " . $config['rp_email'], "yellow");
-        echo $colors->getColoredString("\nOrganization Contact Telephone Number: " . $config['rp_telephone'], "yellow");
-        if (!$config['rp_is_pa']) {
-            echo $colors->getColoredString("\nCessionarioCommittente IdPaese: " . $config['rp_fpa_id_paese'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente IdCodice: " . $config['rp_fpa_id_codice'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente Denominazione: " . $config['rp_fpa_denominazione'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente Indirizzo: " . $config['rp_fpa_indirizzo'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente NumeroCivico: " . $config['rp_fpa_numero_civico'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente CAP: " . $config['rp_fpa_cap'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente Comune: " . $config['rp_fpa_comune'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente Provincia: " . $config['rp_fpa_provincia'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente Nazione: " . $config['rp_fpa_nazione'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente OrganizationName: " . $config['rp_fpa_organization_name'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente OrganizationEmailAddress: " . $config['rp_fpa_organization_email_address'], "yellow");
-            echo $colors->getColoredString("\nCessionarioCommittente OrganizationTelephoneNumber: " . $config['rp_fpa_organization_telephone_number'], "yellow");
+        echo $colors->getColoredString(($config['rp_proxy_clients']['default']['is_pa']) ? "Y" : "N", "yellow");
+        echo $colors->getColoredString("\nOrganization Code Type: " . $config['rp_proxy_clients']['default']['code_type'], "yellow");
+        echo $colors->getColoredString("\nOrganization Code: " . $config['rp_proxy_clients']['default']['code'], "yellow");
+        echo $colors->getColoredString("\nOrganization Identifier: " . $config['rp_proxy_clients']['default']['organization_identifier'], "yellow");
+        echo $colors->getColoredString("\nCertificate CountryName: " . $config['rp_proxy_clients']['default']['country_name'], "yellow");
+        echo $colors->getColoredString("\nCertificate LocalityName: " . $config['rp_proxy_clients']['default']['locality_name'], "yellow");
+        echo $colors->getColoredString("\nOrganization Contact Email Address: " . $config['rp_proxy_clients']['default']['email'], "yellow");
+        echo $colors->getColoredString("\nOrganization Contact Telephone Number: " . $config['rp_proxy_clients']['default']['telephone'], "yellow");
+        if (!$config['rp_proxy_clients']['default']['is_pa']) {
+            echo $colors->getColoredString("\nCessionarioCommittente IdPaese: " . $config['rp_proxy_clients']['default']['fpa_id_paese'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente IdCodice: " . $config['rp_proxy_clients']['default']['fpa_id_codice'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente Denominazione: " . $config['rp_proxy_clients']['default']['fpa_denominazione'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente Indirizzo: " . $config['rp_proxy_clients']['default']['fpa_indirizzo'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente NumeroCivico: " . $config['rp_proxy_clients']['default']['fpa_numero_civico'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente CAP: " . $config['rp_proxy_clients']['default']['fpa_cap'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente Comune: " . $config['rp_proxy_clients']['default']['fpa_comune'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente Provincia: " . $config['rp_proxy_clients']['default']['fpa_provincia'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente Nazione: " . $config['rp_proxy_clients']['default']['fpa_nazione'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente OrganizationName: " . $config['rp_proxy_clients']['default']['fpa_organization_name'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente OrganizationEmailAddress: " . $config['rp_proxy_clients']['default']['fpa_organization_email_address'], "yellow");
+            echo $colors->getColoredString("\nCessionarioCommittente OrganizationTelephoneNumber: " . $config['rp_proxy_clients']['default']['fpa_organization_telephone_number'], "yellow");
         }
 
+        echo $colors->getColoredString("\nrequested_acr: " . json_encode($config['rp_proxy_clients']['default']['requested_acr']), "yellow");
+        echo $colors->getColoredString("\nspid_user_attributes: " . json_encode($config['rp_proxy_clients']['default']['spid_user_attributes']), "yellow");
+        echo $colors->getColoredString("\nredirect_uri: " . $config['rp_proxy_clients']['default']['redirect_uri'], "yellow");
+        echo $colors->getColoredString("\nresponse_handler: " . $config['rp_proxy_clients']['default']['response_handler'], "yellow");
 
-        echo $colors->getColoredString("\nProduction: " . $config['production'], "yellow");
+        echo $colors->getColoredString("\n\nProduction: ", "yellow");
+        echo $colors->getColoredString(($config['production']) ? "Y" : "N", "yellow");
 
         echo "\n\n";
 
@@ -417,7 +446,7 @@ class Setup
         }
 
         // create vhost directory if not exists
-        if (!file_exists($config['www_dir']) && $config['service_name'] != '') {
+        if (!file_exists($config['www_dir']) && $config['service_name']!='') {
             echo $colors->getColoredString("\nWebroot directory not found. Making directory " .
                     $config['www_dir'], "yellow");
             echo $colors->getColoredString("\nPlease remember to configure your virtual host.\n\n", "yellow");
@@ -451,19 +480,19 @@ class Setup
                 fwrite($openssl_config, "uri=2.5.4.83\n");
 
                 fwrite($openssl_config, "\n[ dn ]\n");
-                fwrite($openssl_config, "organizationName=" . $config['rp_client_name'] . "\n");
-                fwrite($openssl_config, "commonName=" . $config['rp_client_name'] . "\n");
-                fwrite($openssl_config, "uri=" . $config['rp_client_id'] . "\n");
-                fwrite($openssl_config, "organizationIdentifier=" . $config['rp_organization_identifier'] . "\n");
-                fwrite($openssl_config, "countryName=" . $config['rp_country_name'] . "\n");
-                fwrite($openssl_config, "localityName=" . $config['rp_locality_name'] . "\n");
-                //fwrite($openssl_config, "serialNumber=" . $config['rp_code'] . "\n");
+                fwrite($openssl_config, "organizationName=" . $config['rp_proxy_clients']['default']['client_name'] . "\n");
+                fwrite($openssl_config, "commonName=" . $config['rp_proxy_clients']['default']['client_name'] . "\n");
+                fwrite($openssl_config, "uri=" . $config['rp_proxy_clients']['default']['client_id'] . "\n");
+                fwrite($openssl_config, "organizationIdentifier=" . $config['rp_proxy_clients']['default']['organization_identifier'] . "\n");
+                fwrite($openssl_config, "countryName=" . $config['rp_proxy_clients']['default']['country_name'] . "\n");
+                fwrite($openssl_config, "localityName=" . $config['rp_proxy_clients']['default']['locality_name'] . "\n");
+                //fwrite($openssl_config, "serialNumber=" . $config['rp_proxy_clients']['default']['code'] . "\n");
 
                 fwrite($openssl_config, "\n[ req_ext ]\n");
                 fwrite($openssl_config, "certificatePolicies = @spid_policies\n");
 
                 fwrite($openssl_config, "\n[ spid_policies ]\n");
-                switch ($config['rp_is_pa']) {
+                switch ($config['rp_proxy_clients']['default']['is_pa']) {
                     case true:
                         fwrite($openssl_config, "policyIdentifier = spid-publicsector-SP\n");
                         break;
@@ -472,7 +501,7 @@ class Setup
                         break;
 
                     default:
-                        echo $colors->getColoredString("Your Organization type is not correctly set. Please retry installation. Found: " . $config['rp_is_pa'] . "\n", "red");
+                        echo $colors->getColoredString("Your Organization type is not correctly set. Please retry installation. Found: " . $config['rp_proxy_clients']['default']['is_pa'] . "\n", "red");
                         fwrite($openssl_config, "ERROR- Interrupted\n");
                         fclose($openssl_config);
                         die();
@@ -488,15 +517,19 @@ class Setup
                     " -extensions req_ext "
             );
 
-            $config['rp_cert_private'] = $config['install_dir'] . "/cert/rp.pem";
-            $config['rp_cert_public'] = $config['install_dir'] . "/cert/rp.crt";
+            $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
+            $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";
         }
 
         file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config));
 
+        $authority_config = "{\"" . $config['rp_proxy_clients']['default']['authority_hint'] . "\":{}}";
+
+        file_put_contents($config['install_dir'] . "/config/federation-authority.json", $authority_config);
+
         // set link to www
         $cmd_link = $config['www_dir'];
-        if ($config['service_name'] != '') {
+        if($config['service_name']!='') {
             $cmd_link .= "/" . $config['service_name'];
         }
         if (!file_exists($cmd_link)) {
