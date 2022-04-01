@@ -544,8 +544,10 @@ class Setup
         file_put_contents($config['install_dir'] . "/config/federation-authority.json", $authority_config);
 
         // copy base default configurations
-        copy($config['install_dir'] . "/config_sample/alg*", $config['install_dir'] . "/config");
-        copy($config['install_dir'] . "/config_sample/hooks*", $config['install_dir'] . "/config");
+        copy($config['install_dir'] . "/config_sample/alg-content-enc.json", $config['install_dir'] . "/config/alg-content-enc.json");
+        copy($config['install_dir'] . "/config_sample/alg-key-enc.json", $config['install_dir'] . "/config/alg-key-enc.json");
+        copy($config['install_dir'] . "/config_sample/alg-sig.json", $config['install_dir'] . "/config/alg-sig.json");
+        copy($config['install_dir'] . "/config_sample/hooks.json", $config['install_dir'] . "/config/hooks.json");
 
         // set link to www
         $cmd_link = $config['www_dir'];
