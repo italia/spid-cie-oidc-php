@@ -1,6 +1,13 @@
 {
-    "name": "italia/spid-cie-oidc-php",
+    "name": "linfaservice/spid-cie-oidc-php",
     "description": "SPID CIE OIDC PHP",
+    "authors": [
+        {
+            "name": "Michele D'Amico",
+            "email": "michele.damico@linfaservice.it"
+        }
+    ],
+    "license": "Apache-2.0",
     "type": "project",
     "config": {
         "version": "0.1.0"
@@ -60,12 +67,5 @@
     },
     "scripts-descriptions": {
         "uninstall": "Remove all packages and custom configurations"
-    },    
-    "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "Michele D'Amico",
-            "email": "michele.damico@linfaservice.it"
-        }
-    ]
+    }
 }
