@@ -3,9 +3,12 @@
         "organization_name": "Federazione SPID"
     },
     "http://127.0.0.1:8000": {
-        "organization_name": "Federazione Test"
+        "organization_name": "Federazione test local"
     },
     "http://localhost:8000": {
-        "organization_name": "Federazione Test"
+        "organization_name": "Federazione test local"
+    },
+    "http://trust-anchor.org:8000/": {
+        "organization_name": "Federazione test oidcfed"
     }
 }

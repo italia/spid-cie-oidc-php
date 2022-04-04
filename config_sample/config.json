@@ -1,24 +1,24 @@
 {
     "production": false,
     "install_dir": "./",
-    "www_dir": "/var/www/html",
+    "www_dir": "/home/spid-cie-oidc-php/www",
     "service_name": "",
 
     "rp_proxy_clients": {
         "default": {
             "cert_private": "./cert/rp.pem",
             "cert_public": "./cert/rp.crt",
-            "client_id": "http://127.0.0.1:8002",
+            "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP",
-            "authority_hint": "http://127.0.0.1:8000/", 
-            "contact": "rp@example.it",
+            "authority_hint": "http://trust-anchor.org:8000/", 
+            "contact": "info@relying-party-php.org",
             "is_pa": true,
             "code": "ipa",
             "code_type": "IPACode",
             "organization_identifier": "PA:IT-ipa",
             "country_name": "IT",
             "locality_name": "Rome",
-            "email": "info@organization.org",
+            "email": "info@relying-party-php.org",
             "telephone": "+3912345678",
             "requested_acr": [
                 3,
@@ -31,7 +31,7 @@
                 "email",
                 "fiscalNumber"
             ],
-            "redirect_uri": "http://127.0.0.1:8002/test.php",
+            "redirect_uri": "http://relying-party-php.org:8003/test.php",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
         }
     },
@@ -47,10 +47,10 @@
             "client_id": "081d2fe0-8dff-4568-b0eb-ffe7895c0ff9",
             "client_secret": "79cd1baa-d2df-4feb-b9e7-a22d9674f436",
             "redirect_uri": [
-                "http://127.0.0.1:8002/wp/wp-admin/admin-ajax.php?action=openid-connect-authorize"
+                "http://relying-party-wordpress.org:8004/wp/wp-admin/admin-ajax.php?action=openid-connect-authorize"
             ],
             "post_logout_redirect_uri": [
-                "http://127.0.0.1:8002"
+                "http://relying-party-wordpress.org:8004/"
             ],
             "level": "2",
             "token_endpoint_auth_method": "client_secret_basic"
