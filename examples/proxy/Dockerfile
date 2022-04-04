@@ -7,25 +7,38 @@ LABEL Description="spid-cie-oidc-php"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes 
 
-# Install php
+# Install apache and php7
 RUN \
     apt-get update && \
-    apt-get -y install software-properties-common && \
-    add-apt-repository ppa:ondrej/php && \
     apt-get -yq install \
         curl \
         git \
-        php7.4 \
-        php7.4-cli \
-        php7.4-fpm \
-        php7.4-gd \
-        php7.4-sqlite3 \
-        php7.4-gmp \
-        php7.4-mbstring \
-        php7.4-curl \
-        php7.4-xml \
-        php7.4-zip
+        apache2 \
+        libapache2-mod-php \
+        php-sqlite3 \
+        php-gmp \
+        php-mbstring \
+        php-curl \
+        php-xml \
+        php-zip
     
+# config PHP
+# we want a dev server which shows PHP errors
+RUN sed -i -e 's/^error_reporting\s*=.*/error_reporting = E_ALL/' /etc/php/7.4/apache2/php.ini
+RUN sed -i -e 's/^display_errors\s*=.*/display_errors = On/' /etc/php/7.4/apache2/php.ini
+RUN sed -i -e 's/^zlib.output_compression\s*=.*/zlib.output_compression = Off/' /etc/php/7.4/apache2/php.ini
+
+# Apache conf
+# allow .htaccess with RewriteEngine
+RUN a2enmod rewrite
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+# autorise .htaccess files
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+# for production :
+# RUN echo "ServerTokens Prod\n" >> /etc/apache2/apache2.conf
+# RUN echo "ServerSignature Off\n" >> /etc/apache2/apache2.conf
+
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
     php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
@@ -42,4 +55,4 @@ RUN cd /home/spid-cie-oidc-php && composer install
 WORKDIR /home/spid-cie-oidc-php/www
 
 EXPOSE 80
-ENTRYPOINT ["/bin/sh", "-c", "php -S 0.0.0.0:80"]
+ENTRYPOINT ["/bin/sh", "-c", "echo WEB SERVER STARTED && apache2ctl -D FOREGROUND"]
