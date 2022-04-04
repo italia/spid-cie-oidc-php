@@ -64,21 +64,21 @@ class Setup
 
         // retrieve path and inputs
         $_home_dir = PHP_OS_FAMILY === "Windows" ? getenv("HOMEDRIVE") . getenv("HOMEPATH") : getenv("HOME");
-        $_www_dir = "/var/www/html";
+        $_www_dir = "/home/spid-cie-oidc-php/www";
         $_install_dir = getcwd();
         $_service_name = "";
 
-        $_rp_client_id = "https://localhost:8002";
+        $_rp_client_id = "http://relying-party-php.org:8003";
         $_rp_client_name = "Name of Relying Party";
-        $_rp_authority_hint = "http://localhost:8000/";
-        $_rp_contact = "rp@example.it";
+        $_rp_authority_hint = "http://trust-anchor.org:8000/";
+        $_rp_contact = "info@relying-party-php.org";
 
-        $_rp_url = "https://www.organization.org";
+        $_rp_url = "http://relying-party-php.org:8003";
         $_rp_country_name = "IT";
         $_rp_locality_name = "Rome";
         $_rp_code_type = "VATNumber";
         $_rp_code = "";
-        $_rp_email = "info@organization.org"; // must be not null otherwise metadata will not generated
+        $_rp_email = "info@relying-party-php.org"; // must be not null otherwise metadata will not generated
         $_rp_telephone = "+3912345678"; // must be not null otherwise metadata will not generated
 
         // billing
