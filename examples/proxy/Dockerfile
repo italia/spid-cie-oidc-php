@@ -47,10 +47,21 @@ RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
 RUN cd /home && \
     git clone https://github.com/italia/spid-cie-oidc-php.git && \
     mkdir /home/spid-cie-oidc-php/data && \
-    mkdir /home/spid-cie-oidc-php/config
-
+    cp -R /home/spid-cie-oidc-php/config_sample /home/spid-cie-oidc-php/config && \
+    cp -R /home/spid-cie-oidc-php/cert_sample /home/spid-cie-oidc-php/cert
+    
 # Setup spid-cie-oidc-php
 RUN cd /home/spid-cie-oidc-php && composer install
+
+# Fix symlink
+RUN rm /var/www/html && \
+    ln -s /home/spid-cie-oidc-php/www /var/www/html
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www
+RUN chmod 755 -R /var/www
+RUN find /var/www -type d -exec chmod 775 {} +
+RUN find /var/www -type f -exec chmod 664 {} +
 
 WORKDIR /home/spid-cie-oidc-php/www
 
