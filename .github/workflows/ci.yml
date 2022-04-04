@@ -52,6 +52,7 @@ jobs:
       with:
         name: testphp-code-coverage-report
         path: code_coverage_report
+        retention-days: 3
 
     - name: Check code coverage score
       run: php vendor/bin/coverage-check phpunit-clover.xml 0
