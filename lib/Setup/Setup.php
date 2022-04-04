@@ -542,12 +542,30 @@ class Setup
         echo $colors->getColoredString("\nSave default base configurations... ", "white");
         file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config));
 
-        copy($config['install_dir'] . "/config_sample/federation-authority.json", $config['install_dir'] . "/config/federation-authority.json");
-        copy($config['install_dir'] . "/config_sample/alg-content-enc.json", $config['install_dir'] . "/config/alg-content-enc.json");
-        copy($config['install_dir'] . "/config_sample/alg-key-enc.json", $config['install_dir'] . "/config/alg-key-enc.json");
-        copy($config['install_dir'] . "/config_sample/alg-sig.json", $config['install_dir'] . "/config/alg-sig.json");
-        copy($config['install_dir'] . "/config_sample/hooks.json", $config['install_dir'] . "/config/hooks.json");
-        echo $colors->getColoredString("OK", "green");
+        if (!file_exists($config['install_dir'] . "/config/federation-authority.json")) {
+            copy($config['install_dir'] . "/config_sample/federation-authority.json", $config['install_dir'] . "/config/federation-authority.json");
+            echo $colors->getColoredString("\n - federation-authority.json", "green");
+        }
+
+        if (!file_exists($config['install_dir'] . "/config/alg-content-enc.json")) {
+            copy($config['install_dir'] . "/config_sample/alg-content-enc.json", $config['install_dir'] . "/config/alg-content-enc.json");
+            echo $colors->getColoredString("\n - alg-content-enc.json", "green");
+        }
+
+        if (!file_exists($config['install_dir'] . "/config/alg-key-enc.json")) {
+            copy($config['install_dir'] . "/config_sample/alg-key-enc.json", $config['install_dir'] . "/config/alg-key-enc.json");
+            echo $colors->getColoredString("\n - alg-key-enc.json", "green");
+        }
+
+        if (!file_exists($config['install_dir'] . "/config/alg-sig.json")) {
+            copy($config['install_dir'] . "/config_sample/alg-sig.json", $config['install_dir'] . "/config/alg-sig.json");
+            echo $colors->getColoredString("\n - alg-sig.json", "green");
+        }
+
+        if (!file_exists($config['install_dir'] . "/config/hooks.json")) {
+            copy($config['install_dir'] . "/config_sample/hooks.json", $config['install_dir'] . "/config/hooks.json");
+            echo $colors->getColoredString("\n - hooks.json", "green");
+        }
 
         // set link to www
         $cmd_link = $config['www_dir'];
