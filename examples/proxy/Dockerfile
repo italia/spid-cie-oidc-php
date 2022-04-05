@@ -22,13 +22,15 @@ RUN \
         php-xml \
         php-zip
     
-# Apache conf
-# set default port to 8003
+# Apache conf - set default port to 8003
 RUN sed -i  's/:80/:8003/g' /etc/apache2/sites-available/000-default.conf
-# allow .htaccess with RewriteEngine
+RUN sed -i  's/ 80/ 8003/g' /etc/apache2/ports.conf
+
+# Apache conf - allow .htaccess with RewriteEngine
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-# autorise .htaccess files
+
+# Apache conf - autorise .htaccess files
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Install Composer
