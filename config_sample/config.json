@@ -74,7 +74,7 @@
             "client_id": "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb",
             "client_secret": "389451f0-dc60-4fba-8c03-eea4adb340b6",
             "redirect_uri": [
-                "http://relying-party-wordpress.org:8004/wp/wp-admin/admin-ajax.php?action=openid-connect-authorize"
+                "http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize"
             ],
             "post_logout_redirect_uri": [
                 "http://relying-party-wordpress.org:8004/"
