@@ -38,6 +38,9 @@ use SPID_CIE_OIDC_PHP\OIDC\RP\RevocationRequest;
 use SPID_CIE_OIDC_PHP\OIDC\OP\Database as OP_Database;
 use SPID_CIE_OIDC_PHP\OIDC\OP\CertsEndpoint;
 use SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint;
+use SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint;
+use SPID_CIE_OIDC_PHP\OIDC\OP\UserinfoEndpoint;
+use SPID_CIE_OIDC_PHP\OIDC\OP\SessionEndEndpoint;
 
 $f3 = \Base::instance();
 
@@ -70,7 +73,7 @@ $f3->set('BASEURL', ($service_name == '') ? '' : '/' . $service_name);
 
 
 
-$f3->route('GET /', function ($f3) {
+$f3->route('GET /info', function ($f3) {
     $composer = json_decode(file_get_contents(__DIR__ . '/../composer.json'));
     echo "SPID CIE OIDC PHP - Version " . $composer->config->version;
 });
@@ -131,23 +134,12 @@ $f3->route([
         $f3->error(400, "Domain not found");
     }
 
-        /* -------- DEV --------- */
-    if ($domain == '2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb') {
-        $responseHandlerClass = $config['response_handler'];
-        $responseHandler = new $responseHandlerClass($config);
-        $userinfoResponse = (object) array(
-            'name' => 'Nome',
-            'familyName' => 'Cognome',
-            'email' => 'email@email.it'
-        );
-        $state = '';
-        $responseHandler->sendResponse($config['redirect_uri'], $userinfoResponse, $state);
-        die();
-    }
-        /* ---------------------- */
-
     $logger = $f3->get("LOGGER");
     $logger->log('VIEW', 'GET /oidc/rp/authz');
+
+    // stash params state from proxy requests
+    // (OIDC generic 2 OIDC SPID)
+    $f3->set("SESSION.state", $_GET['state']);
 
     $auth = $f3->get('SESSION.auth');
     if (
@@ -187,7 +179,10 @@ $f3->route([
 
     $ta_id = base64_decode($f3->get('PARAMS.ta'));
     $op_id = base64_decode($f3->get('PARAMS.op'));
-    $state = $f3->get('GET.state');
+
+    // try to get state first from session, if routed from proxy
+    $state = $f3->get('SESSION.state') || $f3->get('GET.state');
+
     $acr = $config['requested_acr'];
     $user_attributes = $config['spid_user_attributes'];
     $redirect_uri = $config['redirect_uri'];
@@ -392,8 +387,12 @@ $f3->route('GET /oidc/proxy/certs', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_database = $f3->get("OP_DATABASE");
 
-    $handler = new CertsEndpoint($config, $op_database);
-    $handler->process();
+    try {
+        $handler = new CertsEndpoint($config, $op_database);
+        $handler->process();
+    } catch (Exception $e) {
+        $f3->error(500, $e->getMessage());
+    }
 });
 
 $f3->route('GET /oidc/proxy/authz', function ($f3) {
@@ -420,10 +419,53 @@ $f3->route('POST /oidc/proxy/callback', function ($f3) {
     }
 });
 
+$f3->route('POST /oidc/proxy/token', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_database = $f3->get("OP_DATABASE");
+
+    try {
+        $handler = new TokenEndpoint($config, $op_database);
+        $handler->process();
+    } catch (\Exception $e) {
+        $f3->error(400, $e->getMessage());
+    }
+});
+
+$f3->route('POST /oidc/proxy/userinfo', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_database = $f3->get("OP_DATABASE");
+
+    try {
+        $handler = new UserinfoEndpoint($config, $op_database);
+        $handler->process();
+    } catch (\Exception $e) {
+        $f3->error(400, $e->getMessage());
+    }
+});
+
+$f3->route('GET /oidc/proxy/session/end', function ($f3) {
+    $config = $f3->get("CONFIG");
+    $op_database = $f3->get("OP_DATABASE");
+
+    try {
+        $handler = new SessionEndEndpoint($config, $op_database);
+        $handler->process();
+    } catch (\Exception $e) {
+        $f3->error(400, $e->getMessage());
+    }
+});
+
 //----------------------------------------------------------------------------------------
 
 
 
+
+//----------------------------------------------------------------------------------------
+// DEMO
+//----------------------------------------------------------------------------------------
+$f3->route('GET /', function ($f3) {
+    $f3->reroute('/test.php');
+});
 
 
 

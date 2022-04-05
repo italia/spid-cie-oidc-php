@@ -38,12 +38,12 @@ class CertsEndpoint
     /**
      *  creates a new CertsEndpoint instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @param Database $database database instance
      * @throws Exception
      * @return CertsEndpoint
      */
-    public function __construct(object $config, Database $database)
+    public function __construct(array $config, Database $database)
     {
         $this->config = $config;
         $this->database = $database;
@@ -58,14 +58,14 @@ class CertsEndpoint
     {
 
         try {
-            $jwk_pem = $this->config->op_proxy_cert_public;
+            $jwk_pem = $this->config['op_proxy_cert_public'];
             $jwk = JWT::getCertificateJWK($jwk_pem);
 
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($jwk);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             http_response_code(400);
-            if ($this->config['debug']) {
+            if (!$this->config['production']) {
                 echo "ERROR: " . $e->getMessage();
                 $this->database->log("CertsEndpoint", "CERTS_ERR", $e->getMessage());
             }

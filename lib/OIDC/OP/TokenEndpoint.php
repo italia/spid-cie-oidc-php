@@ -26,6 +26,14 @@ namespace SPID_CIE_OIDC_PHP\OIDC\OP;
 
 use SPID_CIE_OIDC_PHP\Core\JWT;
 use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\Signature\JWSBuilder;
+use Jose\Component\Signature\Serializer\CompactSerializer as JWSSerializer;
+use Jose\Component\Signature\Algorithm\RS256;
+
+const DEFAULT_TOKEN_EXPIRATION_TIME = 1200;
+
+
 
 /**
  *  Token Endpoint
@@ -33,17 +41,15 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
  */
 class TokenEndpoint
 {
-    public $name = "Token Endpoint";
-
     /**
      *  creates a new TokenEndpoint instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @param Database $database database instance
      * @throws Exception
      * @return TokenEndpoint
      */
-    public function __construct(object $config, Database $database)
+    public function __construct(array $config, Database $database)
     {
         $this->config = $config;
         $this->database = $database;
@@ -52,29 +58,29 @@ class TokenEndpoint
     /**
      *  process a token request
      *
-     * @param object $request object containing the request parameters
+     * @param array $_POST containing the request parameters
      * @throws Exception
      */
-    public function process(object $request)
+    public function process()
     {
-        $clients        = $this->config['clients'];
-        $code           = $request->code;
-        $scope          = $request->scope;
-        $grant_type     = $request->grant_type;
-        $client_id      = $request->client_id;
-        $client_secret  = $request->client_secret;
-        $redirect_uri   = $request->redirect_uri;
-        $state          = $request->state;
+        $clients        = $this->config['op_proxy_clients'];
+        $code           = $_POST['code'];
+        $scope          = $_POST['scope'];
+        $grant_type     = $_POST['grant_type'];
+        $client_id      = $_POST['client_id'];
+        $client_secret  = $_POST['client_secret'];
+        $redirect_uri   = $_POST['redirect_uri'];
+        $state          = $_POST['state'];
 
         try {
             $credential = $this->getBasicAuthCredential();
             if ($credential != false && is_array($credential)) {
-                $this->database->log("TokenEndpoint", "TOKEN Credential", var_export($credential, true));
+                $this->database->log("TokenEndpoint", "TOKEN Credential", $credential);
                 $username = $credential['username'];
                 $password = $credential['password'];
 
                 $auth_method = $clients[$username]['token_endpoint_auth_method'];
-                $this->database->log("TokenEndpoint", "TOKEN configured auth_method", var_export($auth_method, true));
+                $this->database->log("TokenEndpoint", "TOKEN configured auth_method", $auth_method);
                 switch ($auth_method) {
                     case 'client_secret_post':
                         // already have client_id and client_secret
@@ -86,8 +92,12 @@ class TokenEndpoint
                         break;
                 }
             }
+            $this->database->log("TokenEndpoint", "TOKEN REQUEST CREDENTIAL", array(
+                "client_id" => $client_id,
+                "client_secret" =>  $client_secret
+            ));
 
-            $this->database->log("TokenEndpoint", "TOKEN", var_export($_POST, true));
+            $this->database->log("TokenEndpoint", "TOKEN REQUEST", $_POST);
 
             if (strpos($scope, 'openid') < 0) {
                 throw new \Exception('invalid_scope');
@@ -104,7 +114,7 @@ class TokenEndpoint
             if (!in_array($redirect_uri, $clients[$client_id]['redirect_uri'])) {
                 throw new \Exception('invalid_redirect_uri');
             }
-            if (!$this->database->checkAuthorizationCode($client_id, $redirect_uri, $code)) {
+            if (!isset($code) || !$this->database->checkAuthorizationCode($client_id, $redirect_uri, $code)) {
                 throw new \Exception('invalid_code');
             }
 
@@ -114,12 +124,12 @@ class TokenEndpoint
 
             $subject = $userinfo['fiscalNumber'];
             $exp_time = 1800;
-            $iss = $this->config['spid-php-proxy']['origin'];
+            $iss = $this->config['rp_proxy_clients'][$client_id]['client_id'];
             $aud = $client_id;
-            $jwk_pem = $this->config['jwt_private_key'];
+            $jwk_pem = $this->config['rp_proxy_clients'][$client_id]['cert_private'];
             $nonce = $request['nonce'];
 
-            $id_token = JWT::makeIdToken($subject, $exp_time, $iss, $aud, $nonce, $jwk_pem);
+            $id_token = $this->makeIdToken($subject, $exp_time, $iss, $aud, $nonce, $jwk_pem);
 
             $this->database->saveIdToken($request['req_id'], $id_token);
 
@@ -133,8 +143,9 @@ class TokenEndpoint
                 "id_token" => $id_token
             ));
         } catch (\Exception $e) {
+            // API /token error
             http_response_code(400);
-            if ($this->config['debug']) {
+            if (!$this->config['production']) {
                 echo "ERROR: " . $e->getMessage();
                 $this->database->log("TokenEndpoint", "TOKEN_ERR", $e->getMessage());
             }
@@ -149,7 +160,7 @@ class TokenEndpoint
     {
         $credential = false;
         $authHeader = $this->getAuthorizationHeader();
-        $this->database->log("TokenEndpoint", "TOKEN BASIC AUTH", var_export($authHeader, true));
+        $this->database->log("TokenEndpoint", "TOKEN BASIC AUTH", $authHeader);
         if (substr($authHeader, 0, 5) == 'Basic') {
             $creds = base64_decode(substr($authHeader, 6));
             $creds_array = explode(":", $creds);
@@ -158,20 +169,21 @@ class TokenEndpoint
                 'password' => $creds_array[1]
             );
         }
-
         return $credential;
     }
 
     /**
      * Get header Authorization
-     * */
+     */
     private function getAuthorizationHeader()
     {
         $headers = null;
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
-        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { // Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) { // php builtin server
+            $headers = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
             // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
@@ -181,6 +193,44 @@ class TokenEndpoint
                 $headers = trim($requestHeaders['Authorization']);
             }
         }
+
+
         return $headers;
+    }
+
+
+    /**
+     * Make ID Token
+     */
+    private function makeIdToken(string $subject, string $exp_time, string $iss, string $aud, string $nonce, string $jwk_pem): string
+    {
+
+        $iat        = new \DateTimeImmutable();
+        $exp_time   = $exp_time ?: DEFAULT_TOKEN_EXPIRATION_TIME;
+        $exp        = $iat->modify("+" . $exp_time . " seconds")->getTimestamp();
+
+        $data = [
+            'iss'  => $iss,                                     // Issuer - spDomain
+            'aud'  => $aud,                                     // Audience - Redirect_uri
+            'iat'  => $iat->getTimestamp(),                     // Issued at: time when the token was generated
+            'nbf'  => $iat->getTimestamp(),                     // Not before
+            'exp'  => $exp,                                     // Expire
+            'sub'  => $subject,                                 // Subject Data
+            'nonce' => $nonce,
+        ];
+
+        $algorithmManager = new AlgorithmManager([new RS256()]);
+        $jwk = JWT::getKeyJWK($jwk_pem);
+        $jwsBuilder = new JWSBuilder($algorithmManager);
+        $jws = $jwsBuilder
+            ->create()
+            ->withPayload(json_encode($data))
+            ->addSignature($jwk, ['alg' => 'RS256'])
+            ->build();
+
+        $serializer = new JWSSerializer();
+        $token = $serializer->serialize($jws, 0);
+
+        return $token;
     }
 }

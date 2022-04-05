@@ -32,17 +32,15 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
  */
 class UserinfoEndpoint
 {
-    public $name = "Userinfo Endpoint";
-
     /**
      *  creates a new UserinfoEndpoint instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @param Database $database database instance
      * @throws Exception
      * @return UserinfoEndpoint
      */
-    public function __construct(object $config, Database $database)
+    public function __construct(array $config, Database $database)
     {
         $this->config = $config;
         $this->database = $database;
@@ -69,7 +67,7 @@ class UserinfoEndpoint
             echo json_encode($userinfo);
         } catch (\Exception $e) {
             http_response_code(400);
-            if ($this->config['debug']) {
+            if (!$this->config['production']) {
                 echo "ERROR: " . $e->getMessage();
                 $this->database->log("UserinfoEndpoint", "USERINFO_ERR", $e->getMessage());
             }
@@ -86,6 +84,8 @@ class UserinfoEndpoint
             $headers = trim($_SERVER["Authorization"]);
         } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) { // php builtin server
+            $headers = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
             // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
@@ -95,7 +95,7 @@ class UserinfoEndpoint
                 $headers = trim($requestHeaders['Authorization']);
             }
         }
-        $this->database->log("UserinfoEndpoint", "HEADERS", var_export($headers, true));
+        $this->database->log("UserinfoEndpoint", "HEADERS", $headers);
         return $headers;
     }
 
@@ -108,7 +108,7 @@ class UserinfoEndpoint
         // HEADER: Get the access token from the header
         if (!empty($headers)) {
             if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
-                $this->database->log("UserinfoEndpoint", "BEARER", var_export($matches, true));
+                $this->database->log("UserinfoEndpoint", "BEARER", $matches);
                 return $matches[1];
             }
         }

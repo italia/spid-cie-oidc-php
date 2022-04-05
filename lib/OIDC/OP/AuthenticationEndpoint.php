@@ -49,13 +49,13 @@ class AuthenticationEndpoint
     /**
      *  process an authentication request
      *
-     * @param object $request object containing the request parameters
+     * @param array $_GET containing the request parameters
      * @throws Exception
      */
     public function process()
     {
 
-        $clients        = (array) $this->config->op_proxy_clients;
+        $clients        = $this->config['op_proxy_clients'];
         $scope          = $_GET['scope'];
         $response_type  = $_GET['response_type'];
         $client_id      = $_GET['client_id'];
@@ -63,7 +63,7 @@ class AuthenticationEndpoint
         $state          = $_GET['state'] ? $_GET['state'] : '';
         $nonce          = $_GET['nonce'] ? $_GET['nonce'] : '';
 
-        $this->database->log("AuthenticationEndpoint", "AUTH", var_export($_GET, true));
+        $this->database->log("AuthenticationEndpoint", "AUTH", $_GET);
 
         try {
             if (strpos($scope, 'openid') < 0) {
@@ -95,7 +95,7 @@ class AuthenticationEndpoint
             $url .= 'oidc/rp/' . $client_id . '/authz?state=' . base64_encode($req_id);
             header('Location: ' . $url);
         } catch (\Exception $e) {
-            if (!$this->config->production || $e->getMessage() == 'invalid_redirect_uri') {
+            if (!$this->config['production'] || $e->getMessage() == 'invalid_redirect_uri') {
                 throw $e;
             } else {
                 $return = $redirect_uri;
@@ -118,10 +118,12 @@ class AuthenticationEndpoint
      */
     public function callback()
     {
-        $referer = $_SERVER['HTTP_REFERER'];
-        $origin = $this->config['spid-php-proxy']['origin'];
-
-        if ((substr($referer, 0, strlen($origin)) === $origin)) {
+        if (
+            isset($_POST) && (
+            $_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST']
+            || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST']
+            )
+        ) {
             $req_id         = base64_decode($_POST['state']);
             $auth_code      = $this->database->createAuthorizationCode($req_id);
             $request        = $this->database->getRequest($req_id);
@@ -143,10 +145,7 @@ class AuthenticationEndpoint
 
             header("Location: " . $return);
         } else {
-            if ($this->config['debug']) {
-                echo "Invalid origin: " . $origin;
-            }
-            http_response_code(404);
+            throw new \Exception("Invalid origin: " . $origin);
         }
     }
 }
