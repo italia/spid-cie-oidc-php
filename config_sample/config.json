@@ -6,8 +6,8 @@
 
     "rp_proxy_clients": {
         "default": {
-            "cert_private": "./cert/rp.pem",
-            "cert_public": "./cert/rp.crt",
+            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
+            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP",
             "authority_hint": "http://trust-anchor.org:8000/", 
@@ -36,8 +36,8 @@
         }
     },
 
-    "op_proxy_cert_private": "./cert/op.pem",
-    "op_proxy_cert_public": "./cert/op.crt",
+    "op_proxy_cert_private": "/home/spid-cie-oidc-php/cert/op.pem",
+    "op_proxy_cert_public": "/home/spid-cie-oidc-php/cert/op.crt",
     "op_proxy_clients": {
         "081d2fe0-8dff-4568-b0eb-ffe7895c0ff9": {
             "name": "TEST",
