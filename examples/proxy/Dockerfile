@@ -54,7 +54,7 @@ RUN cd /home && \
 RUN cd /home/spid-cie-oidc-php && composer install
 
 # Fix symlink
-RUN rm /var/www/html && \
+RUN rmdir /var/www/html && \
     ln -s /home/spid-cie-oidc-php/www /var/www/html
 
 # Set permissions
