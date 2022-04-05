@@ -64,7 +64,7 @@ class Setup
 
         // retrieve path and inputs
         $_home_dir = PHP_OS_FAMILY === "Windows" ? getenv("HOMEDRIVE") . getenv("HOMEPATH") : getenv("HOME");
-        $_www_dir = "/home/spid-cie-oidc-php/www";
+        $_www_dir = "/var/www/html";
         $_install_dir = getcwd();
         $_service_name = "";
 
