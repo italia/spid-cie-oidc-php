@@ -33,8 +33,8 @@ RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
 
 # Prepare workdir
 RUN mkdir /workdir
-COPY wp-config.php /workdir
-COPY .ht.sqlite /workdir
+COPY examples/wordpress/wp-config.php /workdir/
+COPY examples/wordpress/.ht.sqlite /workdir/
 
 # Setup wordpress
 RUN cd /workdir && \
