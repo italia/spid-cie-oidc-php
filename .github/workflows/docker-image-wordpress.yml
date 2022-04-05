@@ -1,0 +1,30 @@
+name: Docker Image (wordpress) CI 
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker login
+      env:
+         DOCKER_USER: ${{secrets.DOCKER_USER}}
+         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build the Docker image
+      run: docker build . --file examples/wordpress/Dockerfile --tag spid-cie-oidc-php-wordpress:latest
+
+    - name: Docker Tag
+      run: docker tag spid-cie-oidc-php-wordpress:latest linfaservice/spid-cie-oidc-php-wordpress:latest
+
+    - name: Docker Push
+      run: docker push linfaservice/spid-cie-oidc-php-wordpress:latest

@@ -2,7 +2,7 @@
 
 FROM ubuntu:20.04
 LABEL Maintainer="Michele Damico <michele.damico@linfaservice.it>"
-LABEL Description="spid-cie-oidc-php-wp"
+LABEL Description="spid-cie-oidc-php-wordpress"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes 
@@ -57,5 +57,5 @@ RUN cd /workdir && \
 
 WORKDIR workdir/wordpress
 
-EXPOSE 80
-ENTRYPOINT ["/bin/sh", "-c", "php -S 0.0.0.0:80"]
+EXPOSE 8004
+ENTRYPOINT ["/bin/sh", "-c", "php -S 0.0.0.0:8004"]
