@@ -65,7 +65,7 @@ class AuthenticationRequest
     {
         $client_id = $this->config->client_id;
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
-        if($this->config->service_name != '') {
+        if ($this->config->service_name != '') {
             $redirect_uri .= $this->config->service_name . '/';
         }
         $redirect_uri .= 'oidc/rp/redirect';
