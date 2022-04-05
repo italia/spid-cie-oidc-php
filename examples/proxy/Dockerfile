@@ -63,7 +63,7 @@ RUN chmod 755 -R /var/www
 RUN find /var/www -type d -exec chmod 775 {} +
 RUN find /var/www -type f -exec chmod 664 {} +
 
-WORKDIR /home/spid-cie-oidc-php/www
+WORKDIR /home/spid-cie-oidc-php
 
 EXPOSE 80
 ENTRYPOINT ["/bin/sh", "-c", "echo WEB SERVER STARTED && apache2ctl -D FOREGROUND"]
