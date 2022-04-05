@@ -320,7 +320,7 @@ $f3->route([
 
 
     header('ContentType: application/json');
-    echo json_encode($introspectionResponse);
+    echo $introspectionResponse;
 });
 
 $f3->route([
