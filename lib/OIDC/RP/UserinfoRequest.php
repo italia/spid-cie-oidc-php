@@ -39,12 +39,12 @@ class UserinfoRequest
      *  creates a new UserinfoRequest instance
      *
      * @param array $config base configuration
-     * @param array $op_metadata provider metadata
+     * @param object $op_metadata provider metadata
      * @param array $hooks hooks defined list
      * @throws Exception
      * @return UserinfoRequest
      */
-    public function __construct(array $config, array $op_metadata, array $hooks = null)
+    public function __construct(array $config, object $op_metadata, array $hooks = null)
     {
         $this->config = $config;
         $this->op_metadata = $op_metadata;
@@ -113,7 +113,7 @@ class UserinfoRequest
 
         // TODO: verify response against OP public key
         // TODO: select key by kid
-        $jwks = $this->op_metadata['jwks'];
+        $jwks = $this->op_metadata->jwks;
         if (!JWT::isSignatureVerified($decrypted, $jwks)) {
             throw new \Exception("Impossibile stabilire l'autenticità della risposta");
         }
