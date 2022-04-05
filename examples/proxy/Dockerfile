@@ -57,7 +57,7 @@ RUN cd /home/spid-cie-oidc-php && composer install
 RUN chown -R www-data:www-data /home/spid-cie-oidc-php/data /home/spid-cie-oidc-php/www
 
 # Create symlink
-RUN rm -Rf /var/www/html && ln-s /home/spid-cie-oidc-php/www html
+RUN rm -Rf /var/www/html && ln-s /home/spid-cie-oidc-php/www /var/www/html
 
 WORKDIR /home/spid-cie-oidc-php
 
