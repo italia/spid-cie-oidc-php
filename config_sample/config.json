@@ -21,7 +21,6 @@
             "email": "info@relying-party-php.org",
             "telephone": "+3912345678",
             "requested_acr": [
-                3,
                 2,
                 1
             ],
@@ -50,7 +49,6 @@
             "email": "info@relying-party-php.org",
             "telephone": "+3912345678",
             "requested_acr": [
-                3,
                 2,
                 1
             ],
@@ -68,13 +66,13 @@
     "op_proxy_cert_private": "/home/spid-cie-oidc-php/cert/op.pem",
     "op_proxy_cert_public": "/home/spid-cie-oidc-php/cert/op.crt",
     "op_proxy_clients": {
-        "081d2fe0-8dff-4568-b0eb-ffe7895c0ff9": {
+        "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
             "name": "TEST",
             "description": "TEST WordPress",
             "technical_reference": "technical reference",
             "technical_contact": "contact@email",
-            "client_id": "081d2fe0-8dff-4568-b0eb-ffe7895c0ff9",
-            "client_secret": "79cd1baa-d2df-4feb-b9e7-a22d9674f436",
+            "client_id": "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb",
+            "client_secret": "389451f0-dc60-4fba-8c03-eea4adb340b6",
             "redirect_uri": [
                 "http://relying-party-wordpress.org:8004/wp/wp-admin/admin-ajax.php?action=openid-connect-authorize"
             ],
