@@ -24,7 +24,7 @@ RUN \
     
 # Apache conf
 # set default port to 8003
-RUN sed -i  's/:80/:8003/g' x.conf
+RUN sed -i  's/:80/:8003/g' /etc/apache2/sites-available/000-default.conf
 # allow .htaccess with RewriteEngine
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
