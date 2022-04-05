@@ -55,9 +55,9 @@ RUN cd /home/spid-cie-oidc-php && composer install
 
 # Set permissions
 RUN chown -R www-data:www-data /home/spid-cie-oidc-php/data /home/spid-cie-oidc-php/www
-#RUN chmod 755 -R /var/www
-#RUN find /var/www -type d -exec chmod 775 {} +
-#RUN find /var/www -type f -exec chmod 664 {} +
+
+# Create symlink
+RUN rm -Rf /var/www/html && ln-s /home/spid-cie-oidc-php/www html
 
 WORKDIR /home/spid-cie-oidc-php
 
