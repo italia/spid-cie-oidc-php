@@ -1,7 +1,7 @@
 {
     "production": false,
     "install_dir": "./",
-    "www_dir": "/var/www/html",
+    "www_dir": "/home/spid-cie-oidc-php/public_html",
     "service_name": "spid-cie-oidc",
 
     "rp_proxy_clients": {
