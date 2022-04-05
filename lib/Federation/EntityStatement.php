@@ -56,39 +56,39 @@ class EntityStatement
     /**
      *  creates the JWT to be returned from .well-known/openid-federation endpoint
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @param boolean $decoded if true returns JSON instead of JWS
      * @throws Exception
      * @return mixed
      */
-    public static function makeFromConfig(object $config, $decoded = false)
+    public static function makeFromConfig(array $config, $decoded = false)
     {
-        $crt = $config->cert_public;
+        $crt = $config['cert_public'];
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $payload = array(
-            "iss" => $config->client_id,
-            "sub" => $config->client_id,
+            "iss" => $config['client_id'],
+            "sub" => $config['client_id'],
             "iat" => strtotime("now"),
             "exp" => strtotime("+1 year"),
             "jwks" => array(
                 "keys" => array( $crt_jwk )
             ),
             "authority_hints" => array(
-                $config->authority_hint
+                $config['authority_hint']
             ),
             "trust_marks" => array(),
             "metadata" => array(
                 "openid_relying_party" => array(
                     "application_type" => "web",
                     "client_registration_types" => array( "automatic" ),
-                    "client_name" => $config->client_name,
-                    "contacts" => array( $config->contact ),
+                    "client_name" => $config['client_name'],
+                    "contacts" => array( $config['contact'] ),
                     "grant_types" => array( "authorization_code" ),
                     "jwks" => array(
                         "keys" => array( $crt_jwk )
                     ),
-                    "redirect_uris" => array( $config->client_id . '/oidc/redirect' ),
+                    "redirect_uris" => array( $config['client_id'] . '/oidc/redirect' ),
                     "response_types" => array( "code" ),
                     "subject_type" => "pairwise"
                 )
@@ -101,7 +101,7 @@ class EntityStatement
             "kid" => $crt_jwk['kid']
         );
 
-        $key = $config->cert_private;
+        $key = $config['cert_private'];
         $key_jwk = JWT::getKeyJWK($key);
         $jws = JWT::makeJWS($header, $payload, $key_jwk);
 

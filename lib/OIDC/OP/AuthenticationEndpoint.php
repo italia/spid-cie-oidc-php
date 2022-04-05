@@ -35,12 +35,12 @@ class AuthenticationEndpoint
     /**
      *  creates a new AuthenticationEndpoint instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @param Database $database database instance
      * @throws Exception
      * @return AuthenticationEndpoint
      */
-    public function __construct(object $config, Database $database)
+    public function __construct(array $config, Database $database)
     {
         $this->config = $config;
         $this->database = $database;
@@ -52,16 +52,16 @@ class AuthenticationEndpoint
      * @param object $request object containing the request parameters
      * @throws Exception
      */
-    public function process(object $request)
+    public function process()
     {
 
-        $clients        = $this->config->clients;
-        $scope          = $request->scope;
-        $response_type  = $request->response_type;
-        $client_id      = $request->client_id;
-        $redirect_uri   = $request->redirect_uri;
-        $state          = $request->state;
-        $nonce          = $request->nonce;
+        $clients        = (array) $this->config->op_proxy_clients;
+        $scope          = $_GET['scope'];
+        $response_type  = $_GET['response_type'];
+        $client_id      = $_GET['client_id'];
+        $redirect_uri   = $_GET['redirect_uri'];
+        $state          = $_GET['state'] ? $_GET['state'] : '';
+        $nonce          = $_GET['nonce'] ? $_GET['nonce'] : '';
 
         $this->database->log("AuthenticationEndpoint", "AUTH", var_export($_GET, true));
 
@@ -87,12 +87,12 @@ class AuthenticationEndpoint
                 $req_id = $this->database->createRequest($client_id, $redirect_uri, $state, $nonce);
             }
 
-            $url = '/' . $config->service_name . '/oidc/rp/authz'
-            . '?client_id=' . $this->config['spid-php-proxy']['client_id']
-            . '&level=' . $this->config['clients'][$client_id]['level']
-            . '&redirect_uri=' . $this->config['spid-php-proxy']['redirect_uri']
-            . '&state=' . base64_encode($req_id);
+            $url = '/';
+            if ($this->config['service_name'] != '') {
+                $url = '/' . $this->config['service_name'] . '/';
+            }
 
+            $url .= 'oidc/rp/' . $client_id . '/authz?state=' . base64_encode($req_id);
             header('Location: ' . $url);
         } catch (\Exception $e) {
             if (!$this->config->production || $e->getMessage() == 'invalid_redirect_uri') {

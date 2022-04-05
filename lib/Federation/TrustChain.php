@@ -41,7 +41,7 @@ class TrustChain
     /**
      *  creates a new EntityStatement instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @param Database $database instance of Database
      * @param string $leaf id of leaf entity for wich resolve configuration
      * @param string $trust_anchor id of the trust anchor authority
@@ -49,7 +49,7 @@ class TrustChain
      * @throws Exception
      * @return EntityStatement
      */
-    public function __construct(object $config, Database $database, string $leaf, string $trust_anchor, string $entity = null)
+    public function __construct(array $config, Database $database, string $leaf, string $trust_anchor, string $entity = null)
     {
         $this->config = $config;
         $this->database = $database;

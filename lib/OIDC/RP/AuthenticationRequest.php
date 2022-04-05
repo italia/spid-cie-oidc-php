@@ -38,12 +38,12 @@ class AuthenticationRequest
     /**
      *  creates a new AuthenticationRequest instance
      *
-     * @param object $config base configuration
-     * @param object $hooks hooks defined list
+     * @param array $config base configuration
+     * @param array $hooks hooks defined list
      * @throws Exception
      * @return AuthenticationRequest
      */
-    public function __construct(object $config, object $hooks = null)
+    public function __construct(array $config, array $hooks = null)
     {
         $this->config = $config;
         $this->hooks = $hooks;
@@ -63,10 +63,10 @@ class AuthenticationRequest
      */
     public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
-        $client_id = $this->config->client_id;
+        $client_id = $this->config['client_id'];
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
-        if ($this->config->service_name != '') {
-            $redirect_uri .= $this->config->service_name . '/';
+        if ($this->config['service_name'] != '') {
+            $redirect_uri .= $this->config['service_name'] . '/';
         }
         $redirect_uri .= 'oidc/rp/redirect';
         $response_type = 'code';
@@ -121,7 +121,7 @@ class AuthenticationRequest
             "state" => $state
         );
 
-        $crt = $this->config->cert_public;
+        $crt = $this->config['cert_public'];
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -132,7 +132,7 @@ class AuthenticationRequest
             "x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config->cert_private;
+        $key = $this->config['cert_private'];
         $key_jwk = JWT::getKeyJWK($key);
         $signed_request = JWT::makeJWS($header, $request, $key_jwk);
 
@@ -165,7 +165,7 @@ class AuthenticationRequest
 
         // HOOK: pre_authorization_request
         if ($this->hooks != null) {
-            $hooks_pre = $this->hooks->pre_authorization_request;
+            $hooks_pre = $this->hooks['pre_authorization_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);

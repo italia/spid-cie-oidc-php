@@ -38,12 +38,12 @@ class TokenRequest
     /**
      *  creates a new TokenRequest instance
      *
-     * @param object $config base configuration
-     * @param object $hooks hooks defined list
+     * @param array $config base configuration
+     * @param array $hooks hooks defined list
      * @throws Exception
      * @return TokenRequest
      */
-    public function __construct(object $config, object $hooks = null)
+    public function __construct(array $config, array $hooks = null)
     {
         $this->config = $config;
         $this->hooks = $hooks;
@@ -69,7 +69,7 @@ class TokenRequest
      */
     public function send(string $token_endpoint, string $auth_code, string $code_verifier, $refresh = false, string $refresh_token = null)
     {
-        $client_id = $this->config->client_id;
+        $client_id = $this->config['client_id'];
         $client_assertion = array(
             "jti" => 'spid-cie-php-oidc_' . uniqid(),
             "iss" => $client_id,
@@ -82,7 +82,7 @@ class TokenRequest
         $code = $auth_code;
         $grant_type = ($refresh && $refresh_token != null) ? 'refresh_token' : 'authorization_code';
 
-        $crt = $this->config->cert_public;
+        $crt = $this->config['cert_public'];
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -93,7 +93,7 @@ class TokenRequest
             "x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config->cert_private;
+        $key = $this->config['cert_private'];
         $key_jwk = JWT::getKeyJWK($key);
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);
@@ -113,7 +113,7 @@ class TokenRequest
 
         // HOOK: pre_token_request
         if ($this->hooks != null) {
-            $hooks_pre = $this->hooks->pre_token_request;
+            $hooks_pre = $this->hooks['pre_token_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);
@@ -135,7 +135,7 @@ class TokenRequest
 
         // HOOK: post_token_request
         if ($this->hooks != null) {
-            $hooks_pre = $this->hooks->post_token_request;
+            $hooks_pre = $this->hooks['post_token_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);

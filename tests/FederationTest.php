@@ -13,8 +13,8 @@ class FederationTest extends TestCase
      */
     public function test_isFederationSupported()
     {
-        $config = (object) array();
-        $fed_config = (object) array(
+        $config = array();
+        $fed_config = array(
             "https://registry.spid.gov.it" => array(),
             "http://127.0.0.1:8000" => array()
         );

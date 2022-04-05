@@ -37,12 +37,12 @@ class Federation
     /**
      *  creates a new Federation instance
      *
-     * @param object $config base configuration
-     * @param object $fed_config federation configuration
+     * @param array $config base configuration
+     * @param array $fed_config federation configuration
      * @throws Exception
      * @return Federation
      */
-    public function __construct(object $config, object $fed_config)
+    public function __construct(array $config, array $fed_config)
     {
         $this->config = $config;
         $this->fed_config = $fed_config;
@@ -58,7 +58,7 @@ class Federation
     public function isFederationSupported(string $federation)
     {
         $supported_fed = $this->fed_config;
-        $supported_fed_list = array_keys(get_object_vars($supported_fed));
+        $supported_fed_list = array_keys($supported_fed);
         return in_array($federation, $supported_fed_list);
     }
 }

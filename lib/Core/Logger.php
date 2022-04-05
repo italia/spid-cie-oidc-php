@@ -33,14 +33,14 @@ class Logger
     /**
      *  creates a new Logger instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @throws Exception
      * @return Database
      */
-    public function __construct(object $config = null)
+    public function __construct(array $config = null)
     {
         if ($config == null) {
-            $config = (object)[];
+            $config = array();
         }
         $this->config = $config;
     }
