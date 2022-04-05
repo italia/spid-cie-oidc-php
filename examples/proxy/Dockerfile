@@ -22,22 +22,14 @@ RUN \
         php-xml \
         php-zip
     
-# config PHP
-# we want a dev server which shows PHP errors
-RUN sed -i -e 's/^error_reporting\s*=.*/error_reporting = E_ALL/' /etc/php/7.4/apache2/php.ini
-RUN sed -i -e 's/^display_errors\s*=.*/display_errors = On/' /etc/php/7.4/apache2/php.ini
-RUN sed -i -e 's/^zlib.output_compression\s*=.*/zlib.output_compression = Off/' /etc/php/7.4/apache2/php.ini
-
 # Apache conf
+# set default port to 8003
+RUN sed -i  's/:80/:8003/g' x.conf
 # allow .htaccess with RewriteEngine
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # autorise .htaccess files
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-# for production :
-# RUN echo "ServerTokens Prod\n" >> /etc/apache2/apache2.conf
-# RUN echo "ServerSignature Off\n" >> /etc/apache2/apache2.conf
-
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
