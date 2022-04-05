@@ -1,4 +1,4 @@
-name: spid-cie-oidc-php CI
+name: Setup Check CI 
 
 on:
   push:

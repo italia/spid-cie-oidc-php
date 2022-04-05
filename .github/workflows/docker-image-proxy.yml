@@ -1,4 +1,4 @@
-name: Docker Image CI (proxy example)
+name: Docker Image (proxy) CI 
 
 on:
   push:
