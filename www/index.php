@@ -319,8 +319,8 @@ $f3->route([
     }
 
 
-    header('ContentType: application/json');
-    echo $introspectionResponse;
+    header('Content-Type: application/json');
+    echo json_encode($introspectionResponse);
 });
 
 $f3->route([
