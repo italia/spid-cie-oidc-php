@@ -32,14 +32,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
       
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+      
     - name: Create sample configuration
       run: cp -R config_sample config && ls -la config/
 
     - name: Create sample certificates
       run: cp -R cert_sample cert && ls -la cert/
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
 
     - name: Run PHP Code Sniffer
       run: php vendor/bin/phpcs --standard=PSR12 --warning-severity=0 lib www
