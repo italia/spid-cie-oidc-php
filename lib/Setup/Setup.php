@@ -532,11 +532,11 @@ class Setup
                     " -out " . $config['install_dir'] . "/cert/rp.crt" .
                     " -extensions req_ext "
             );
-
-            $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
-            $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";
         }
 
+        $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
+        $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";
+        
 
         // save default configurations
         echo $colors->getColoredString("\nSave default base configurations... ", "white");
