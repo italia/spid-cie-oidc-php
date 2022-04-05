@@ -65,7 +65,7 @@ class AuthenticationRequest
     {
         $client_id = $this->config->client_id;
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
-        $redirect_uri .= 'oidc/rp/redirect';
+        $redirect_uri .= $this->config->service_name . '/oidc/rp/redirect';
         $response_type = 'code';
         $scope = 'openid';
         $code_challenge = Util::getCodeChallenge($code_verifier);
