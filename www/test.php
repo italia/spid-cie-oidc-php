@@ -1,13 +1,15 @@
 <?php
 
-if (isset($_POST) && (
+if (
+    isset($_POST) && (
     $_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST']
     || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST']
-)) {
+    )
+) {
     $ta_id = $_POST['trust_anchor_id'];
     $op_id = $_POST['provider_id'];
-    
-?>
+
+    ?>
 
 <!DOCTYPE html>
 <html lang="it">
