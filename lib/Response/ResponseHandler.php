@@ -52,11 +52,11 @@ abstract class ResponseHandler
     /**
      *  creates a new <ResponseHandler> instance
      *
-     * @param object $config base configuration
+     * @param array $config base configuration
      * @throws Exception
      * @return ResponseHandler
      */
-    public function __construct(object $config)
+    public function __construct(array $config)
     {
         $this->config = $config;
     }
