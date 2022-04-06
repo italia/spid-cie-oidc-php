@@ -375,6 +375,13 @@ $f3->route([
     }
 
     $f3->reroute('/oidc/rp/authz');
+
+    $post_logout_redirect_uri = $f3->get('GET.post_logout_redirect_uri');
+    if ($post_logout_redirect_uri == null) {
+        $post_logout_redirect_uri = '/oidc/rp/authz';
+    }
+
+    $f3->reroute($post_logout_redirect_uri);
 });
 
 //----------------------------------------------------------------------------------------

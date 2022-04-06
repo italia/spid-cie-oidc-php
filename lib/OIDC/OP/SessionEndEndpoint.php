@@ -100,7 +100,7 @@ class SessionEndEndpoint
             $logout_url = '/' . $this->config['service_name'] . '/';
         }
 
-        $logout_url .= 'oidc/rp/logout';
+        $logout_url .= 'oidc/rp/' . $request['client_id'] . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
 
         header('Location: ' . $logout_url);
     }
