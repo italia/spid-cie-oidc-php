@@ -145,7 +145,7 @@ class AuthenticationEndpoint
 
             header("Location: " . $return);
         } else {
-            throw new \Exception("Invalid origin: " . $origin);
+            throw new \Exception("Invalid origin");
         }
     }
 }
