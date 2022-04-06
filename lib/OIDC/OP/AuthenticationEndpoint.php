@@ -133,10 +133,10 @@ class AuthenticationEndpoint
             $userinfo       = $_POST;
 
             foreach ($userinfo as $claim => $value) {
-                if (substr($claim, 0, 31) == 'https://attributes.spid.gov.it/') {
+                if (substr($claim, 0, 31) == 'https://attributes_spid_gov_it/') {
                     $c = substr($claim, 31);
-                    $userinfo[$c] == $value;
-                    unet($userinfo[$claim]);
+                    $userinfo[$c] = $value;
+                    unset($userinfo[$claim]);
                 }
             }
 
