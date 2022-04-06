@@ -76,7 +76,7 @@
                                             <div id="spid-idp-button-medium-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
                                                 <ul id="spid-idp-list-medium-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp">    
                                                     <li class="spid-idp-button-link" data-idp="test">
-                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/<?php echo $DOMAIN; ?>/authz/<?php echo base64_encode('http://trust-anchor.org:8000/'); ?>/<?php echo base64_encode('http://trust-anchor.org:8000/oidc/op/'); ?>?state=TEST"><span class="spid-sr-only">TEST</span><img src="<?php echo $BASEURL; ?>/assets/img/spid_test_button.png" onerror="this.src='<?php echo $BASEURL; ?>/assets/img/spid_test_button.png'; this.onerror=null;" alt="Provider TEST" /></a>
+                                                        <a href="<?php echo $BASEURL; ?>/oidc/rp/<?php echo $DOMAIN; ?>/authz/<?php echo base64_encode('http://trust-anchor.org:8000/'); ?>/<?php echo base64_encode('http://trust-anchor.org:8000/oidc/op/'); ?>?state=TEST"><span class="spid-sr-only">TEST</span><img src="<?php echo $BASEURL; ?>/assets/img/spid_test_provider.png" onerror="this.src='<?php echo $BASEURL; ?>/assets/img/spid_test_provider.png'; this.onerror=null;" alt="Provider TEST" /></a>
                                                     </li>   
                                                     <!--
                                                     <li class="spid-idp-button-link" data-idp="arubaid">
