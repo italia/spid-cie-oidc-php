@@ -124,13 +124,17 @@ class AuthenticationEndpoint
             || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST']
             )
         ) {
-            $req_id         = $_POST['state'];
+            $req_id         = base64_decode($_POST['state']);
             $auth_code      = $this->database->createAuthorizationCode($req_id);
             $request        = $this->database->getRequest($req_id);
             $client_id      = $request['client_id'];
             $redirect_uri   = $request['redirect_uri'];
             $state          = $request['state'];
             $userinfo       = $_POST;
+
+            if ($redirect_uri == null || $client_id == null) {
+                throw new \Exception("Session not found");
+            }
 
             foreach ($userinfo as $claim => $value) {
                 if (substr($claim, 0, 31) == 'https://attributes_spid_gov_it/') {
