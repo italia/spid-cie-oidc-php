@@ -61,7 +61,7 @@ class EntityStatement
      * @throws Exception
      * @return mixed
      */
-    public static function makeFromConfig(array $config, $decoded = false)
+    public static function makeFromConfig(array $config, $json = false)
     {
         $crt = $config['cert_public'];
         $crt_jwk = JWT::getCertificateJWK($crt);
@@ -105,7 +105,7 @@ class EntityStatement
         $key_jwk = JWT::getKeyJWK($key);
         $jws = JWT::makeJWS($header, $payload, $key_jwk);
 
-        return $decoded ? json_encode($payload) : $jws;
+        return $json ? json_encode($payload) : $jws;
     }
 
     /**

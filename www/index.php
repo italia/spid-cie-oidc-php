@@ -118,10 +118,11 @@ $f3->route([
     $logger = $f3->get("LOGGER");
     $logger->log('OIDC', 'GET /.well-known/openid-federation');
 
-    $decoded = $f3->get("GET.decoded");
-    $mediaType = $decoded == 'Y' ? 'application/json' : 'application/jwt';
+    $output = $f3->get("GET.output");
+    $json = strtolower($output) == 'json';
+    $mediaType = $json ? 'application/json' : 'application/jwt';
     header('Content-Type: ' . $mediaType);
-    echo EntityStatement::makeFromConfig($config, $decoded == 'Y');
+    echo EntityStatement::makeFromConfig($config, $json);
 });
 
 $f3->route([
