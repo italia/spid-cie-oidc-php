@@ -124,13 +124,21 @@ class AuthenticationEndpoint
             || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST']
             )
         ) {
-            $req_id         = base64_decode($_POST['state']);
+            $req_id         = $_POST['state'];
             $auth_code      = $this->database->createAuthorizationCode($req_id);
             $request        = $this->database->getRequest($req_id);
             $client_id      = $request['client_id'];
             $redirect_uri   = $request['redirect_uri'];
             $state          = $request['state'];
             $userinfo       = $_POST;
+
+            foreach ($userinfo as $claim => $value) {
+                if (substr($claim, 0, 31) == 'https://attributes.spid.gov.it/') {
+                    $c = substr($claim, 31);
+                    $userinfo[$c] == $value;
+                    unet($userinfo[$claim]);
+                }
+            }
 
             unset($userinfo['state']);
             $this->database->saveUserinfo($req_id, $userinfo);
@@ -142,7 +150,6 @@ class AuthenticationEndpoint
                 $return .= '?code=' . $auth_code;
             }
             $return .= '&state=' . $state;
-
             header("Location: " . $return);
         } else {
             throw new \Exception("Invalid origin");

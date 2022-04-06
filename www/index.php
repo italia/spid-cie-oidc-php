@@ -408,77 +408,15 @@ $f3->route('GET /oidc/proxy/authz', function ($f3) {
     }
 });
 
-// TODO: normalize /oidc/proxy/callback on /oidc/rp/redirect
-$f3->route('GET /oidc/proxy/callback', function ($f3) {
+$f3->route('POST /oidc/proxy/callback', function ($f3) {
     $config = $f3->get("CONFIG");
     $op_database = $f3->get("OP_DATABASE");
-    $rp_database = $f3->get("RP_DATABASE");
-    $hooks = $f3->get("HOOKS");
-    $logger = $f3->get("LOGGER");
-
-    $logger->log('OIDC', 'GET /oidc/proxy/callback');
-
-    $error = $f3->get("GET.error");
-    if ($error != null) {
-        $error_description = $f3->get("GET.error_description");
-        $f3->set('error_description', $error_description);
-        echo View::instance()->render('view/error.php');
-        die();
-    }
-
-    $code = $f3->get("GET.code");
-    $req_id = trim(Util::base64UrlDecode($f3->get("GET.state")));
-    $iss = $f3->get("GET.iss");
-
-    // recover parameters from saved request
-    $request = $rp_database->getRequest($req_id);
-    $ta_id = $request['ta_id'];
-    $op_id = $request['op_id'];
-    $redirect_uri = $request['redirect_uri'];
-    $state = $request['state'];
-    $code_verifier = $request['code_verifier'];
-
-    // resolve entity statement on federation
-    try {
-        $trustchain = new TrustChain($config, $rp_database, $op_id, $ta_id);
-        $configuration = $trustchain->resolve();
-    } catch (Exception $e) {
-        $f3->error(401, $e->getMessage());
-    }
-
-    $token_endpoint = $configuration->metadata->openid_provider->token_endpoint;
-    $userinfo_endpoint = $configuration->metadata->openid_provider->userinfo_endpoint;
 
     try {
-        $tokenRequest = new TokenRequest($config, $hooks);
-        $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
-        $access_token = $tokenResponse->access_token;
-
-        $userinfoRequest = new UserinfoRequest($config, $configuration->metadata->openid_provider, $hooks);
-        $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
-
-        $f3->set('SESSION.auth', array(
-            "ta_id" => $ta_id,
-            "op_id" => $op_id,
-            "access_token" => $access_token,
-            "redirect_uri" => $redirect_uri,
-            "userinfo" => $userinfoResponse,
-            "state" => $state
-        ));
-
-        $userinfoResponse->trust_anchor_id = $ta_id;
-        $userinfoResponse->provider_id = $op_id;
-
-        /* TODO: normalize on /oidc/rp/redirect with a proxy response handler
-        $responseHandlerClass = $config['response_handler'];
-        $responseHandler = new $responseHandlerClass($config);
-        $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
-        */
-
-        $responseHandler = new AuthenticationEndpoint($config, $op_database);
-        $responseHandler->callback();
-    } catch (Exception $e) {
-        $f3->error($e->getCode(), $e->getMessage());
+        $handler = new AuthenticationEndpoint($config, $op_database);
+        $handler->callback();
+    } catch (\Exception $e) {
+        $f3->error(400, $e->getMessage());
     }
 });
 
