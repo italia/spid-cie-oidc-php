@@ -60,6 +60,34 @@
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
+        },
+        "9798f8ca-2682-49bc-ac2f-67b568b86b74": {
+            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
+            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "client_id": "http://relying-party-php.org:8003/",
+            "client_name": "Relying Party PHP Drupal",
+            "authority_hint": "http://trust-anchor.org:8000/", 
+            "contact": "info@relying-party-php.org",
+            "is_pa": true,
+            "code": "ipa",
+            "code_type": "IPACode",
+            "organization_identifier": "PA:IT-ipa",
+            "country_name": "IT",
+            "locality_name": "Rome",
+            "email": "info@relying-party-php.org",
+            "telephone": "+3912345678",
+            "requested_acr": [
+                2,
+                1
+            ],
+            "spid_user_attributes": [
+                "name",
+                "familyName",
+                "email",
+                "fiscalNumber"
+            ],
+            "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
+            "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
         }
     },
 
