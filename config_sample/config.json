@@ -81,6 +81,22 @@
             ],
             "level": "2",
             "token_endpoint_auth_method": "client_secret_basic"
+        },
+        "9798f8ca-2682-49bc-ac2f-67b568b86b74": {
+            "name": "TEST",
+            "description": "TEST Drupal",
+            "technical_reference": "technical reference",
+            "technical_contact": "contact@email",
+            "client_id": "9798f8ca-2682-49bc-ac2f-67b568b86b74",
+            "client_secret": "59764f55-eb1e-49a6-80f7-0efc7edeeeb2",
+            "redirect_uri": [
+                "http://relying-party-drupal.org:8005/openid-connect/generic"
+            ],
+            "post_logout_redirect_uri": [
+                "http://relying-party-drupal.org:8005/"
+            ],
+            "level": "2",
+            "token_endpoint_auth_method": "client_secret_basic"
         }
     }
 }
