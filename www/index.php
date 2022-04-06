@@ -182,7 +182,13 @@ $f3->route([
     $op_id = base64_decode($f3->get('PARAMS.op'));
 
     // try to get state first from session, if routed from proxy
-    $state = $f3->get('SESSION.state') || $f3->get('GET.state') || 'state';
+    $state = $f3->get('SESSION.state');
+    if ($state == null) {
+        $state = $f3->get('GET.state');
+    }
+    if ($state == null) {
+        $state = 'state';
+    }
 
     $acr = $config['requested_acr'];
     $user_attributes = $config['spid_user_attributes'];
@@ -373,8 +379,6 @@ $f3->route([
     } finally {
         $f3->clear('SESSION.auth');
     }
-
-    $f3->reroute('/oidc/rp/authz');
 
     $post_logout_redirect_uri = $f3->get('GET.post_logout_redirect_uri');
     if ($post_logout_redirect_uri == null) {
