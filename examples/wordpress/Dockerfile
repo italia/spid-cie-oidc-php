@@ -7,37 +7,44 @@ LABEL Description="spid-cie-oidc-php-wordpress"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NOWARNINGS=yes 
 
-# Install php
+# Install apache and php7
 RUN \
     apt-get update && \
-    apt-get -y install software-properties-common && \
-    add-apt-repository ppa:ondrej/php && \
     apt-get -yq install \
         wget \
         unzip \
         curl \
         git \
-        php7.4 \
-        php7.4-cli \
-        php7.4-fpm \
-        php7.4-gd \
-        php7.4-sqlite3 \
-        php7.4-gmp \
-        php7.4-mbstring \
-        php7.4-curl \
-        php7.4-xml 
+        apache2 \
+        libapache2-mod-php \
+        php-sqlite3 \
+        php-gmp \
+        php-mbstring \
+        php-curl \
+        php-xml \
+        php-zip
+
+# Apache conf - set default port to 8003
+RUN sed -i  's/:80/:8003/g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i  's/ 80/ 8003/g' /etc/apache2/ports.conf
+
+# Apache conf - allow .htaccess with RewriteEngine
+RUN a2enmod rewrite
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Apache conf - autorise .htaccess files
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
     php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-# Prepare workdir
-RUN mkdir /workdir
-COPY examples/wordpress/wp-config.php /workdir/
-COPY examples/wordpress/.ht.sqlite /workdir/
+# Prepare wordpress
+COPY examples/wordpress/wp-config.php /home/
+COPY examples/wordpress/.ht.sqlite /home/
 
 # Setup wordpress
-RUN cd /workdir && \
+RUN cd /home && \
     wget https://wordpress.org/latest.tar.gz -O wordpress.tar.gz && \
     wget https://downloads.wordpress.org/plugin/sqlite-integration.1.8.1.zip -O sqlite-integration.zip && \
     wget https://github.com/oidc-wp/openid-connect-generic/archive/refs/tags/3.9.0.zip -O openid-connect-generic.zip && \
@@ -55,7 +62,13 @@ RUN cd /workdir && \
     rm openid-connect-generic.zip && \
     rm italiawp.zip
 
-WORKDIR workdir/wordpress
+# Set permissions
+RUN chown -R www-data:www-data /home/wordpress
 
-EXPOSE 8004
-ENTRYPOINT ["/bin/sh", "-c", "php -S 0.0.0.0:8004"]
+# Create symlink
+RUN rm -Rf /var/www/html && ln -s /home/wordpress /var/www/html
+
+WORKDIR home/wordpress
+
+EXPOSE 80
+ENTRYPOINT ["/bin/sh", "-c", "echo WEB SERVER STARTED && apache2ctl -D FOREGROUND"]
