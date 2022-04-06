@@ -157,6 +157,7 @@ $f3->route([
         die();
     }
 
+    $f3->set("DOMAIN", $domain);
     echo View::instance()->render('view/login.php');
 });
 
