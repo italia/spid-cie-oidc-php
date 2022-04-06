@@ -24,9 +24,9 @@ RUN \
         php-xml \
         php-zip
 
-# Apache conf - set default port to 8003
-RUN sed -i  's/:80/:8003/g' /etc/apache2/sites-available/000-default.conf
-RUN sed -i  's/ 80/ 8003/g' /etc/apache2/ports.conf
+# Apache conf - set default port to 8004
+RUN sed -i  's/:80/:8004/g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i  's/ 80/ 8004/g' /etc/apache2/ports.conf
 
 # Apache conf - allow .htaccess with RewriteEngine
 RUN a2enmod rewrite
