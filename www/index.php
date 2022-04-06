@@ -182,10 +182,7 @@ $f3->route([
     $op_id = base64_decode($f3->get('PARAMS.op'));
 
     // try to get state first from session, if routed from proxy
-    $state = $f3->get('SESSION.state');
-    if ($state == null || $state == '') {
-        $state = $f3->get('GET.state');
-    }
+    $state = $f3->get('SESSION.state') || $f3->get('GET.state') || 'state';
 
     $acr = $config['requested_acr'];
     $user_attributes = $config['spid_user_attributes'];
