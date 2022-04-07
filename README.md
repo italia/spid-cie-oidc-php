@@ -1,6 +1,7 @@
 # SPID/CIE OIDC Federation Relying Party, for PHP
 
 [![spid-cie-oidc-php CI](https://github.com/italia/spid-cie-oidc-php/workflows/Setup%20Check%20CI/badge.svg)](https://github.com/italia/spid-cie-oidc-php/workflows/Setup%20Check%20CI/badge.svg)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/damikael/f6982180cd9872afb7975f38524cc177/raw/spid-cie-oidc-php-dynamic-code-coverage-badge.json)
 ![Apache license](https://img.shields.io/badge/license-Apache%202-blue.svg)
 [![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
 [![Join the #spid openid](https://img.shields.io/badge/Slack%20channel-%23spid%20openid-blue.svg)](https://developersitalia.slack.com/archives/C7E85ED1N/)
