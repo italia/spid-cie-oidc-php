@@ -49,7 +49,10 @@ jobs:
         retention-days: 3
 
     - name: Get code coverage score
-      run: CODE_COVERAGE_RESULT=$(php vendor/bin/coverage-check phpunit-clover.xml 0)
+      run: CODE_COVERAGE_RESULT=$(php vendor/bin/coverage-check phpunit-clover.xml 90 --only-percentage)
+      
+    - name: Echo coverage score
+      run: echo $(php vendor/bin/coverage-check phpunit-clover.xml 90 --only-percentage)
       
     - name: Create code coverage badge
       uses: schneegans/dynamic-badges-action@v1.2.0
