@@ -36,6 +36,7 @@ use SPID_CIE_OIDC_PHP\OIDC\RP\UserinfoRequest;
 use SPID_CIE_OIDC_PHP\OIDC\RP\IntrospectionRequest;
 use SPID_CIE_OIDC_PHP\OIDC\RP\RevocationRequest;
 use SPID_CIE_OIDC_PHP\OIDC\OP\Database as OP_Database;
+use SPID_CIE_OIDC_PHP\OIDC\OP\Metadata as OP_Metadata;
 use SPID_CIE_OIDC_PHP\OIDC\OP\CertsEndpoint;
 use SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint;
 use SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint;
@@ -395,6 +396,18 @@ $f3->route([
 //----------------------------------------------------------------------------------------
 // Routes for Proxy OIDC Provider
 //----------------------------------------------------------------------------------------
+
+$f3->route('GET /oidc/proxy/.well-known/openid-configuration', function ($f3) {
+    $config = $f3->get("CONFIG");
+
+    try {
+        $op_metadata = new OP_Metadata($config);
+        header('Content-Type: application/json');
+        echo $op_metadata->getConfiguration();
+    } catch (Exception $e) {
+        $f3->error(500, $e->getMessage());
+    }
+});
 
 $f3->route('GET /oidc/proxy/certs', function ($f3) {
     $config = $f3->get("CONFIG");
