@@ -9,6 +9,15 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
 class JWTTest extends TestCase
 {
     /**
+     * @covers SPID_CIE_OIDC_PHP\Core\JWT::getKeyJWK
+     */
+    public function test_getKeyJWK()
+    {
+        $jwk = JWT::getKeyJWK('./cert/rp.pem');
+        $this->assertNotNull($jwk);
+    }
+
+    /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::isValid
      */
     public function test_isValid()

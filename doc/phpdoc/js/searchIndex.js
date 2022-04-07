@@ -1,10 +1,10 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\DEFAULT_TOKEN_EXPIRATION_TIME",
-            "name": "DEFAULT_TOKEN_EXPIRATION_TIME",
-            "summary": "",
-            "url": "namespaces/spid-cie-oidc-php-core.html#constant_DEFAULT_TOKEN_EXPIRATION_TIME"
+                    "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\DEFAULT_TOKEN_EXPIRATION_TIME",
+                    "name": "DEFAULT_TOKEN_EXPIRATION_TIME",
+                    "summary": "",
+                    "url": "namespaces/spid-cie-oidc-php-core.html#constant_DEFAULT_TOKEN_EXPIRATION_TIME"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\JWT",
             "name": "JWT",
