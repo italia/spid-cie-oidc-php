@@ -60,22 +60,24 @@ class UserinfoEndpointTest extends TestCase
             //
         }
 
-        $request = $database->getRequestByCode($code);
+        $access_token = $database->createAccessToken($code);
 
         try {
             $endpoint->process();
 
             // authorization not present
             $this->fail();
-        } catch (\Exception $e) {
-            $_SERVER['Authorization'] = "Bearer " . $request['access_token'];
-            $endpoint = new UserinfoEndpoint($config, $database);
 
+        } catch (\Exception $e) {
+            $_SERVER['Authorization'] = "Bearer " . $access_token;
+            $endpoint = new UserinfoEndpoint($config, $database);
+    
             try {
                 $this->expectOutputRegex("{.+?}");
                 $endpoint->process();
 
                 $this->assertTrue(true);
+
             } catch (\Exception $e) {
                 //
             }
