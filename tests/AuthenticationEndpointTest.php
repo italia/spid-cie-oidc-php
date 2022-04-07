@@ -15,6 +15,9 @@ class AuthenticationEndpointTest extends TestCase
      */
     public function test_process()
     {
+        // clean old tests
+        unlink("tests/tests.sqlite");
+
         $config = json_decode(file_get_contents(__DIR__ . '/../config_sample/config.json'), true);
         $database = new OP_Database(__DIR__ . '/tests.sqlite');
         $endpoint = new AuthenticationEndpoint($config, $database);

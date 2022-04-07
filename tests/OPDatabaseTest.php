@@ -9,8 +9,26 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 class OPDatabaseTest extends TestCase
 {
     /**
-     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::saveToStore
-     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::getFromStore
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::createRequest
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::updateRequest
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::getRequest
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::getRequestByCode
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::getRequestByIdToken
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::getRequestByClientID
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::createAuthorizationCode
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::checkAuthorizationCode
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::saveIdToken
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::checkIdToken
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::createAccessToken
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::saveAccessToken
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::checkAccessToken
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::saveUserinfo
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::getUserinfo
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::deleteRequest
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::query
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::exec
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::dump
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::log
      */
     public function test_OPDatabase()
     {
