@@ -91,7 +91,7 @@
         }
     },
 
-    "op_proxy_client_id": "http://relying-party-pho:8003/oidc/proxy/",
+    "op_proxy_client_id": "http://relying-party-php.org:8003/oidc/proxy/",
     "op_proxy_cert_private": "/home/spid-cie-oidc-php/cert/op.pem",
     "op_proxy_cert_public": "/home/spid-cie-oidc-php/cert/op.crt",
     "op_proxy_clients": {
