@@ -11,6 +11,9 @@ class RPDatabaseTest extends TestCase
     /**
      * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::saveToStore
      * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::getFromStore
+     * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::getFromStoreByURL
+     * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::createRequest
+     * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::getRequest
      */
     public function test_Store()
     {
@@ -63,5 +66,42 @@ class RPDatabaseTest extends TestCase
         $object8 = $database->getFromStoreByURL($url);
         $this->assertEquals((object) $object8, (object) $object5);
         $this->assertNotEquals($object8, $object);
+
+
+        $ta_id = "http://trust-anchor.org/";
+        $op_id = "http://provider.org/";
+        $redirect_uri = "http://relying-party.org/redirect_uri";
+        $state = "STATE";
+        $acr = [2, 1];
+        $user_attributes = ["fiscalNumber", "name", "familyName"];
+
+        $req_id = $database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
+        $request = $database->getRequest($req_id);
+
+        $this->assertEquals($request['ta_id'], $ta_id);
+        $this->assertEquals($request['op_id'], $op_id);
+        $this->assertEquals($request['redirect_uri'], $redirect_uri);
+        $this->assertEquals($request['state'], $state);
+        $this->assertEquals($request['acr'], $acr);
+        $this->assertEquals($request['user_attributes'], $user_attributes);
+
+
+
+
+
+
+        $dump = $database->dump('request');
+
+        $this->assertNotNull($dump);
+
+        $dump = $database->dump('store');
+
+        $this->assertNotNull($dump);
+
+        try {
+            $log = $database->log('context', 'tag', '$value');
+        } catch (\Exception $e) {
+            $this->fail();
+        }
     }
 }
