@@ -47,9 +47,6 @@ jobs:
         name: testphp-code-coverage-report
         path: code_coverage_report
         retention-days: 3
-
-    - name: Get code coverage score
-      run: CODE_COVERAGE_RESULT=$(php vendor/bin/coverage-check phpunit-clover.xml 90 --only-percentage)
       
     - name: Echo coverage score
       run: echo $(php vendor/bin/coverage-check phpunit-clover.xml 90 --only-percentage)
