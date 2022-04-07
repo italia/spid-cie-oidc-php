@@ -61,7 +61,7 @@ jobs:
         gistID: f6982180cd9872afb7975f38524cc177
         filename: spid-cie-oidc-php-dynamic-code-coverage-badge.json
         label: Code Coverage
-        message: ${{ env.CODE_COVERAGE_RESULT }}%
+        message: ${{ env.CODE_COVERAGE_RESULT }}
         color: orange
         
     - name: Check code coverage score
