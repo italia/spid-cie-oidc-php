@@ -54,28 +54,39 @@ RUN cd /home && \
 
 
 # Setup Bootstrap Italia Theme
-#RUN cd /home/drupal && \
-#    php vendor/bin/drush pm:enable inline_form_errors responsive_image && \
-#    composer require drupal/components drupal/ui_patterns && \
-#    php vendor/bin/drush pm:enable components \
-#        ui_patterns ui_patterns_layouts ui_patterns_library ui_patterns_views && \
-#    composer require drupal/bootstrap_italia 
+RUN cd /home/drupal && \
+    php vendor/bin/drush pm:enable inline_form_errors responsive_image && \
+    composer require drupal/components drupal/ui_patterns && \
+    php vendor/bin/drush pm:enable components \
+        ui_patterns ui_patterns_layouts ui_patterns_library ui_patterns_views && \
+    composer require drupal/bootstrap_italia 
 
 # Copy sub-theme to destination folder
-#RUN cd /home/drupal/web/themes && \
-#    mkdir custom && \
-#    cp -r contrib/bootstrap_italia/var/starter_kits/italiagov custom/ 
+RUN cd /home/drupal/web/themes && \
+    mkdir custom && \
+    cp -r contrib/bootstrap_italia/var/starter_kits/italiagov custom/ 
 
 # Enable themes and set as default
-#RUN cd /home/drupal && \
-#    php vendor/bin/drush -y theme:enable bootstrap_italia && \
-#    php vendor/bin/drush -y theme:enable italiagov && \
-#    php vendor/bin/drush config-set system.theme default italiagov
+RUN cd /home/drupal && \
+    php vendor/bin/drush -y theme:enable bootstrap_italia && \
+    php vendor/bin/drush -y theme:enable italiagov && \
+    php vendor/bin/drush config-set system.theme default italiagov
 
 # Install assets
-#RUN cd /home/drupal/web/themes/custom/italiagov && \
-#    npm install
+RUN cd /home/drupal/web/themes/custom/italiagov && \
+    npm install
 
+# Install Node.js 14 to build theme
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt -y install nodejs
+
+# Build theme
+RUN cd /home/drupal/web/themes/custom/italiagov && \
+    npm run build:prod
+
+# Reload cache
+RUN cd /home/drupal && \
+    php vendor/bin/drush cr
 
 # Prepare drupal
 #COPY sites /home/drupal/web
