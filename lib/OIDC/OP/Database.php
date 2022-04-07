@@ -496,7 +496,6 @@ class Database
      * @param mixed $value value for the log record
      * @param string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
      * @throws Exception
-     * @return array result of the save
      */
     public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
     {
