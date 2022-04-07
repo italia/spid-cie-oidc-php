@@ -86,18 +86,6 @@ class RPDatabaseTest extends TestCase
         $this->assertEquals($request['user_attributes'], $user_attributes);
 
 
-
-
-
-
-        $dump = $database->dump('request');
-
-        $this->assertNotNull($dump);
-
-        $dump = $database->dump('store');
-
-        $this->assertNotNull($dump);
-
         try {
             $log = $database->log('context', 'tag', '$value');
         } catch (\Exception $e) {

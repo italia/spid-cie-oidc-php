@@ -25,6 +25,7 @@ class AuthenticationRequestTest extends TestCase
         $config = $config['rp_proxy_clients']['default'];
         $config['cert_private'] = 'cert_sample/rp.pem';
         $config['cert_public'] = 'cert_sample/rp.crt';
+        $config['service_name'] = '';
         $database = new RP_Database(__DIR__ . '/tests.sqlite');
         $request = new AuthenticationRequest($config);
 
