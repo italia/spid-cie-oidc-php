@@ -51,3 +51,12 @@ jobs:
     - name: Check code coverage score
       run: php vendor/bin/coverage-check phpunit-clover.xml 0
       
+    - name: Create code coverage badge
+      uses: schneegans/dynamic-badges-action@v1.2.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: nWXUskvvvrBZa3e2QadvNpF9AujkjBze
+        filename: spid-cie-oidc-php-dynamic-code-coverage-badge.json
+        label: Code Coverage
+        message: 15%
+        color: orange
