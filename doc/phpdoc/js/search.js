@@ -48,33 +48,26 @@ var Search = (function () {
     // be triggered. The function will be called after it stops being called for
     // N milliseconds. If `immediate` is passed, trigger the function on the
     // leading edge, instead of the trailing.
-    function debounce(func, wait, immediate)
-    {
+    function debounce(func, wait, immediate) {
         var timeout;
 
-        return function executedFunction()
-        {
+        return function executedFunction() {
             var context = this;
             var args = arguments;
 
             var later = function () {
                 timeout = null;
-                if (!immediate) {
-                    func.apply(context, args);
-                }
+                if (!immediate) func.apply(context, args);
             };
 
             var callNow = immediate && !timeout;
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
-            if (callNow) {
-                func.apply(context, args);
-            }
+            if (callNow) func.apply(context, args);
         };
     }
 
-    function close()
-    {
+    function close() {
         // Start scroll prevention: https://css-tricks.com/prevent-page-scrolling-when-a-modal-is-open/
         const scrollY = document.body.style.top;
         document.body.style.position = '';
@@ -91,11 +84,10 @@ var Search = (function () {
         searchField.blur();
     }
 
-    function search(event)
-    {
+    function search(event) {
         // Start scroll prevention: https://css-tricks.com/prevent-page-scrolling-when-a-modal-is-open/
         document.body.style.position = 'fixed';
-        document.body.style.top = ` - ${window.scrollY}px`;
+        document.body.style.top = `-${window.scrollY}px`;
         // End scroll prevention
 
         // prevent enter's from autosubmitting
@@ -126,8 +118,7 @@ var Search = (function () {
         });
     }
 
-    function appendIndex(added)
-    {
+    function appendIndex(added) {
         index = index.concat(added);
 
         // re-initialize search engine when appending an index after initialisation
@@ -136,20 +127,17 @@ var Search = (function () {
         }
     }
 
-    function init()
-    {
+    function init() {
         fuse = new Fuse(index, options);
 
         var form = document.querySelector('[data-search-form]');
         var searchField = document.querySelector('[data-search-form] input[type="search"]');
 
         var closeButton = document.querySelector('.phpdocumentor-search-results__close');
-        closeButton.addEventListener('click', function () {
-            close() }.bind(this));
+        closeButton.addEventListener('click', function() { close() }.bind(this));
 
         var searchResults = document.querySelector('[data-search-results]');
-        searchResults.addEventListener('click', function () {
-            close() }.bind(this));
+        searchResults.addEventListener('click', function() { close() }.bind(this));
 
         form.classList.add('phpdocumentor-search--active');
 

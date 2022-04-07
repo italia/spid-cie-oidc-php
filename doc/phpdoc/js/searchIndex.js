@@ -1,46 +1,6 @@
 Search.appendIndex(
     [
                 {
-                    "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database",
-                    "name": "Database",
-                    "summary": "Provides\u0020functions\u0020to\u0020saves\u0020and\u0020retrieves\u0020data\u0020from\u0020a\u0020SQLite\u0020storage\u0020database",
-                    "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "creates\u0020a\u0020new\u0020Database\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method___construct"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003AcreateRequest\u0028\u0029",
-            "name": "createRequest",
-            "summary": "creates\u0020a\u0020record\u0020for\u0020an\u0020authentication\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method_createRequest"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003AgetRequest\u0028\u0029",
-            "name": "getRequest",
-            "summary": "get\u0020a\u0020saved\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method_getRequest"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003Aquery\u0028\u0029",
-            "name": "query",
-            "summary": "executes\u0020a\u0020SQL\u0020query\u0020to\u0020retrieve\u0020values\u0020\u0028SELECT\u0029",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method_query"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003Aexec\u0028\u0029",
-            "name": "exec",
-            "summary": "executes\u0020a\u0020SQL\u0020query\u0020to\u0020upsert\u0020values\u0020\u0028INSERT,\u0020UPDATE\u0029",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method_exec"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003Adump\u0028\u0029",
-            "name": "dump",
-            "summary": "executes\u0020a\u0020dump\u0020of\u0020a\u0020table",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method_dump"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Database\u003A\u003Alog\u0028\u0029",
-            "name": "log",
-            "summary": "saves\u0020a\u0020record\u0020on\u0020the\u0020log\u0020table",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-Database.html#method_log"
-        },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\DEFAULT_TOKEN_EXPIRATION_TIME",
             "name": "DEFAULT_TOKEN_EXPIRATION_TIME",
             "summary": "",
@@ -81,10 +41,15 @@ Search.appendIndex(
             "summary": "get\u0020the\u0020payload\u0020of\u0020the\u0020JWS\u0020token",
             "url": "classes/SPID-CIE-OIDC-PHP-Core-JWT.html#method_getJWSPayload"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\JWT\u003A\u003AisVerified\u0028\u0029",
-            "name": "isVerified",
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\JWT\u003A\u003AisSignatureVerified\u0028\u0029",
+            "name": "isSignatureVerified",
             "summary": "verify\u0020the\u0020signature\u0020of\u0020the\u0020JWS\u0020token",
-            "url": "classes/SPID-CIE-OIDC-PHP-Core-JWT.html#method_isVerified"
+            "url": "classes/SPID-CIE-OIDC-PHP-Core-JWT.html#method_isSignatureVerified"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\JWT\u003A\u003AisValid\u0028\u0029",
+            "name": "isValid",
+            "summary": "verify\u0020if\u0020token\u0020is\u0020not\u0020expired\u0020and\u0020other\u0020stuff.",
+            "url": "classes/SPID-CIE-OIDC-PHP-Core-JWT.html#method_isValid"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\JWT\u003A\u003AdecryptJWE\u0028\u0029",
             "name": "decryptJWE",
@@ -166,9 +131,24 @@ Search.appendIndex(
             "summary": "decode\u0020a\u0020base64\u0020url\u0020encoded\u0020string",
             "url": "classes/SPID-CIE-OIDC-PHP-Core-Util.html#method_base64UrlDecode"
         },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Util\u003A\u003AstringStartsWith\u0028\u0029",
+            "name": "stringStartsWith",
+            "summary": "check\u0020if\u0020haystack\u0020string\u0020starts\u0020with\u0020needle\u0020string",
+            "url": "classes/SPID-CIE-OIDC-PHP-Core-Util.html#method_stringStartsWith"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Util\u003A\u003AstringEndsWith\u0028\u0029",
+            "name": "stringEndsWith",
+            "summary": "check\u0020if\u0020haystack\u0020string\u0020ends\u0020with\u0020needle\u0020string",
+            "url": "classes/SPID-CIE-OIDC-PHP-Core-Util.html#method_stringEndsWith"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Core\\Util\u003A\u003Adebug\u0028\u0029",
+            "name": "debug",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Core-Util.html#method_debug"
+        },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement",
             "name": "EntityStatement",
-            "summary": "Generate\u0020the\u0020EntityStatement",
+            "summary": "Handle\u0020EntityStatement",
             "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003A__construct\u0028\u0029",
@@ -176,95 +156,65 @@ Search.appendIndex(
             "summary": "creates\u0020a\u0020new\u0020EntityStatement\u0020instance",
             "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method___construct"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AgetConfiguration\u0028\u0029",
-            "name": "getConfiguration",
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AmakeFromConfig\u0028\u0029",
+            "name": "makeFromConfig",
             "summary": "creates\u0020the\u0020JWT\u0020to\u0020be\u0020returned\u0020from\u0020.well\u002Dknown\/openid\u002Dfederation\u0020endpoint",
-            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_getConfiguration"
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_makeFromConfig"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\IntrospectionRequest",
-            "name": "IntrospectionRequest",
-            "summary": "Generates\u0020the\u0020Introspection\u0020Request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-IntrospectionRequest.html"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AinitFromObject\u0028\u0029",
+            "name": "initFromObject",
+            "summary": "initialize\u0020the\u0020entity\u0020statement\u0020payload\u0020from\u0020object",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_initFromObject"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\IntrospectionRequest\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "creates\u0020a\u0020new\u0020IntrospectionRequest\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-IntrospectionRequest.html#method___construct"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AgetPayload\u0028\u0029",
+            "name": "getPayload",
+            "summary": "return\u0020entity\u0020statement\u0020payload",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_getPayload"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\IntrospectionRequest\u003A\u003Asend\u0028\u0029",
-            "name": "send",
-            "summary": "send\u0020the\u0020introspection\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-IntrospectionRequest.html#method_send"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003Avalidate\u0028\u0029",
+            "name": "validate",
+            "summary": "validate\u0020token",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_validate"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\IntrospectionRequest\u003A\u003AgetResponse\u0028\u0029",
-            "name": "getResponse",
-            "summary": "retrieves\u0020the\u0020response\u0020returned\u0020from\u0020previous\u0020introspection\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-IntrospectionRequest.html#method_getResponse"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicy\u0028\u0029",
+            "name": "applyPolicy",
+            "summary": "apply\u0020policy\u0020from\u0020federation\u0020entity\u0020statement",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicy"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RevocationRequest",
-            "name": "RevocationRequest",
-            "summary": "Generates\u0020the\u0020Revocation\u0020Request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RevocationRequest.html"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierValue\u0028\u0029",
+            "name": "applyPolicyModifierValue",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierValue"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RevocationRequest\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "creates\u0020a\u0020new\u0020RevocationRequest\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RevocationRequest.html#method___construct"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierAdd\u0028\u0029",
+            "name": "applyPolicyModifierAdd",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierAdd"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RevocationRequest\u003A\u003Asend\u0028\u0029",
-            "name": "send",
-            "summary": "send\u0020the\u0020revocation\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RevocationRequest.html#method_send"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierDefault\u0028\u0029",
+            "name": "applyPolicyModifierDefault",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierDefault"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RevocationRequest\u003A\u003AgetResponse\u0028\u0029",
-            "name": "getResponse",
-            "summary": "retrieves\u0020the\u0020response\u0020returned\u0020from\u0020previous\u0020revocation\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RevocationRequest.html#method_getResponse"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierOneOf\u0028\u0029",
+            "name": "applyPolicyModifierOneOf",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierOneOf"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\TokenRequest",
-            "name": "TokenRequest",
-            "summary": "Generates\u0020the\u0020Token\u0020Request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-TokenRequest.html"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierSubsetOf\u0028\u0029",
+            "name": "applyPolicyModifierSubsetOf",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierSubsetOf"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\TokenRequest\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "creates\u0020a\u0020new\u0020TokenRequest\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-TokenRequest.html#method___construct"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierSupersetOf\u0028\u0029",
+            "name": "applyPolicyModifierSupersetOf",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierSupersetOf"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\TokenRequest\u003A\u003Asend\u0028\u0029",
-            "name": "send",
-            "summary": "send\u0020the\u0020token\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-TokenRequest.html#method_send"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\TokenRequest\u003A\u003AgetResponse\u0028\u0029",
-            "name": "getResponse",
-            "summary": "retrieves\u0020the\u0020response\u0020returned\u0020from\u0020previous\u0020token\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-TokenRequest.html#method_getResponse"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\TokenRequest\u003A\u003AgetAccessToken\u0028\u0029",
-            "name": "getAccessToken",
-            "summary": "retrieves\u0020the\u0020access_token\u0020returned\u0020from\u0020previous\u0020token\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-TokenRequest.html#method_getAccessToken"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\TokenRequest\u003A\u003AgetIdToken\u0028\u0029",
-            "name": "getIdToken",
-            "summary": "retrieves\u0020the\u0020id_token\u0020returned\u0020from\u0020previous\u0020token\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-TokenRequest.html#method_getIdToken"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\UserinfoRequest",
-            "name": "UserinfoRequest",
-            "summary": "Generates\u0020the\u0020Userinfo\u0020Request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-UserinfoRequest.html"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\UserinfoRequest\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "creates\u0020a\u0020new\u0020UserinfoRequest\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-UserinfoRequest.html#method___construct"
-        },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\UserinfoRequest\u003A\u003Asend\u0028\u0029",
-            "name": "send",
-            "summary": "send\u0020the\u0020userinfo\u0020request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-UserinfoRequest.html#method_send"
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\EntityStatement\u003A\u003AapplyPolicyModifierEssential\u0028\u0029",
+            "name": "applyPolicyModifierEssential",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-EntityStatement.html#method_applyPolicyModifierEssential"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Response\\ResponseHandler",
             "name": "ResponseHandler",
@@ -351,25 +301,435 @@ Search.appendIndex(
             "summary": "uninstall\u0020function\u0020called\u0020by\u0020\u0022composer\u0020uninstall\u0022\u0020command",
             "url": "classes/SPID-CIE-OIDC-PHP-Setup-Setup.html#method_remove"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest",
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\Federation",
+            "name": "Federation",
+            "summary": "Utility\u0020functions\u0020for\u0020Federation",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-Federation.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\Federation\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020Federation\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-Federation.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\Federation\u003A\u003AisFederationSupported\u0028\u0029",
+            "name": "isFederationSupported",
+            "summary": "check\u0020if\u0020federation\u0020is\u0020supported",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-Federation.html#method_isFederationSupported"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\TrustChain",
+            "name": "TrustChain",
+            "summary": "Resolve\u0020the\u0020EntityStatement\u0020and\u0020apply\u0020authority\u0020policy",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-TrustChain.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\TrustChain\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020EntityStatement\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-TrustChain.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\Federation\\TrustChain\u003A\u003Aresolve\u0028\u0029",
+            "name": "resolve",
+            "summary": "resolve\u0020the\u0020entity\u0020statement\u0020recursively",
+            "url": "classes/SPID-CIE-OIDC-PHP-Federation-TrustChain.html#method_resolve"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\AuthenticationEndpoint",
+            "name": "AuthenticationEndpoint",
+            "summary": "Authentication\u0020Endpoint",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-AuthenticationEndpoint.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\AuthenticationEndpoint\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020AuthenticationEndpoint\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-AuthenticationEndpoint.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\AuthenticationEndpoint\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "process\u0020an\u0020authentication\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-AuthenticationEndpoint.html#method_process"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\AuthenticationEndpoint\u003A\u003Acallback\u0028\u0029",
+            "name": "callback",
+            "summary": "receive\u0020and\u0020process\u0020an\u0020authentication\u0020response",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-AuthenticationEndpoint.html#method_callback"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\CertsEndpoint",
+            "name": "CertsEndpoint",
+            "summary": "Certs\u0020Endpoint",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-CertsEndpoint.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\CertsEndpoint\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020CertsEndpoint\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-CertsEndpoint.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\CertsEndpoint\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "process\u0020a\u0020certs\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-CertsEndpoint.html#method_process"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\CertsEndpoint\u003A\u003A\u0024name",
+            "name": "name",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-CertsEndpoint.html#property_name"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database",
+            "name": "Database",
+            "summary": "Provides\u0020functions\u0020to\u0020saves\u0020and\u0020retrieves\u0020data\u0020from\u0020a\u0020SQLite\u0020storage\u0020database\u0020for\u0020OP",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020Database\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AcreateRequest\u0028\u0029",
+            "name": "createRequest",
+            "summary": "creates\u0020a\u0020record\u0020from\u0020an\u0020authentication\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_createRequest"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AupdateRequest\u0028\u0029",
+            "name": "updateRequest",
+            "summary": "updates\u0020a\u0020record\u0020of\u0020an\u0020authentication\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_updateRequest"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AgetRequest\u0028\u0029",
+            "name": "getRequest",
+            "summary": "retrieve\u0020a\u0020record\u0020of\u0020an\u0020authentication\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_getRequest"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AgetRequestByCode\u0028\u0029",
+            "name": "getRequestByCode",
+            "summary": "retrieve\u0020a\u0020record\u0020of\u0020an\u0020authentication\u0020request\u0020by\u0020authcode",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_getRequestByCode"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AgetRequestByIdToken\u0028\u0029",
+            "name": "getRequestByIdToken",
+            "summary": "retrieve\u0020a\u0020record\u0020of\u0020an\u0020authentication\u0020request\u0020by\u0020id_token",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_getRequestByIdToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AgetRequestByClientID\u0028\u0029",
+            "name": "getRequestByClientID",
+            "summary": "retrieve\u0020all\u0020records\u0020of\u0020authentication\u0020requests\u0020by\u0020client_id",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_getRequestByClientID"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AcreateAuthorizationCode\u0028\u0029",
+            "name": "createAuthorizationCode",
+            "summary": "update\u0020a\u0020request\u0020record\u0020generating\u0020the\u0020authcode\u0020for\u0020the\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_createAuthorizationCode"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AcheckAuthorizationCode\u0028\u0029",
+            "name": "checkAuthorizationCode",
+            "summary": "check\u0020if\u0020exists\u0020a\u0020request\u0020with\u0020the\u0020specified\u0020authorization\u0020code\u0020for\u0020that\u0020client_id\u0020and\u0020redirect_uri",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_checkAuthorizationCode"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AsaveIdToken\u0028\u0029",
+            "name": "saveIdToken",
+            "summary": "save\u0020id_token\u0020for\u0020the\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_saveIdToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AcheckIdToken\u0028\u0029",
+            "name": "checkIdToken",
+            "summary": "check\u0020if\u0020the\u0020id_token\u0020exists",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_checkIdToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AcreateAccessToken\u0028\u0029",
+            "name": "createAccessToken",
+            "summary": "create\u0020a\u0020new\u0020access\u0020token\u0020for\u0020the\u0020request\u0020identified\u0020by\u0020authorization\u0020code",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_createAccessToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AsaveAccessToken\u0028\u0029",
+            "name": "saveAccessToken",
+            "summary": "save\u0020the\u0020provided\u0020access_token\u0020for\u0020the\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_saveAccessToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AcheckAccessToken\u0028\u0029",
+            "name": "checkAccessToken",
+            "summary": "check\u0020if\u0020the\u0020access_token\u0020exists",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_checkAccessToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AsaveUserinfo\u0028\u0029",
+            "name": "saveUserinfo",
+            "summary": "save\u0020user\u0020info\u0020for\u0020the\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_saveUserinfo"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AgetUserinfo\u0028\u0029",
+            "name": "getUserinfo",
+            "summary": "get\u0020user\u0020info\u0020for\u0020the\u0020access_token",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_getUserinfo"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003AdeleteRequest\u0028\u0029",
+            "name": "deleteRequest",
+            "summary": "delete\u0020the\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_deleteRequest"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003Aquery\u0028\u0029",
+            "name": "query",
+            "summary": "executes\u0020a\u0020SQL\u0020query\u0020to\u0020retrieve\u0020values\u0020\u0028SELECT\u0029",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_query"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003Aexec\u0028\u0029",
+            "name": "exec",
+            "summary": "executes\u0020a\u0020SQL\u0020query\u0020to\u0020upsert\u0020values\u0020\u0028INSERT,\u0020UPDATE\u0029",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_exec"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003Adump\u0028\u0029",
+            "name": "dump",
+            "summary": "executes\u0020a\u0020dump\u0020of\u0020a\u0020table",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_dump"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Database\u003A\u003Alog\u0028\u0029",
+            "name": "log",
+            "summary": "saves\u0020a\u0020record\u0020on\u0020the\u0020log\u0020table",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Database.html#method_log"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Metadata",
+            "name": "Metadata",
+            "summary": "Proxy\u0020OIDC\u0020Metadata\u0020Discovery",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Metadata.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Metadata\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020Metadata\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Metadata.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\Metadata\u003A\u003AgetConfiguration\u0028\u0029",
+            "name": "getConfiguration",
+            "summary": "",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-Metadata.html#method_getConfiguration"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\SessionEndEndpoint",
+            "name": "SessionEndEndpoint",
+            "summary": "Session\u0020End\u0020Endpoint",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-SessionEndEndpoint.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\SessionEndEndpoint\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020SessionEndEndpoint\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-SessionEndEndpoint.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\SessionEndEndpoint\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "process\u0020a\u0020session\u0020end\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-SessionEndEndpoint.html#method_process"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\DEFAULT_TOKEN_EXPIRATION_TIME",
+            "name": "DEFAULT_TOKEN_EXPIRATION_TIME",
+            "summary": "",
+            "url": "namespaces/spid-cie-oidc-php-oidc-op.html#constant_DEFAULT_TOKEN_EXPIRATION_TIME"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\TokenEndpoint",
+            "name": "TokenEndpoint",
+            "summary": "Token\u0020Endpoint",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-TokenEndpoint.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\TokenEndpoint\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020TokenEndpoint\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-TokenEndpoint.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\TokenEndpoint\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "process\u0020a\u0020token\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-TokenEndpoint.html#method_process"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\TokenEndpoint\u003A\u003AgetBasicAuthCredential\u0028\u0029",
+            "name": "getBasicAuthCredential",
+            "summary": "Get\u0020username\u0020e\u0020password\u0020of\u0020Basic\u0020Authentication",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-TokenEndpoint.html#method_getBasicAuthCredential"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\TokenEndpoint\u003A\u003AgetAuthorizationHeader\u0028\u0029",
+            "name": "getAuthorizationHeader",
+            "summary": "Get\u0020header\u0020Authorization",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-TokenEndpoint.html#method_getAuthorizationHeader"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\TokenEndpoint\u003A\u003AmakeIdToken\u0028\u0029",
+            "name": "makeIdToken",
+            "summary": "Make\u0020ID\u0020Token",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-TokenEndpoint.html#method_makeIdToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\UserinfoEndpoint",
+            "name": "UserinfoEndpoint",
+            "summary": "Userinfo\u0020Endpoint",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-UserinfoEndpoint.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\UserinfoEndpoint\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020UserinfoEndpoint\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-UserinfoEndpoint.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\UserinfoEndpoint\u003A\u003Aprocess\u0028\u0029",
+            "name": "process",
+            "summary": "process\u0020a\u0020userinfo\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-UserinfoEndpoint.html#method_process"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\UserinfoEndpoint\u003A\u003AgetAuthorizationHeader\u0028\u0029",
+            "name": "getAuthorizationHeader",
+            "summary": "Get\u0020hearder\u0020Authorization",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-UserinfoEndpoint.html#method_getAuthorizationHeader"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP\\UserinfoEndpoint\u003A\u003AgetBearerToken\u0028\u0029",
+            "name": "getBearerToken",
+            "summary": "get\u0020access\u0020token\u0020from\u0020header",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-OP-UserinfoEndpoint.html#method_getBearerToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\AuthenticationRequest",
             "name": "AuthenticationRequest",
             "summary": "Generates\u0020the\u0020Authentication\u0020Request",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html"
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-AuthenticationRequest.html"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\AuthenticationRequest\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "creates\u0020a\u0020new\u0020AuthenticationRequest\u0020instance",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html#method___construct"
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-AuthenticationRequest.html#method___construct"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest\u003A\u003AgetRedirectURL\u0028\u0029",
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\AuthenticationRequest\u003A\u003AgetRedirectURL\u0028\u0029",
             "name": "getRedirectURL",
             "summary": "creates\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider\u0020to\u0020which\u0020redirect\u0020the\u0020user",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html#method_getRedirectURL"
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-AuthenticationRequest.html#method_getRedirectURL"
         },                {
-            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\AuthenticationRequest\u003A\u003Asend\u0028\u0029",
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\AuthenticationRequest\u003A\u003Asend\u0028\u0029",
             "name": "send",
             "summary": "redirect\u0020the\u0020browser\u0020with\u0020the\u0020authentication\u0020request\u0020to\u0020the\u0020URL\u0020to\u0020OIDC\u0020Provider",
-            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-AuthenticationRequest.html#method_send"
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-AuthenticationRequest.html#method_send"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database",
+            "name": "Database",
+            "summary": "Provides\u0020functions\u0020to\u0020saves\u0020and\u0020retrieves\u0020data\u0020from\u0020a\u0020SQLite\u0020storage\u0020database\u0020for\u0020RP",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020Database\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003AcreateRequest\u0028\u0029",
+            "name": "createRequest",
+            "summary": "creates\u0020a\u0020record\u0020for\u0020an\u0020authentication\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_createRequest"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003AgetRequest\u0028\u0029",
+            "name": "getRequest",
+            "summary": "get\u0020a\u0020saved\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_getRequest"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003AsaveToStore\u0028\u0029",
+            "name": "saveToStore",
+            "summary": "save\u0020an\u0020object\u0020to\u0020the\u0020store",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_saveToStore"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003AgetFromStore\u0028\u0029",
+            "name": "getFromStore",
+            "summary": "get\u0020an\u0020object\u0020from\u0020store",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_getFromStore"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003AgetFromStoreByURL\u0028\u0029",
+            "name": "getFromStoreByURL",
+            "summary": "get\u0020an\u0020object\u0020from\u0020store\u0020by\u0020url",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_getFromStoreByURL"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003Aquery\u0028\u0029",
+            "name": "query",
+            "summary": "executes\u0020a\u0020SQL\u0020query\u0020to\u0020retrieve\u0020values\u0020\u0028SELECT\u0029",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_query"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003Aexec\u0028\u0029",
+            "name": "exec",
+            "summary": "executes\u0020a\u0020SQL\u0020query\u0020to\u0020upsert\u0020values\u0020\u0028INSERT,\u0020UPDATE\u0029",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_exec"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003Adump\u0028\u0029",
+            "name": "dump",
+            "summary": "executes\u0020a\u0020dump\u0020of\u0020a\u0020table",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_dump"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\Database\u003A\u003Alog\u0028\u0029",
+            "name": "log",
+            "summary": "saves\u0020a\u0020record\u0020on\u0020the\u0020log\u0020table",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-Database.html#method_log"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\IntrospectionRequest",
+            "name": "IntrospectionRequest",
+            "summary": "Generates\u0020the\u0020Introspection\u0020Request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-IntrospectionRequest.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\IntrospectionRequest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020IntrospectionRequest\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-IntrospectionRequest.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\IntrospectionRequest\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "send\u0020the\u0020introspection\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-IntrospectionRequest.html#method_send"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\IntrospectionRequest\u003A\u003AgetResponse\u0028\u0029",
+            "name": "getResponse",
+            "summary": "retrieves\u0020the\u0020response\u0020returned\u0020from\u0020previous\u0020introspection\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-IntrospectionRequest.html#method_getResponse"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\RevocationRequest",
+            "name": "RevocationRequest",
+            "summary": "Generates\u0020the\u0020Revocation\u0020Request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-RevocationRequest.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\RevocationRequest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020RevocationRequest\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-RevocationRequest.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\RevocationRequest\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "send\u0020the\u0020revocation\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-RevocationRequest.html#method_send"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\RevocationRequest\u003A\u003AgetResponse\u0028\u0029",
+            "name": "getResponse",
+            "summary": "retrieves\u0020the\u0020response\u0020returned\u0020from\u0020previous\u0020revocation\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-RevocationRequest.html#method_getResponse"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\TokenRequest",
+            "name": "TokenRequest",
+            "summary": "Generates\u0020the\u0020Token\u0020Request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-TokenRequest.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\TokenRequest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020TokenRequest\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-TokenRequest.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\TokenRequest\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "send\u0020the\u0020token\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-TokenRequest.html#method_send"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\TokenRequest\u003A\u003AgetResponse\u0028\u0029",
+            "name": "getResponse",
+            "summary": "retrieves\u0020the\u0020response\u0020returned\u0020from\u0020previous\u0020token\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-TokenRequest.html#method_getResponse"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\TokenRequest\u003A\u003AgetAccessToken\u0028\u0029",
+            "name": "getAccessToken",
+            "summary": "retrieves\u0020the\u0020access_token\u0020returned\u0020from\u0020previous\u0020token\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-TokenRequest.html#method_getAccessToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\TokenRequest\u003A\u003AgetIdToken\u0028\u0029",
+            "name": "getIdToken",
+            "summary": "retrieves\u0020the\u0020id_token\u0020returned\u0020from\u0020previous\u0020token\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-TokenRequest.html#method_getIdToken"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\UserinfoRequest",
+            "name": "UserinfoRequest",
+            "summary": "Generates\u0020the\u0020Userinfo\u0020Request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-UserinfoRequest.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\UserinfoRequest\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "creates\u0020a\u0020new\u0020UserinfoRequest\u0020instance",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-UserinfoRequest.html#method___construct"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP\\UserinfoRequest\u003A\u003Asend\u0028\u0029",
+            "name": "send",
+            "summary": "send\u0020the\u0020userinfo\u0020request",
+            "url": "classes/SPID-CIE-OIDC-PHP-OIDC-RP-UserinfoRequest.html#method_send"
         },                {
             "fqsen": "\\",
             "name": "\\",
@@ -391,10 +751,20 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/spid-cie-oidc-php-federation.html"
         },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\OP",
+            "name": "OP",
+            "summary": "",
+            "url": "namespaces/spid-cie-oidc-php-oidc-op.html"
+        },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC",
             "name": "OIDC",
             "summary": "",
             "url": "namespaces/spid-cie-oidc-php-oidc.html"
+        },                {
+            "fqsen": "\\SPID_CIE_OIDC_PHP\\OIDC\\RP",
+            "name": "RP",
+            "summary": "",
+            "url": "namespaces/spid-cie-oidc-php-oidc-rp.html"
         },                {
             "fqsen": "\\SPID_CIE_OIDC_PHP\\Response",
             "name": "Response",
