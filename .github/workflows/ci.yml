@@ -55,7 +55,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.2.0
       with:
         auth: ${{ secrets.GIST_SECRET }}
-        gistID: nWXUskvvvrBZa3e2QadvNpF9AujkjBze
+        gistID: f6982180cd9872afb7975f38524cc177
         filename: spid-cie-oidc-php-dynamic-code-coverage-badge.json
         label: Code Coverage
         message: 15%
