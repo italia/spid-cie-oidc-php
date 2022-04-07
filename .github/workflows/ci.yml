@@ -48,8 +48,8 @@ jobs:
         path: code_coverage_report
         retention-days: 3
 
-    - name: Check code coverage score
-      run: CODE_COVERAGE_RESULT=$(php vendor/bin/coverage-check phpunit-clover.xml 0 --only-percentage)
+    - name: Get code coverage score
+      run: CODE_COVERAGE_RESULT=$(php vendor/bin/coverage-check phpunit-clover.xml 0)
       
     - name: Create code coverage badge
       uses: schneegans/dynamic-badges-action@v1.2.0
@@ -60,3 +60,6 @@ jobs:
         label: Code Coverage
         message: ${{ env.CODE_COVERAGE_RESULT }}%
         color: orange
+        
+    - name: Check code coverage score
+      run: php vendor/bin/coverage-check phpunit-clover.xml 0
