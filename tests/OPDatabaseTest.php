@@ -33,7 +33,9 @@ class OPDatabaseTest extends TestCase
     public function test_OPDatabase()
     {
         // clean old tests
-        unlink("tests/tests.sqlite");
+        if (file_exists("tests/tests.sqlite")) {
+            unlink("tests/tests.sqlite");
+        }
 
         $database = new Database("tests/tests.sqlite");
 
