@@ -89,11 +89,9 @@ RUN cd /home/drupal && \
     php vendor/bin/drush cr
 
 # Prepare drupal
-#COPY sites /home/drupal/web
-#RUN  ls -la /home/drupal/web 
-#RUN  chmod 555 /home/drupal/web/sites/default
-#RUN  chmod 755 /home/drupal/web/sites/default/files
-#RUN  chmod 444 /home/drupal/web/sites/default/settings.php 
+COPY examples/drupal/sites.zip /home/drupal
+RUN  ls -la /home/drupal && \
+     unzip -o /home/drupal/sites.zip -d /home/drupal/web/sites 
 
 # Set permissions
 RUN chown -R www-data:www-data /home/drupal/web/sites
