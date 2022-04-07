@@ -51,6 +51,9 @@ jobs:
     - name: Echo coverage score
       run: echo $(php vendor/bin/coverage-check phpunit-clover.xml 90 --only-percentage)
       
+    - name: Grab coverage score
+      run: echo CODE_COVERAGE_RESULT=$(php vendor/bin/coverage-check phpunit-clover.xml 90 --only-percentage) >> $GITHUB_ENV
+      
     - name: Create code coverage badge
       uses: schneegans/dynamic-badges-action@v1.2.0
       with:
