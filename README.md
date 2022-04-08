@@ -14,12 +14,12 @@ The SPID/CIE OIDC Federation Relying Party, for PHP
 ## Summary
 
 * [What is SPID/CIE OIDC PHP](#what-is)
-    * [PHP class library technical documentation](https://italia.github.io/spid-cie-oidc-php/doc/phpdoc/)
+    * [PHP class library](https://italia.github.io/spid-cie-oidc-php/doc/phpdoc/)
     * [Standalone proxy relying party](doc/howto-proxy/README.md)
     * [Generic OIDC to SPID/CIE OIDC relying party](doc/howto-gateway/README.md)
 * [Features](#features)
 * [Setup](#setup)
-* [Example prokects](#example-projects)
+* [Example projects](#example-projects)
     * [WordPress example project](doc/example-wordpress/README.md)
     * [Drupal example project](doc/example-drupal/README.md)
 * [Contribute](#contribute)
@@ -69,8 +69,9 @@ docker run -it -p 8002:80 -v $(pwd)/config:/var/www/spid-cie-oidc-php/config lin
 On the first run the setup will ask for configurations.
 All configurations will be saved in the ./config directory.
 
-The repository also provides example projects to set up a complete SPID/CIE OIDC Federation.<br/>
-Read how to set up a federation with the [WordPress Example Project](doc/example-wordpress/README.md).
+The repository also provides example projects to set up a complete SPID/CIE OIDC Federation.<br/><br/>
+
+Read how to set up a federation with the [WordPress Example Project](doc/example-wordpress/README.md).<br/>
 Read how to set up a federation with the [Drupal Example Project](doc/example-drupal/README.md).
 
 
