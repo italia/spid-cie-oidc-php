@@ -1,4 +1,4 @@
-# SPID/CIE OIDC Federation Relying Party, for PHP
+# SPID/CIE OIDC Federation Relying Party for PHP
 
 [![spid-cie-oidc-php CI](https://github.com/italia/spid-cie-oidc-php/workflows/Setup%20Check%20CI/badge.svg)](https://github.com/italia/spid-cie-oidc-php/workflows/Setup%20Check%20CI/badge.svg)
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/damikael/f6982180cd9872afb7975f38524cc177/raw/spid-cie-oidc-php-dynamic-code-coverage-badge.json)
