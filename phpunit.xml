@@ -25,6 +25,7 @@
         </include>
         <exclude>
             <directory suffix=".php">lib/Setup</directory>
+            <file>lib/Hooks/HookTest.php</file>
         </exclude>
     </coverage>
 </phpunit>
