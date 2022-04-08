@@ -60,9 +60,9 @@ jobs:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: f6982180cd9872afb7975f38524cc177
         filename: spid-cie-oidc-php-dynamic-code-coverage-badge.json
-        label: Code Coverage
+        label: Test Coverage
         message: ${{ env.CODE_COVERAGE_RESULT }}
-        color: orange
+        color: green
         
     - name: Check code coverage score
       run: php vendor/bin/coverage-check phpunit-clover.xml 0
