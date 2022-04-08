@@ -69,7 +69,7 @@ docker run -it -p 8002:80 -v $(pwd)/config:/var/www/spid-cie-oidc-php/config lin
 On the first run the setup will ask for configurations.
 All configurations will be saved in the ./config directory.
 
-The repository also provides example projects to set up a complete SPID/CIE OIDC Federation.<br/><br/>
+The repository also provides example projects to set up a complete SPID/CIE OIDC Federation.<br/>
 
 Read how to set up a federation with the [WordPress Example Project](doc/example-wordpress/README.md).<br/>
 Read how to set up a federation with the [Drupal Example Project](doc/example-drupal/README.md).
