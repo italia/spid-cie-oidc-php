@@ -49,18 +49,18 @@ class Setup
     /**
     *  main setup function called by "composer install" command
     */
-    public static function setup(Event $event)
+    public static function setup()
     {
         $filesystem = new Filesystem();
         $colors = new Colors();
-        $version = $event->getComposer()->getConfig()->get("version");
+        //$version = $event->getComposer()->getConfig()->get("version");
 
         if ($colors->hasColorSupport()) {
             // Clear the screen
             echo "\e[H\e[J";
         }
 
-        echo $colors->getColoredString("SPID CIE OIDC PHP SDK Setup\nversion " . $version . "\n\n", "green");
+        //echo $colors->getColoredString("SPID CIE OIDC PHP SDK Setup\nversion " . $version . "\n\n", "green");
 
         // retrieve path and inputs
         $_home_dir = PHP_OS_FAMILY === "Windows" ? getenv("HOMEDRIVE") . getenv("HOMEPATH") : getenv("HOME");
