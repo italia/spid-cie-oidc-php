@@ -13,7 +13,7 @@ The SPID/CIE OIDC Federation Relying Party, for PHP
 
 ## Summary
 
-* [What is SPID/CIE OIDC PHP](#what-is)
+* [What is SPID/CIE OIDC PHP](#https://github.com/italia/spid-cie-oidc-php#what-is-spidcie-oidc-php)
     * [PHP class library](https://italia.github.io/spid-cie-oidc-php/doc/phpdoc/)
     * [Standalone proxy relying party](doc/howto-proxy/README.md)
     * [Generic OIDC to SPID/CIE OIDC relying party](doc/howto-gateway/README.md)
