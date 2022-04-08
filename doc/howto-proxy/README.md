@@ -1,0 +1,1 @@
+# Standalone proxy relying party

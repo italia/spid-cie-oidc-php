@@ -6,7 +6,6 @@
 [![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
 [![Join the #spid openid](https://img.shields.io/badge/Slack%20channel-%23spid%20openid-blue.svg)](https://developersitalia.slack.com/archives/C7E85ED1N/)
 
-> ⚠️ This project is a WiP
 
 <img src="doc/spid-cie-oidc-php.gif" width="500" />
 
@@ -14,14 +13,32 @@ The SPID/CIE OIDC Federation Relying Party, for PHP
 
 ## Summary
 
+* [What is SPID/CIE OIDC PHP](#what-is)
+    * [PHP class library technical documentation](https://italia.github.io/spid-cie-oidc-php/doc/phpdoc/)
+    * [Standalone proxy relying party](doc/howto-proxy/README.md)
+    * [Generic OIDC to SPID/CIE OIDC relying party](doc/howto-gateway/README.md)
 * [Features](#features)
 * [Setup](#setup)
-* [Docker](#docker)
+* [Example prokects](#example-projects)
+    * [WordPress example project](doc/example-wordpress/README.md)
+    * [Drupal example project](doc/example-drupal/README.md)
 * [Contribute](#contribute)
     * [Contribute as end user](#contribute-as-end-user)
     * [Contribute as developer](#contribute-as-developer)
 * [Useful links](#useful-links)
 * [License and Authors](#license-and-authors)
+
+## What is SPID/CIE OIDC PHP
+SPID/CIE OIDC PHP is:
+ - **A PHP class library that helps to develop a relying party for SPID/CIE**
+   Are you a Developer and you want to make your own relying party or a plugin for your software? 
+   Read the [Technical documentation](https://italia.github.io/spid-cie-oidc-php/doc/phpdoc/).<br/><br/>
+ - **A standalone proxy relying party for SPID/CIE**
+   You can simply setup the proxy project and configure the URL where to receive users's attributes. You can also choice how the attributes will be returned from the proxy, such as plain values, signed encrypted.
+   Read [How to use as a proxy](doc/howto-proxy/README.md).<br/><br/>
+ - **A generic OIDC to SPID/CIE OIDC relying party gateway**
+   Can your application connect to a standard OIDC Provider, but it doesn't have extended functionalities required by the SPID/CIE OIDC Federation? No problem, you can configure your client as a relying party to SPID/CIE OIDC PHP Provider and it will make the rest.
+   Read [How to use as a generic OIDC Provider](doc/howto-gateway/README.md).
 
 ## Features
 
@@ -42,7 +59,7 @@ composer install
 After setup go to /<i>service_name</i>/oidc/rp/authz
 where <i>service_name</i> is the service name configured during setup
 
-## Docker
+## Example projects
 
 Start the basic example project is as simple as run:
 ```
@@ -51,6 +68,10 @@ docker run -it -p 8002:80 -v $(pwd)/config:/var/www/spid-cie-oidc-php/config lin
 ```
 On the first run the setup will ask for configurations.
 All configurations will be saved in the ./config directory.
+
+The repository also provides example projects to set up a complete SPID/CIE OIDC Federation.<br/>
+Read how to set up a federation with the [WordPress Example Project](doc/example-wordpress/README.md).
+Read how to set up a federation with the [Drupal Example Project](doc/example-drupal/README.md).
 
 
 ## Contribute
