@@ -6,7 +6,7 @@ In this demo has been used:
  - [ItaliaWP2 WordPress theme](https://github.com/italia/design-wordpress-theme-italiaWP2)
  - [OpenID Connect generic client plugin](https://wordpress.org/plugins/daggerhart-openid-connect-generic/)
 
- <img src="spid-cie-oidc-php-wordpress.gif" />
+ <img src="spid-cie-oidc-php-wordpress.gif" width="600" />
 
 ## How to run with Docker
 To set up a complete SPID/CIE OIDC Federation clone the [Django repository](https://github.com/italia/spid-cie-oidc-django) and add the following section into the docker-compose.yml file contained in the Django repo's root folder.
@@ -102,5 +102,5 @@ The onboarding process can be summarized as follows:
 - The RP descendant should now appear in the associated policies.
 - If you click again on the RP in the "Federation entity descendants assigned profiles" page, now you should see the generated Trust Mark.
 
-Now you can perform a sample login/logout flow, since the OP will successfully resolve the Proxy RP's trust chain, by navigating the RP's home page (http://relying-party-php.org:8003/) or logging in from WordPress site (http://relying-party-wordpress.org:8004/)
+Now you can perform a sample login/logout flow, since the OP will successfully resolve the Proxy RP's trust chain, by navigating the RP's home page (http://relying-party-php.org:8003/) or logging in from WordPress site (http://relying-party-wordpress.org:8004/).
 
