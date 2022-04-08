@@ -9,7 +9,7 @@
 
 <img src="doc/spid-cie-oidc-php.gif" width="500" />
 
-The SPID/CIE OIDC Federation Relying Party, for PHP
+The SPID/CIE OIDC Federation Relying Party for PHP
 
 ## Summary
 
