@@ -7,7 +7,7 @@
 [![Join the #spid openid](https://img.shields.io/badge/Slack%20channel-%23spid%20openid-blue.svg)](https://developersitalia.slack.com/archives/C7E85ED1N/)
 
 
-<img src="doc/spid-cie-oidc-php.gif" width="500" />
+<img src="doc/spid-cie-oidc-php.gif" width="600" />
 
 The SPID/CIE OIDC Federation Relying Party for PHP
 
