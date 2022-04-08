@@ -30,13 +30,13 @@ The SPID/CIE OIDC Federation Relying Party, for PHP
 
 ## What is SPID/CIE OIDC PHP
 SPID/CIE OIDC PHP is:
- - **A PHP class library that helps to develop a relying party for SPID/CIE**
+ - **A PHP class library that helps to develop a relying party for SPID/CIE**<br/>
    Are you a Developer and you want to make your own relying party or a plugin for your software? 
    Read the [Technical documentation](https://italia.github.io/spid-cie-oidc-php/doc/phpdoc/).<br/><br/>
- - **A standalone proxy relying party for SPID/CIE**
+ - **A standalone proxy relying party for SPID/CIE**<br/>
    You can simply setup the proxy project and configure the URL where to receive users's attributes. You can also choice how the attributes will be returned from the proxy, such as plain values, signed encrypted.
    Read [How to use as a proxy](doc/howto-proxy/README.md).<br/><br/>
- - **A generic OIDC to SPID/CIE OIDC relying party gateway**
+ - **A generic OIDC to SPID/CIE OIDC relying party gateway**<br/>
    Can your application connect to a standard OIDC Provider, but it doesn't have extended functionalities required by the SPID/CIE OIDC Federation? No problem, you can configure your client as a relying party to SPID/CIE OIDC PHP Provider and it will make the rest.
    Read [How to use as a generic OIDC Provider](doc/howto-gateway/README.md).
 
@@ -57,7 +57,7 @@ git clone https://github.com/italia/spid-cie-oidc-php.git
 composer install
 ```
 After setup go to /<i>service_name</i>/oidc/rp/authz
-where <i>service_name</i> is the service name configured during setup
+where <i>service_name</i> is the service name configured during setup.
 
 ## Example projects
 
