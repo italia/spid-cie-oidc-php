@@ -129,7 +129,9 @@ class Util
     }
 
 
-
+    /**
+    * @codeCoverageIgnore
+    */
     public static function debug($object)
     {
         header('Content-Type: application/json');
