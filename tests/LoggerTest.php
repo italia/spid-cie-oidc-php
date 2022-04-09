@@ -15,7 +15,7 @@ class LoggerTest extends TestCase
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $logger = new Logger();
-        $logger->log('tag', 'value', null);
+        $logger->log('tag', 'value', 'object');
         $this->assertTrue(true);
     }
 }

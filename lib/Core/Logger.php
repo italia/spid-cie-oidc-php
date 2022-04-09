@@ -55,7 +55,7 @@ class Logger
      * @throws Exception
      * @return boolean result of save
      */
-    public function log(string $tag, string $value, mixed $object = null, int $priority = LOG_NOTICE)
+    public function log(string $tag, string $value, $object = null, int $priority = LOG_NOTICE)
     {
         $message = "[" . $_SERVER['REMOTE_ADDR'] . "][" . $tag . "] - " . $value;
         if ($object != null) {
