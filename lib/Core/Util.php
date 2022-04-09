@@ -72,9 +72,14 @@ class Util
     public static function base64UrlEncode(string $data)
     {
         $b64 = base64_encode($data);
+
+        /**
+        * @codeCoverageIgnore
+        */
         if ($b64 === false) {
             return false;
         }
+        
         $url = strtr($b64, '+/', '-_');
         return rtrim($url, '=');
     }

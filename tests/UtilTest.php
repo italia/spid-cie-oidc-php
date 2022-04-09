@@ -29,7 +29,13 @@ class UtilTest extends TestCase
         $startsWith = Util::stringStartsWith($string, "s");
         $this->assertTrue($startsWith);
 
+        $startsWith = Util::stringStartsWith($string, "S", false);
+        $this->assertTrue($startsWith);
+
         $endsWith = Util::stringEndsWith($string, "g");
+        $this->assertTrue($endsWith);
+
+        $endsWith = Util::stringEndsWith($string, "G", false);
         $this->assertTrue($endsWith);
     }
 }
