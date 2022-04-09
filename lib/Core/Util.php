@@ -73,10 +73,10 @@ class Util
     {
         $b64 = base64_encode($data);
 
-        /**
-        * @codeCoverageIgnore
-        */
         if ($b64 === false) {
+            /**
+            * @codeCoverageIgnore
+            */
             return false;
         }
 
