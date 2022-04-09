@@ -79,7 +79,7 @@ class Util
         if ($b64 === false) {
             return false;
         }
-        
+
         $url = strtr($b64, '+/', '-_');
         return rtrim($url, '=');
     }

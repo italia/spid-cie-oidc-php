@@ -24,7 +24,7 @@ class TrustChainTest extends TestCase
 
         try {
             $trustChain->resolve();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // unable to reach
             $this->assertTrue(true);
         }

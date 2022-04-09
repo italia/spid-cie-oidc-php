@@ -14,7 +14,7 @@ class UtilTest extends TestCase
     public function test_Util()
     {
         $code = Util::getRandomCode();
-        $this->assertTrue(strlen($code)==64);
+        $this->assertTrue(strlen($code) == 64);
 
         $code_verifier = "code";
         $code_challenge = Util::getCodeChallenge($code_verifier);
