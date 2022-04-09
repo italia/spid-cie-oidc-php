@@ -73,12 +73,11 @@ class Util
     {
         $b64 = base64_encode($data);
 
+        // @codeCoverageIgnoreStart
         if ($b64 === false) {
-            /**
-            * @codeCoverageIgnore
-            */
             return false;
         }
+        // @codeCoverageIgnoreEnd
 
         $url = strtr($b64, '+/', '-_');
         return rtrim($url, '=');
