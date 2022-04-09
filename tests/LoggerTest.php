@@ -14,7 +14,7 @@ class LoggerTest extends TestCase
     public function test_Logger()
     {
         $logger = new Logger();
-        $logger->log('tag', 'value', null, LOG_NOTICE);
+        $logger->log('tag', 'value', null);
         $this->assertTrue(true);
     }
 }
