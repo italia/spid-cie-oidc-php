@@ -43,7 +43,7 @@ class EntityStatement
      * @throws Exception
      * @return EntityStatement
      */
-    public function __construct(string $token = null, string $iss = string)
+    public function __construct($token = null, $iss = null)
     {
         if ($token != null) {
             $this->token = $token;
