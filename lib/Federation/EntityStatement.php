@@ -60,6 +60,7 @@ class EntityStatement
      * @param boolean $decoded if true returns JSON instead of JWS
      * @throws Exception
      * @return mixed
+     * @codeCoverageIgnore
      */
     public static function makeFromConfig(array $config, $json = false)
     {
@@ -139,6 +140,7 @@ class EntityStatement
      * @param string $token entity statement JWS token
      * @throws Exception
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function validate()
     {
@@ -170,6 +172,7 @@ class EntityStatement
      * @param EntityStatement $federation_entity_statement the federation entity statement containing policy
      * @throws Exception
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function applyPolicy(EntityStatement $federation_entity_statement)
     {

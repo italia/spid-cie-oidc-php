@@ -104,6 +104,24 @@ class EntityStatementTest extends TestCase
 
         $this->assertNotEquals($config, $es->getPayload());
         $this->assertEquals($new_config, $es->getPayload());
+
+        $method->invokeArgs($es, array(
+            'openid_provider',
+            'subject_types_supported',
+            'pairwise'
+         ));
+
+         $new_config = json_decode(json_encode(array(
+             "iss" => "https://iss",
+            "metadata" => array(
+                "openid_provider" => array(
+                    "subject_types_supported" => "pairwise"
+                )
+            )
+         )));
+
+         $this->assertNotEquals($config, $es->getPayload());
+         $this->assertEquals($new_config, $es->getPayload());
     }
 
     /**

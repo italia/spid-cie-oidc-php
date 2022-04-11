@@ -115,6 +115,7 @@ class AuthenticationEndpoint
      *  receive and process an authentication response
      *
      * @throws Exception
+     * @codeCoverageIgnore
      */
     public function callback()
     {
