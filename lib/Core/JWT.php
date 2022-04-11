@@ -320,6 +320,8 @@ class JWT
             new JWESerializer(),
         ]);
 
+        $headerCheckerManager = null;
+
         $jweLoader = new JWELoader(
             $serializerManager,
             $jweDecrypter,
