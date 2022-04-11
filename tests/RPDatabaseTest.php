@@ -14,6 +14,7 @@ class RPDatabaseTest extends TestCase
      * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::getFromStoreByURL
      * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::createRequest
      * @covers SPID_CIE_OIDC_PHP\OIDC\RP\Database::getRequest
+     * @runInSeparateProcess
      */
     public function test_Store()
     {
