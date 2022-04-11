@@ -186,7 +186,6 @@ class AuthenticationEndpointTest extends TestCase
         $config = json_decode(file_get_contents(__DIR__ . '/../config_sample/config.json'), true);
         $config['service_name'] = 'test';
         $database = new OP_Database(__DIR__ . '/tests.sqlite');
-        $endpoint = new AuthenticationEndpoint($config, $database);
 
         $_GET['state'] = '';
         $_GET['nonce'] = '';
@@ -194,7 +193,6 @@ class AuthenticationEndpointTest extends TestCase
         $_GET['response_type'] = 'code';
         $_GET['client_id'] = '2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb';
         $_GET['redirect_uri'] = '';
-
         $config['production'] = false;
         $endpoint = new AuthenticationEndpoint($config, $database);
         $this->expectExceptionMessage('invalid_redirect_uri');
@@ -215,7 +213,6 @@ class AuthenticationEndpointTest extends TestCase
         $config = json_decode(file_get_contents(__DIR__ . '/../config_sample/config.json'), true);
         $config['service_name'] = 'test';
         $database = new OP_Database(__DIR__ . '/tests.sqlite');
-        $endpoint = new AuthenticationEndpoint($config, $database);
 
         $_GET['state'] = '';
         $_GET['nonce'] = '';
@@ -225,7 +222,6 @@ class AuthenticationEndpointTest extends TestCase
         $_GET['redirect_uri'] = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
 
         $config['production'] = false;
-
         $endpoint = new AuthenticationEndpoint($config, $database);
 
         try {
@@ -235,6 +231,31 @@ class AuthenticationEndpointTest extends TestCase
         }
 
         $this->assertTrue(true);
+    }
+
+    public function test_process_not_production2()
+    {
+        // clean old tests
+        if (file_exists("tests/tests.sqlite")) {
+            unlink("tests/tests.sqlite");
+        }
+
+        $config = json_decode(file_get_contents(__DIR__ . '/../config_sample/config.json'), true);
+        $config['service_name'] = 'test';
+        $database = new OP_Database(__DIR__ . '/tests.sqlite');
+
+        $_GET['state'] = '';
+        $_GET['nonce'] = '';
+        $_GET['scope'] = 'openid profile';
+        $_GET['response_type'] = '';
+        $_GET['client_id'] = '2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb';
+        $_GET['redirect_uri'] = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
+
+        $config['production'] = false;
+        $endpoint = new AuthenticationEndpoint($config, $database);
+
+        $this->expectExceptionMessage('invalid_request');
+        $endpoint->process();
     }
 
 
@@ -249,7 +270,7 @@ class AuthenticationEndpointTest extends TestCase
 
         $_POST['name'] = 'NAME';
         $_SERVER['HTTP_HOST'] = 'HOST';
-        $_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST'];
+        $_SERVER['HTTP_ORIGIN'] = 'https://' . $_SERVER['HTTP_HOST'];
 
         try {
             $endpoint->callback();
