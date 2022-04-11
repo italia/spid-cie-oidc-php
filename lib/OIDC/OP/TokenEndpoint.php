@@ -75,6 +75,7 @@ class TokenEndpoint
         try {
             $credential = $this->getBasicAuthCredential();
             if ($credential != false && is_array($credential)) {
+                // @codeCoverageIgnoreStart
                 $this->database->log("TokenEndpoint", "TOKEN Credential", $credential);
                 $username = $credential['username'];
                 $password = $credential['password'];
@@ -91,6 +92,7 @@ class TokenEndpoint
                         $client_secret = $password;
                         break;
                 }
+                // @codeCoverageIgnoreEnd
             }
             $this->database->log("TokenEndpoint", "TOKEN REQUEST CREDENTIAL", array(
                 "client_id" => $client_id,
@@ -99,10 +101,10 @@ class TokenEndpoint
 
             $this->database->log("TokenEndpoint", "TOKEN REQUEST", $_POST);
 
-            if (strpos($scope, 'openid') < 0) {
+            if (!str_contains($scope, 'openid')) {
                 throw new \Exception('invalid_scope');
             }
-            if (strpos($scope, 'profile') < 0) {
+            if (!str_contains($scope, 'profile')) {
                 throw new \Exception('invalid_scope');
             }
             if ($grant_type != 'authorization_code') {
@@ -155,6 +157,7 @@ class TokenEndpoint
 
     /**
      * Get username e password of Basic Authentication
+     * @codeCoverageIgnore
      */
     private function getBasicAuthCredential()
     {
@@ -174,6 +177,7 @@ class TokenEndpoint
 
     /**
      * Get header Authorization
+     * @codeCoverageIgnore
      */
     private function getAuthorizationHeader()
     {

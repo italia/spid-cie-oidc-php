@@ -64,11 +64,13 @@ class CertsEndpoint
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($jwk);
         } catch (\Exception $e) {
+            // @codeCoverageIgnoreStart
             http_response_code(400);
             if (!$this->config['production']) {
                 echo "ERROR: " . $e->getMessage();
                 $this->database->log("CertsEndpoint", "CERTS_ERR", $e->getMessage());
             }
+            // @codeCoverageIgnoreEnd
         }
     }
 }

@@ -58,6 +58,7 @@ class SessionEndEndpoint
         $post_logout_redirect_uri = $_GET['post_logout_redirect_uri'];
 
         if ($id_token_hint) {
+            // @codeCoverageIgnoreStart
             if ($this->database->checkIdToken($id_token_hint)) {
                 $request = $this->database->getRequestByIdToken($id_token_hint);
                 $this->database->deleteRequest($request['req_id']);
@@ -68,6 +69,7 @@ class SessionEndEndpoint
                     $this->database->log("SessionEndEndpoint", "SESSION_END_ERR", "id_token not valid");
                 }
             }
+            // @codeCoverageIgnoreEnd
         } else {
             $client_id = null;
             $clients = $this->config['op_proxy_clients'];
@@ -85,11 +87,13 @@ class SessionEndEndpoint
                     $this->database->deleteRequest($req_id);
                 }
             } else {
+                // @codeCoverageIgnoreStart
                 http_response_code(400);
                 if (!$this->config['production']) {
                     echo "ERROR: client_id not found for post_logout_redirect_uri";
                     $this->database->log("SessionEndEndpoint", "SESSION_END_ERR", "client_id not found for post_logout_redirect_uri");
                 }
+                // @codeCoverageIgnoreEnd
             }
         }
 
@@ -97,11 +101,15 @@ class SessionEndEndpoint
 
         $logout_url = '/';
         if ($this->config['service_name'] != '') {
+            // @codeCoverageIgnoreStart
             $logout_url = '/' . $this->config['service_name'] . '/';
+            // @codeCoverageIgnoreEnd
         }
 
         $logout_url .= 'oidc/rp/' . $request['client_id'] . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
 
+        // @codeCoverageIgnoreStart
         header('Location: ' . $logout_url);
+        // @codeCoverageIgnoreEnd
     }
 }
