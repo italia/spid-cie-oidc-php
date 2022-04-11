@@ -35,7 +35,8 @@ class Logger
      *
      * @param array $config base configuration
      * @throws Exception
-     * @return Database
+     * @return Logger
+     * @codeCoverageIgnore
      */
     public function __construct(array $config = null)
     {
@@ -54,6 +55,7 @@ class Logger
      * @param int $priority on wichh save the log
      * @throws Exception
      * @return boolean result of save
+     * @codeCoverageIgnore
      */
     public function log(string $tag, string $value, $object = null, int $priority = LOG_NOTICE)
     {
