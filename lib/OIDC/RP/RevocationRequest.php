@@ -61,6 +61,7 @@ class RevocationRequest
      * @param string $token token to be revoked
      * @throws Exception
      * @return object response returned from revocation
+     * @codeCoverageIgnore
      */
     public function send(string $revocation_endpoint, string $token)
     {
