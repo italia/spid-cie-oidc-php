@@ -260,11 +260,18 @@ class AuthenticationEndpointTest extends TestCase
 
         $endpoint->process();
         $this->assertTrue(true);
+
+        $_GET['redirect_uri'] = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
+        $endpoint = new AuthenticationEndpoint($config, $database);
+
+        $endpoint->process();
+        $this->assertTrue(true);
     }
 
 
     /**
      * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::callback
+     * @runInSeparateProcess
      */
     public function test_callback()
     {

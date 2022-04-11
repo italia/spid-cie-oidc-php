@@ -76,6 +76,7 @@ class TrustChain
      * @param boolean $apply_policy if true applies trust anchor authorities policies
      * @throws Exception
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function resolve($apply_policy = true)
     {
