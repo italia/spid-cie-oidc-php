@@ -76,6 +76,7 @@ class UserinfoEndpoint
 
     /**
      * Get hearder Authorization
+     * @codeCoverageIgnore
      */
     private function getAuthorizationHeader()
     {
@@ -101,6 +102,7 @@ class UserinfoEndpoint
 
     /**
      * get access token from header
+     * @codeCoverageIgnore
      */
     private function getBearerToken()
     {

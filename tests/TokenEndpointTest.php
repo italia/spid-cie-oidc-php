@@ -55,6 +55,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_invalid_scope2()
     {
         // clean old tests
@@ -97,6 +101,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_invalid_scope3()
     {
         // clean old tests
@@ -139,6 +147,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_invalid_request()
     {
         // clean old tests
@@ -181,6 +193,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_invalid_client()
     {
         // clean old tests
@@ -223,6 +239,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_invalid_redirect_uri()
     {
         // clean old tests
@@ -265,6 +285,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_invalid_code()
     {
         // clean old tests
@@ -307,6 +331,10 @@ class TokenEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\TokenEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_valid()
     {
         // clean old tests

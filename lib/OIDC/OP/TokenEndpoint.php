@@ -205,6 +205,7 @@ class TokenEndpoint
 
     /**
      * Make ID Token
+     * @codeCoverageIgnore
      */
     private function makeIdToken(string $subject, string $exp_time, string $iss, string $aud, string $nonce, string $jwk_pem): string
     {
