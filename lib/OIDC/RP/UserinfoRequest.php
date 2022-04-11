@@ -65,10 +65,12 @@ class UserinfoRequest
      * @param string $access_token access_token needed to access to userinfo endpoint
      * @throws Exception
      * @return object response returned from userinfo endpoint
+     * @codeCoverageIgnore
      */
     public function send(string $userinfo_endpoint, string $access_token)
     {
         // HOOK: pre_userinfo_request
+        // @codeCoverageIgnoreStart
         if ($this->hooks != null) {
             $hooks_pre = $this->hooks['pre_userinfo_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
@@ -81,8 +83,10 @@ class UserinfoRequest
                 }
             }
         }
+        // @codeCoverageIgnoreEnd
 
         $response = $this->http_client->get($userinfo_endpoint, ['headers' => [ 'Authorization' => 'Bearer ' . $access_token ]]);
+
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();
@@ -92,6 +96,7 @@ class UserinfoRequest
         $jwe = $response->getBody()->getContents();
 
         // HOOK: post_userinfo_request
+        // @codeCoverageIgnoreStart
         if ($this->hooks != null) {
             $hooks_pre = $this->hooks['post_userinfo_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
@@ -103,6 +108,7 @@ class UserinfoRequest
                 }
             }
         }
+        // @codeCoverageIgnoreEnd
 
         $file_key = $this->config['cert_private'];
         $jws = JWT::decryptJWE($jwe, $file_key);

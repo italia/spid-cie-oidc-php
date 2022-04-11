@@ -100,6 +100,7 @@ class IntrospectionRequest
 
         $response = $this->http_client->post($introspection_endpoint, [ 'form_params' => $data ]);
 
+        // @codeCoverageIgnoreStart
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();
@@ -107,6 +108,7 @@ class IntrospectionRequest
         }
 
         $this->response = json_decode((string) $response->getBody());
+        // @codeCoverageIgnoreEnd
 
         // Check Response
 

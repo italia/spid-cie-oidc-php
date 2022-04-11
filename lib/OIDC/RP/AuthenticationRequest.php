@@ -158,6 +158,7 @@ class AuthenticationRequest
      * @param string $nonce value for nonce to send with the request
      * @param string $state value for state to send with the request
      * @throws Exception
+     * @codeCoverageIgnore
      */
     public function send(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {

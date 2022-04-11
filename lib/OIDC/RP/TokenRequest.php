@@ -112,6 +112,7 @@ class TokenRequest
         }
 
         // HOOK: pre_token_request
+        // @codeCoverageIgnoreStart
         if ($this->hooks != null) {
             $hooks_pre = $this->hooks['pre_token_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
@@ -124,16 +125,20 @@ class TokenRequest
                 }
             }
         }
+        // @codeCoverageIgnoreEnd
 
         $response = $this->http_client->post($token_endpoint, [ 'form_params' => $data ]);
 
+        // @codeCoverageIgnoreStart
         $code = $response->getStatusCode();
         if ($code != 200) {
             $reason = $response->getReasonPhrase();
             throw new \Exception($reason);
         }
+        // @codeCoverageIgnoreEnd
 
         // HOOK: post_token_request
+        // @codeCoverageIgnoreStart
         if ($this->hooks != null) {
             $hooks_pre = $this->hooks['post_token_request'];
             if ($hooks_pre != null && is_array($hooks_pre)) {
@@ -146,6 +151,7 @@ class TokenRequest
                 }
             }
         }
+        // @codeCoverageIgnoreEnd
 
         $this->response = json_decode((string) $response->getBody());
 
@@ -159,6 +165,7 @@ class TokenRequest
      *
      * @throws Exception
      * @return object response returned from token request
+     * @codeCoverageIgnore
      */
     public function getResponse()
     {
@@ -170,6 +177,7 @@ class TokenRequest
      *
      * @throws Exception
      * @return string access_token returned from token request
+     * @codeCoverageIgnore
      */
     public function getAccessToken()
     {
@@ -182,6 +190,7 @@ class TokenRequest
      *
      * @throws Exception
      * @return string id_token returned from token request
+     * @codeCoverageIgnore
      */
     public function getIdToken()
     {
