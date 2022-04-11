@@ -17,7 +17,11 @@ class RPDatabaseTest extends TestCase
      */
     public function test_Store()
     {
-        $database = new Database("tests/tests_notexists.sqlite");
+        // clean old tests
+        if (file_exists("tests/tests.sqlite")) {
+            unlink("tests/tests.sqlite");
+        }
+
         $database = new Database("tests/tests.sqlite");
 
         $type = 'openid-federation';
