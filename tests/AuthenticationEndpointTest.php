@@ -225,9 +225,9 @@ class AuthenticationEndpointTest extends TestCase
         $_GET['redirect_uri'] = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
 
         $config['production'] = false;
-                
+
         $endpoint = new AuthenticationEndpoint($config, $database);
-        
+
         try {
             $endpoint->process();
         } catch (\Exception $e) {
@@ -236,7 +236,7 @@ class AuthenticationEndpointTest extends TestCase
 
         $this->assertTrue(true);
     }
-    
+
 
     /**
      * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::callback
@@ -246,6 +246,10 @@ class AuthenticationEndpointTest extends TestCase
         $config = json_decode(file_get_contents(__DIR__ . '/../config_sample/config.json'), true);
         $database = new OP_Database(__DIR__ . '/tests.sqlite');
         $endpoint = new AuthenticationEndpoint($config, $database);
+
+        $_POST['name'] = 'NAME';
+        $_SERVER['HTTP_HOST'] = 'HOST';
+        $_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST'];
 
         try {
             $endpoint->callback();
