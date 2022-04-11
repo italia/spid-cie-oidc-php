@@ -10,6 +10,7 @@ class LoggerTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\Logger
+     * @runInSeparateProcess
      */
     public function test_Logger()
     {

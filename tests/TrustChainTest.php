@@ -11,6 +11,7 @@ class TrustChainTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::TrustChain
+     * @runInSeparateProcess
      */
     public function test_TrustChain()
     {

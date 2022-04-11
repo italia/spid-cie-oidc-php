@@ -10,6 +10,7 @@ class JWTTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::getKeyJWK
+     * @runInSeparateProcess
      */
     public function test_getKeyJWK()
     {
@@ -19,6 +20,7 @@ class JWTTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::getJWKFromJSON
+     * @runInSeparateProcess
      */
     public function test_getJWKFromJSON()
     {
@@ -38,6 +40,7 @@ class JWTTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::getJWKSFromValues
+     * @runInSeparateProcess
      */
     public function test_getJWKSFromValues()
     {
@@ -56,6 +59,7 @@ class JWTTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::isValid
+     * @runInSeparateProcess
      */
     public function test_isValid()
     {
@@ -102,6 +106,7 @@ class JWTTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::isSignatureVerified
+     * @runInSeparateProcess
      */
     public function test_isSignatureVerified()
     {
@@ -132,6 +137,7 @@ class JWTTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\JWT::decryptJWE
+     * @runInSeparateProcess
      */
     public function test_decryptJWE()
     {

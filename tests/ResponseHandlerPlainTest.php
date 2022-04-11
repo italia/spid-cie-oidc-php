@@ -10,6 +10,7 @@ class ResponseHandlerPlainTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\ResponseHandlerPlain\ResponseHandlerPlain
+     * @runInSeparateProcess
      */
     public function test_ResponseHandlerPlain()
     {

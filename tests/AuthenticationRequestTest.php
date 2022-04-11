@@ -47,6 +47,10 @@ class AuthenticationRequestTest extends TestCase
         $this->assertStringStartsWith("https://op.org/auth?client_id=http://relying-party-php.org:8003/&response_type=code&scope=openid&code_challenge=a1Y-Z7sHPycP84FUZMgqhDyqVo6DdP5EUEXrLaTUge0&code_challenge_method=S256&nonce=NONCE&request=", $redirect_url);
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationRequest::send
+     * @runInSeparateProcess
+     */
     public function test_send()
     {
         // clean old tests

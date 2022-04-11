@@ -29,6 +29,7 @@ class OPDatabaseTest extends TestCase
      * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::exec
      * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::dump
      * @covers SPID_CIE_OIDC_PHP\OIDC\OP\Database::log
+     * @runInSeparateProcess
      */
     public function test_OPDatabase()
     {

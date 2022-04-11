@@ -275,6 +275,7 @@ class Database
      * @param string $table the name of the table to dump
      * @throws Exception
      * @return array result of the dump
+     * @codeCoverageIgnore
      */
     public function dump($table)
     {
@@ -294,6 +295,7 @@ class Database
      * @param string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
      * @throws Exception
      * @return array result of the save
+     * @codeCoverageIgnore
      */
     public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
     {

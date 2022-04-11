@@ -10,6 +10,7 @@ class FederationTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\Federation::isFederationSupported
+     * @runInSeparateProcess
      */
     public function test_isFederationSupported()
     {

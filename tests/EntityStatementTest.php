@@ -10,6 +10,7 @@ class EntityStatementTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::makeFromConfig
+     * @runInSeparateProcess
      */
     public function test_makeFromConfig()
     {
@@ -21,6 +22,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierValue
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierValue()
     {
@@ -65,6 +67,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierAdd
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierAdd()
     {
@@ -126,6 +129,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierDefault
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierDefault()
     {
@@ -181,6 +185,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierOneOf
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierOneOf()
     {
@@ -234,6 +239,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierSubsetOf
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierSubsetOf()
     {
@@ -298,6 +304,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierSupersetOf
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierSupersetOf()
     {
@@ -362,6 +369,7 @@ class EntityStatementTest extends TestCase
 
     /**
      * @covers SPID_CIE_OIDC_PHP\Federation\EntityStatement::applyPolicyModifierEssential
+     * @runInSeparateProcess
      */
     public function test_applyPolicyModifierEssential()
     {

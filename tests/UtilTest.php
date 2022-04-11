@@ -10,6 +10,7 @@ class UtilTest extends TestCase
 {
     /**
      * @covers SPID_CIE_OIDC_PHP\Core\Util
+     * @runInSeparateProcess
      */
     public function test_Util()
     {
