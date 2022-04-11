@@ -69,7 +69,7 @@ class AuthenticationEndpoint
             if (!str_contains($scope, 'openid')) {
                 throw new \Exception('invalid_scope');
             }
-            if (strpos($scope, 'profile') < 0) {
+            if (!str_contains($scope, 'profile')) {
                 throw new \Exception('invalid_scope');
             }
             if ($response_type != 'code') {
