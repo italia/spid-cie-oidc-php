@@ -36,6 +36,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_invalid_scope2()
     {
         // clean old tests
@@ -59,6 +63,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_invalid_scope3()
     {
         // clean old tests
@@ -83,6 +91,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_invalid_request()
     {
         // clean old tests
@@ -106,6 +118,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_invalid_client()
     {
         // clean old tests
@@ -129,6 +145,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_invalid_redirect_uri1()
     {
         // clean old tests
@@ -152,6 +172,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_invalid_redirect_uri2()
     {
         // clean old tests
@@ -177,7 +201,10 @@ class AuthenticationEndpointTest extends TestCase
         $endpoint->process();
     }
 
-
+    /**
+     * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::process
+     * @runInSeparateProcess
+     */
     public function test_process_not_production()
     {
         // clean old tests
@@ -198,9 +225,9 @@ class AuthenticationEndpointTest extends TestCase
         $_GET['redirect_uri'] = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
 
         $config['production'] = false;
-
+                
         $endpoint = new AuthenticationEndpoint($config, $database);
-
+        
         try {
             $endpoint->process();
         } catch (\Exception $e) {
@@ -209,7 +236,7 @@ class AuthenticationEndpointTest extends TestCase
 
         $this->assertTrue(true);
     }
-
+    
 
     /**
      * @covers SPID_CIE_OIDC_PHP\OIDC\OP\AuthenticationEndpoint::callback
