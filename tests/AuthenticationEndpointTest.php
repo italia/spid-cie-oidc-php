@@ -24,13 +24,38 @@ class AuthenticationEndpointTest extends TestCase
         $database = new OP_Database(__DIR__ . '/tests.sqlite');
         $endpoint = new AuthenticationEndpoint($config, $database);
 
-        // wordpress example project
-        $_GET['scope']          = 'openid profile';
-        $_GET['response_type']  = 'code';
-        $_GET['client_id']      = '2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb';
-        $_GET['redirect_uri']   = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
         $_GET['state']          = '';
         $_GET['nonce']          = '';
+
+        $this->expectExceptionMessage('invalid_scope');
+        $endpoint->process();
+
+        $_GET['scope'] = 'openid';
+        $this->expectExceptionMessage('invalid_scope');
+        $endpoint->process();
+
+        $_GET['scope'] = 'profile';
+        $this->expectExceptionMessage('invalid_scope');
+        $endpoint->process();
+
+        $_GET['scope'] = 'openid profile';
+        $this->expectExceptionMessage('invalid_request');
+        $endpoint->process();
+
+        $_GET['response_type']  = 'code';
+        $this->expectExceptionMessage('invalid_client');
+        $endpoint->process();
+
+        // wordpress example project
+        $_GET['client_id']      = '2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb';
+        $this->expectExceptionMessage('invalid_redirect_uri');
+        $endpoint->process();
+
+        // wordpress example project
+        $_GET['redirect_uri']   = 'http://relying-party-wordpress.org:8004/wp-admin/admin-ajax.php?action=openid-connect-authorize';
+        $this->expectExceptionMessage('invalid_redirect_uri');
+        $endpoint->process();
+
 
         try {
             $endpoint->process();

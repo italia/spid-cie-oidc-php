@@ -66,7 +66,7 @@ class AuthenticationEndpoint
         $this->database->log("AuthenticationEndpoint", "AUTH", $_GET);
 
         try {
-            if (strpos($scope, 'openid') < 0) {
+            if (!str_contains($scope, 'openid')) {
                 throw new \Exception('invalid_scope');
             }
             if (strpos($scope, 'profile') < 0) {
