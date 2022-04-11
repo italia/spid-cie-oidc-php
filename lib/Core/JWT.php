@@ -33,6 +33,7 @@ use Jose\Component\Signature\JWSLoader;
 use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
 use Jose\Component\Signature\Serializer\CompactSerializer as JWSSerializer;
+use Jose\Component\Encryption\JWEBuilder;
 use Jose\Component\Encryption\JWEDecrypter;
 use Jose\Component\Encryption\JWELoader;
 use Jose\Component\Encryption\Serializer\JWESerializerManager;
@@ -143,11 +144,11 @@ class JWT
     /**
      *  get a public cert JWK object from an object
      *
-     * @param object $object object containing JWK values
+     * @param array $values array containing JWK values
      * @throws Exception
      * @return object JWK object
      */
-    public static function getJWKSFromValues(object $values)
+    public static function getJWKSFromValues(array $values)
     {
         $jwks_obj = JWKSet::createFromKeyData($values);
         return $jwks_obj;
@@ -241,6 +242,55 @@ class JWT
 
         return $isValid;
     }
+
+    /**
+     *  encrypt the token and return the JWE token
+     *
+     * @param array $data the data to be encrypted
+     * @param string $file path to PEM file of the public key to wich encrypt the JWE
+     * @throws Exception
+     * @return string the JWE token
+     */
+    public static function encrypt(array $data, string $file)
+    {
+        $payload = json_encode($data);
+        $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => 'enc']);
+
+        // The key encryption algorithm manager with the A256KW algorithm.
+        $keyEncryptionAlgorithmManager = self::getKeyEncAlgManager();
+
+        // The content encryption algorithm manager with the A256CBC-HS256 algorithm.
+        $contentEncryptionAlgorithmManager = self::getContentEncAlgManager();
+
+        // The compression method manager with the DEF (Deflate) method.
+        $compressionMethodManager = new CompressionMethodManager([
+           new Deflate(),
+        ]);
+
+        // We instantiate our JWE Builder.
+        $jweBuilder = new JWEBuilder(
+            $keyEncryptionAlgorithmManager,
+            $contentEncryptionAlgorithmManager,
+            $compressionMethodManager
+        );
+
+        $jwe = $jweBuilder
+           ->create()
+           ->withPayload($payload)
+           ->withSharedProtectedHeader([
+               'alg' => 'RSA-OAEP',
+               'enc' => 'A256CBC-HS512',
+               'zip' => 'DEF'
+           ])
+           ->addRecipient($jwk_obj)
+           ->build();
+
+        $serializer = new JWESerializer();
+        $token = $serializer->serialize($jwe, 0);
+
+        return $token;
+    }
+
 
     /**
      *  descrypts the token and return the embedded JWS
