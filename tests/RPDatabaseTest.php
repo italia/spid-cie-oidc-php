@@ -17,6 +17,7 @@ class RPDatabaseTest extends TestCase
      */
     public function test_Store()
     {
+        $database = new Database("tests/tests_notexists.sqlite");
         $database = new Database("tests/tests.sqlite");
 
         $type = 'openid-federation';
@@ -34,7 +35,8 @@ class RPDatabaseTest extends TestCase
         $iat = $object['iat'];
         $exp = $object['exp'];
 
-        $database->saveToStore($iss, $type, $url, $iat, $exp, $object);
+        $id = $database->saveToStore($iss, $type, $url, $iat, $exp, $object);
+        $this->assertNotNull($id);
 
         $object2 = $database->getFromStore('https://iss_not_saved', $type);
         $this->assertNull($object2);
