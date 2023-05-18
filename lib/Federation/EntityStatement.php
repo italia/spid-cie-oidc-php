@@ -78,7 +78,7 @@ class EntityStatement
             "authority_hints" => array(
                 $config['authority_hint']
             ),
-            "trust_marks" => array(),
+            "trust_marks" => array($config['trust_mark']),
             "metadata" => array(
                 "openid_relying_party" => array(
                     "application_type" => "web",
