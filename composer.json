@@ -30,7 +30,7 @@
         "php": "~7.4.1",
         "ext-mbstring": "*",
         "ext-gmp": "*",
-        "lib-openssl": "^1.1.1",
+        "lib-openssl": ">=1.1.1",
         "symfony/filesystem": "^5.2.6",
         "italia/spid-sp-access-button": "^1.0.0",
         "bcosca/fatfree": "^3.7",
