@@ -72,7 +72,8 @@ class Setup
         $_rp_client_name = "Name of Relying Party";
         $_rp_authority_hint = "http://trust-anchor.org:8000/";
         $_rp_contact = "info@relying-party-php.org";
-
+        $_rp_trust_mark = "";
+        
         $_rp_url = "http://relying-party-php.org:8003";
         $_rp_country_name = "IT";
         $_rp_locality_name = "Rome";
@@ -397,7 +398,8 @@ class Setup
         // TODO: let insert from user
         $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
         $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('name', 'familyName', 'fiscalNumber');
-
+        $config['rp_proxy_clients']['default']['trust_mark'] = $_rp_trust_mark;
+        
         $_rp_redirect_uri = '/' . $config['service_name'] . '/test.php';
 
         if (!isset($config['rp_proxy_clients']['default']['redirect_uri'])) {

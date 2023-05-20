@@ -11,18 +11,18 @@ ENV DEBCONF_NOWARNINGS=yes
 RUN \
     apt-get update && \
     apt-get -yq install \
-        wget \
-        unzip \
-        curl \
-        git \
-        apache2 \
-        libapache2-mod-php \
-        php-sqlite3 \
-        php-gmp \
-        php-mbstring \
-        php-curl \
-        php-xml \
-        php-zip
+    wget \
+    unzip \
+    curl \
+    git \
+    apache2 \
+    libapache2-mod-php \
+    php-sqlite3 \
+    php-gmp \
+    php-mbstring \
+    php-curl \
+    php-xml \
+    php-zip
 
 # Apache conf - set default port to 8004
 RUN sed -i  's/:80/:8004/g' /etc/apache2/sites-available/000-default.conf
@@ -40,12 +40,12 @@ RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
     php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Prepare wordpress
-COPY examples/wordpress/wp-config.php /home/
-COPY examples/wordpress/.ht.sqlite /home/
+COPY ./wp-config.php /home/
+COPY ./.ht.sqlite /home/
 
 # Setup wordpress
 RUN cd /home && \
-    wget https://wordpress.org/latest.tar.gz -O wordpress.tar.gz && \
+    wget https://wordpress.org/wordpress-5.9.tar.gz -O wordpress.tar.gz && \
     wget https://downloads.wordpress.org/plugin/sqlite-integration.1.8.1.zip -O sqlite-integration.zip && \
     wget https://github.com/oidc-wp/openid-connect-generic/archive/refs/tags/3.9.0.zip -O openid-connect-generic.zip && \
     wget https://raw.githubusercontent.com/italia/design-wordpress-theme-italiaWP/master/italiawp.zip -O italiawp.zip && \

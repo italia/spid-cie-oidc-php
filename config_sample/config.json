@@ -6,6 +6,7 @@
 
     "rp_proxy_clients": {
         "default": {
+            "trust_mark": "",
             "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
             "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
             "client_id": "http://relying-party-php.org:8003/",
