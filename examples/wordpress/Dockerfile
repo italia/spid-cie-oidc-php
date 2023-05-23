@@ -40,8 +40,8 @@ RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
     php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Prepare wordpress
-COPY ./wp-config.php /home/
-COPY ./.ht.sqlite /home/
+COPY examples/wordpress/wp-config.php /home/
+COPY examples/wordpress/.ht.sqlite /home/
 
 # Setup wordpress
 RUN cd /home && \
