@@ -30,6 +30,8 @@
         "php": "^7.4 || ^8.0",
         "ext-mbstring": "*",
         "ext-gmp": "*",
+        "ext-openssl": "*",
+        "ext-readline": "*",
         "lib-openssl": ">=1.1.1",
         "symfony/filesystem": "^5.2.6",
         "italia/spid-sp-access-button": "^1.0.0",
