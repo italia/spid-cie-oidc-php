@@ -10,9 +10,16 @@
             "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
             "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
             "client_id": "http://relying-party-php.org:8003/",
+            "application_type": "web",
+            "client_registration_types": ["automatic"],
             "client_name": "Relying Party PHP",
             "authority_hint": "http://trust-anchor.org:8000/", 
             "contact": "info@relying-party-php.org",
+            "redirect_uri": "http://relying-party-php.org:8003/oidc/redirect",
+            "subject_type": "pairwise",
+            "scope": "openid",
+            "code_challenge_method": "S256",
+            "prompt": "consent login",
             "is_pa": true,
             "code": "ipa",
             "code_type": "IPACode",
@@ -23,7 +30,8 @@
             "telephone": "+3912345678",
             "requested_acr": [
                 2,
-                1
+                "https://www.spid.gov.it/SpidL1",
+                "http://eidas.europa.eu/LoA/low"
             ],
             "spid_user_attributes": [
                 "name",

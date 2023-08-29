@@ -81,17 +81,17 @@ class EntityStatement
             "trust_marks" => array($config['trust_mark']),
             "metadata" => array(
                 "openid_relying_party" => array(
-                    "application_type" => "web",
-                    "client_registration_types" => array( "automatic" ),
+                    "application_type" => $config['application_type'] ?? "web",
+                    "client_registration_types" => $config['client_registration_types'] ?? array( "automatic" ),
                     "client_name" => $config['client_name'],
                     "contacts" => array( $config['contact'] ),
                     "grant_types" => array( "authorization_code" ),
                     "jwks" => array(
                         "keys" => array( $crt_jwk )
                     ),
-                    "redirect_uris" => array( $config['client_id'] . '/oidc/redirect' ),
+                    "redirect_uris" => array( $config['redirect_uri'] ?? ($config['client_id'] . '/oidc/redirect') ),
                     "response_types" => array( "code" ),
-                    "subject_type" => "pairwise"
+                    "subject_type" => $config['subject_type'] ?? "pairwise"
                 )
             )
         );

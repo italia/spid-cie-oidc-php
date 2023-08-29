@@ -64,16 +64,20 @@ class AuthenticationRequest
     public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
         $client_id = $this->config['client_id'];
-        $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
-        if ($this->config['service_name'] != '') {
-            $redirect_uri .= $this->config['service_name'] . '/';
+        if (!empty($this->config['redirect_uri'])) {
+            $redirect_uri = $this->config['redirect_uri'];
+        } else {
+            $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
+            if ($this->config['service_name'] != '') {
+                $redirect_uri .= $this->config['service_name'] . '/';
+            }
+            $redirect_uri .= 'oidc/rp/redirect';
         }
-        $redirect_uri .= 'oidc/rp/redirect';
         $response_type = 'code';
-        $scope = 'openid';
+        $scope = $config['scope'] ?? 'openid';
         $code_challenge = Util::getCodeChallenge($code_verifier);
-        $code_challenge_method = 'S256';
-        $prompt = 'consent login';
+        $code_challenge_method = $config['code_challenge_method'] ?? 'S256';
+        $prompt = $config['prompt'] ?? 'consent login';
 
         $acr_values = array();
 
@@ -87,6 +91,7 @@ class AuthenticationRequest
         if (in_array(1, $acr)) {
             $acr_values[] = "https://www.spid.gov.it/SpidL1";
         }
+        $acr_values = array_unique(array_merge($acr_values, array_diff($acr, [3, 2, 1])));
 
         $userinfo_claims = array();
         foreach ($user_attributes as $a) {
