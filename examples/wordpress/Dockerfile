@@ -68,7 +68,7 @@ RUN chown -R www-data:www-data /home/wordpress
 # Create symlink
 RUN rm -Rf /var/www/html && ln -s /home/wordpress /var/www/html
 
-WORKDIR home/wordpress
+WORKDIR /home/wordpress
 
 EXPOSE 80
 ENTRYPOINT ["/bin/sh", "-c", "echo WEB SERVER STARTED && apache2ctl -D FOREGROUND"]

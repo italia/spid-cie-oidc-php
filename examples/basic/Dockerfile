@@ -55,7 +55,7 @@ RUN cd /var/www && \
 # RUN apt-get clean && apt-get autoremove -y
 
 #change working directory to root
-WORKDIR var/www/spid-cie-oidc-php
+WORKDIR /var/www/spid-cie-oidc-php
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www
