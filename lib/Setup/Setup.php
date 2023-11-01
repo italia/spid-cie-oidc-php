@@ -70,7 +70,7 @@ class Setup
 
         $_rp_client_id = "http://relying-party-php.org:8003";
         $_rp_client_name = "Name of Relying Party";
-        $_rp_authority_hint = "http://trust-anchor.org:8000/";
+        $_rp_authority_hint = "http://trust-anchor.org:8000";
         $_rp_contact = "info@relying-party-php.org";
         $_rp_trust_mark = "";
 
