@@ -164,7 +164,7 @@ class TrustChain
 
             if ($code != 200) {
                 $this->database->log("TrustChain", "failed fetching configuration for " . $this->leaf, $reason, "ERROR");
-                throw new \Exception("Unable to trust " . $this->leaf, $reason . " - " . $reason);
+                throw new \Exception("Unable to trust " . $this->leaf. ' - '. $reason . " - " . $reason);
             }
 
             $federation_entity_statement_token = (string) $response->getBody();
