@@ -26,10 +26,10 @@
                 1
             ],
             "spid_user_attributes": [
-                "name",
-                "familyName",
+                "given_name",
+                "family_name",
                 "email",
-                "fiscalNumber"
+                "https://attributes.eid.gov.it/fiscal_number"
             ],
             "redirect_uri": "http://relying-party-php.org:8003/test.php",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
@@ -54,10 +54,10 @@
                 1
             ],
             "spid_user_attributes": [
-                "name",
-                "familyName",
+                "given_name",
+                "family_name",
                 "email",
-                "fiscalNumber"
+                "https://attributes.eid.gov.it/fiscal_number"
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
@@ -82,10 +82,10 @@
                 1
             ],
             "spid_user_attributes": [
-                "name",
-                "familyName",
+                "given_name",
+                "family_name",
                 "email",
-                "fiscalNumber"
+                "https://attributes.eid.gov.it/fiscal_number"
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"

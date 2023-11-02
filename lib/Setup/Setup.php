@@ -397,7 +397,7 @@ class Setup
 
         // TODO: let insert from user
         $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
-        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('name', 'familyName', 'fiscalNumber');
+        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('given_name', 'family_name', 'https://attributes.eid.gov.it/fiscal_number');
         $config['rp_proxy_clients']['default']['trust_mark'] = $_rp_trust_mark;
 
         $_rp_redirect_uri = '/' . $config['service_name'] . '/test.php';

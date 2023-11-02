@@ -90,7 +90,7 @@ class AuthenticationRequest
 
         $userinfo_claims = array();
         foreach ($user_attributes as $a) {
-            $userinfo_claims["https://attributes.spid.gov.it/" . $a] = null;
+            $userinfo_claims[$a] = null;
         }
 
         $claims = array(

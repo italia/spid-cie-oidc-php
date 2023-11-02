@@ -32,10 +32,10 @@ class AuthenticationRequestTest extends TestCase
         $authorization_endpoint = "https://op.org/auth";
         $acr = array(3, 2, 1);
         $user_attributes = array(
-            "name",
-            "familyName",
+            "given_name",
+            "family_name",
             "email",
-            "fiscalNumber"
+            "https://attributes.eid.gov.it/fiscal_number"
         );
 
         $code_verifier = "VERIFIER";
@@ -68,10 +68,10 @@ class AuthenticationRequestTest extends TestCase
         $authorization_endpoint = "https://op.org/auth";
         $acr = array(3, 2, 1);
         $user_attributes = array(
-            "name",
-            "familyName",
+            "given_name",
+            "family_name",
             "email",
-            "fiscalNumber"
+            "https://attributes.eid.gov.it/fiscal_number"
         );
 
         $code_verifier = "VERIFIER";

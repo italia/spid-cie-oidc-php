@@ -12,7 +12,9 @@ RUN \
     apt-get update && \
     apt-get -yq install \
         curl \
-        git \
+        git \ 
+        sqlite3 \
+        vim \
         apache2 \
         libapache2-mod-php \
         php-sqlite3 \

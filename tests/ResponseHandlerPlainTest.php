@@ -16,8 +16,8 @@ class ResponseHandlerPlainTest extends TestCase
     {
         $config = json_decode(file_get_contents(__DIR__ . '/../config/config.json'), true);
         $responseHandlerPlain = new ResponseHandlerPlain($config);
-        $this->expectOutputString("<form name='spidauth' action='http://127.0.0.1' method='POST'><input type='hidden' name='name' value='Name' /><input type='hidden' name='familyName' value='Family Name' /><input type='hidden' name='state' value='state' /></form><script type='text/javascript'>  document.spidauth.submit();</script>");
-        $responseHandlerPlain->sendResponse('http://127.0.0.1', (object)["name" => "Name", "familyName" => "Family Name"], 'state');
+        $this->expectOutputString("<form name='spidauth' action='http://127.0.0.1' method='POST'><input type='hidden' name='given_name' value='Name' /><input type='hidden' name='family_name' value='Family Name' /><input type='hidden' name='state' value='state' /></form><script type='text/javascript'>  document.spidauth.submit();</script>");
+        $responseHandlerPlain->sendResponse('http://127.0.0.1', (object)["given_name" => "Name", "family_name" => "Family Name"], 'state');
         $this->assertTrue(true);
     }
 }

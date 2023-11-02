@@ -71,15 +71,14 @@ class Metadata
             ),
             "claims_supported" => array(
                 "sub",
-                "spidCode",
-                "name",
-                "familyName",
-                "placeOfBirth",
-                "countyOfBirth",
-                "dateOfBirth",
+                "https://attributes.eid.gov.it/spid_code",
+                "given_name",
+                "family_name",
+                "place_of_birth",
+                "birthdate",
                 "gender",
-                "fiscalNumber",
-                "mobilePhone",
+                "https://attributes.eid.gov.it/fiscal_number",
+                "phone_number",
                 "email"
             )
         );
