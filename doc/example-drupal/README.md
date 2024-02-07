@@ -85,7 +85,7 @@ Now navigate to the endpoint that shows the openid federation configuration of t
 
 Please, take note of the keys field value in the json, you will need it later in the onboarding phase.
 
-Now you should be able to navigate the TA admin panel at the following url: http://trust-anchor.org:8000admin.
+Now you should be able to navigate the TA admin panel at the following url: http://trust-anchor.org:8000/admin.
 Please enter the admin credentials, and you will be presented with the TA admin panel main page.
 
 The onboarding process can be summarized as follows:
