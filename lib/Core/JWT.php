@@ -114,31 +114,47 @@ class JWT
      * @throws Exception
      * @return object JWK object
      */
-    public static function getCertificateJWK(string $file, string $use = 'sig')
+    public static function getCertificateJWK($file, string $use = 'sig')
     {
-        $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => $use]);
+        if($use=='sig+enc') {
 
-        // fix \n json_encode issue
-        $x5c    = $jwk_obj->get('x5c')[0];
-        $x5c    = preg_replace("/\s+/", "", $x5c);
+            $file_sig = is_array($file)? $file[0]: $file;
+            $file_enc = is_array($file)? $file[1]: $file;
 
-        $x5cData = openssl_x509_parse(file_get_contents($file), false);
-        $organizationIdentifier = $x5cData['issuer']['organizationIdentifier'];
-        $serialNumber = $x5cData['serialNumber'];
-        $kid = hash('sha256', $organizationIdentifier . '.' . $serialNumber);
+            $jwk_sig = JWT::getCertificateJWK($file_sig, 'sig');
+            $jwk_enc = JWT::getCertificateJWK($file_enc, 'enc');
 
-        $jwk = array(
-            'kid'       => $kid,
-            'kty'       => $jwk_obj->get('kty'),
-            'n'         => $jwk_obj->get('n'),
-            'e'         => $jwk_obj->get('e'),
-            'x5c'       => $x5c,
-            'x5t'       => $jwk_obj->get('x5t'),
-            'x5t#256'   => $jwk_obj->get('x5t#256'),
-            'use'       => $jwk_obj->get('use')
-        );
+            return array($jwk_sig, $jwk_enc);
 
-        return $jwk;
+        } else {
+
+            $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => $use]);
+
+            // fix \n json_encode issue
+            $x5c    = $jwk_obj->get('x5c')[0];
+            $x5c    = preg_replace("/\s+/", "", $x5c);
+
+            $x5cData = openssl_x509_parse(file_get_contents($file), false);
+            $organizationIdentifier = $x5cData['issuer']['organizationIdentifier'];
+            $serialNumber = $x5cData['serialNumber'];
+            $kid = hash('sha256', $organizationIdentifier . '.' . $serialNumber);
+
+            $jwk = array(
+                'kty'       => $jwk_obj->get('kty'),
+                'e'         => $jwk_obj->get('e'),
+                'use'       => $jwk_obj->get('use'),
+                'kid'       => $kid,
+                'alg'       => ($use=='enc')? "RSA-OAEP" : "RS256", // useful???
+                'n'         => $jwk_obj->get('n'),
+                //'x5c'       => $x5c,
+                //'x5t'       => $jwk_obj->get('x5t'),
+                //'x5t#256'   => $jwk_obj->get('x5t#256'),
+            );
+
+            //if($use=='enc') unset($jwk['alg']);
+
+            return $jwk;
+        }
     }
 
     /**
