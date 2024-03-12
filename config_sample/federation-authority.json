@@ -2,6 +2,12 @@
     "https://registry.spid.gov.it": {
         "organization_name": "Federazione SPID"
     },
+    "https://preprod.oidc.registry.servizicie.interno.gov.it": {
+        "organization_name": "Federazione preprod CIE"
+    },
+    "https://oidc.registry.servizicie.interno.gov.it": {
+        "organization_name": "Federazione CIE"
+    },
     "http://127.0.0.1:8000": {
         "organization_name": "Federazione test local"
     },

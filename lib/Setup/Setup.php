@@ -128,6 +128,8 @@ class Setup
             }
         }
 
+        $config['default_domain'] = 'default';
+
         if (!isset($config['rp_proxy_clients'])) {
             $config['rp_proxy_clients'] = array();
         }
@@ -171,15 +173,16 @@ class Setup
             }
         }
 
-        if (!isset($config['rp_proxy_clients']['default']['contact'])) {
+        if (!isset($config['rp_proxy_clients']['default']['contacts'])) {
             echo "Please insert contact email (" .
             $colors->getColoredString($_rp_contact, "green") . "): ";
-            $config['rp_proxy_clients']['default']['contact'] = str_replace("'", "\'", readline());
+            $config['rp_proxy_clients']['default']['contacts'] = str_replace("'", "\'", readline());
             if (
-                $config['rp_proxy_clients']['default']['contact'] == null
-                || $config['rp_proxy_clients']['default']['contact'] == ""
+                $config['rp_proxy_clients']['default']['contacts'] == null
+                || $config['rp_proxy_clients']['default']['contacts'] == ""
+                || !count($config['rp_proxy_clients']['default']['contacts'])
             ) {
-                $config['rp_proxy_clients']['default']['contact'] = $_rp_contact;
+                $config['rp_proxy_clients']['default']['contacts'] = array($_rp_contact);
             }
         }
 
@@ -395,12 +398,43 @@ class Setup
             }
         }
 
+        $_rp_homepage_uri = $_rp_client_id + "/";
+        if (!isset($config['rp_proxy_clients']['default']['homepage_uri'])) {
+            echo "Please insert Organization Home Page URI (" .
+              $colors->getColoredString($_rp_homepage_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['homepage_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['homepage_uri'] == null || $config['rp_proxy_clients']['default']['homepage_uri'] == "") {
+                $config['rp_proxy_clients']['default']['homepage_uri'] = $_rp_homepage_uri;
+            }
+        }
+
+        $_rp_logo_uri = $_rp_client_id + "/logo.svg";
+        if (!isset($config['rp_proxy_clients']['default']['logo_uri'])) {
+            echo "Please insert Organization Logo URI (" .
+              $colors->getColoredString($_rp_logo_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['logo_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['logo_uri'] == null || $config['rp_proxy_clients']['default']['logo_uri'] == "") {
+                $config['rp_proxy_clients']['default']['logo_uri'] = $_rp_logo_uri;
+            }
+        }
+
+        $_rp_policy_uri = $_rp_client_id + "/policy";
+        if (!isset($config['rp_proxy_clients']['default']['policy_uri'])) {
+            echo "Please insert Organization Policy URI (" .
+              $colors->getColoredString($_rp_policy_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['policy_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['policy_uri'] == null || $config['rp_proxy_clients']['default']['policy_uri'] == "") {
+                $config['rp_proxy_clients']['default']['policy_uri'] = $_rp_policy_uri;
+            }
+        }
+
+
         // TODO: let insert from user
         $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
         $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('name', 'familyName', 'fiscalNumber');
         $config['rp_proxy_clients']['default']['trust_mark'] = $_rp_trust_mark;
 
-        $_rp_redirect_uri = '/' . $config['service_name'] . '/test.php';
+        $_rp_redirect_uri = '/' . $config['service_name'] . '/oidc/rp/test.php';
 
         if (!isset($config['rp_proxy_clients']['default']['redirect_uri'])) {
             echo "Please insert redirect_uri (" .
@@ -433,6 +467,9 @@ class Setup
         echo $colors->getColoredString("\nCertificate LocalityName: " . $config['rp_proxy_clients']['default']['locality_name'], "yellow");
         echo $colors->getColoredString("\nOrganization Contact Email Address: " . $config['rp_proxy_clients']['default']['email'], "yellow");
         echo $colors->getColoredString("\nOrganization Contact Telephone Number: " . $config['rp_proxy_clients']['default']['telephone'], "yellow");
+        echo $colors->getColoredString("\nOrganization Home Page URI: " . $config['rp_proxy_clients']['default']['homepage_uri'], "yellow");
+        echo $colors->getColoredString("\nOrganization Logo URI: " . $config['rp_proxy_clients']['default']['logo_uri'], "yellow");
+        echo $colors->getColoredString("\nOrganization Policy URI: " . $config['rp_proxy_clients']['default']['policy_uri'], "yellow");
         if (!$config['rp_proxy_clients']['default']['is_pa']) {
             echo $colors->getColoredString("\nCessionarioCommittente IdPaese: " . $config['rp_proxy_clients']['default']['fpa_id_paese'], "yellow");
             echo $colors->getColoredString("\nCessionarioCommittente IdCodice: " . $config['rp_proxy_clients']['default']['fpa_id_codice'], "yellow");
@@ -528,16 +565,39 @@ class Setup
                 echo $colors->getColoredString("OK\n", "green");
             }
 
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Federation signing... ", "white");
+            shell_exec(
+                "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
+                    " -keyout " . $config['install_dir'] . "/cert/rp-fed.pem" .
+                    " -out " . $config['install_dir'] . "/cert/rp-fed.crt" .
+                    " -extensions req_ext "
+            );
+            $config['rp_proxy_clients']['default']['cert_private_fed'] = $config['install_dir'] . "/cert/rp-fed.pem";
+            $config['rp_proxy_clients']['default']['cert_public_fed'] = $config['install_dir'] . "/cert/rp-fed.crt";    
+            echo $colors->getColoredString("OK\n", "green");
+
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Core signing... ", "white");
             shell_exec(
                 "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
                     " -keyout " . $config['install_dir'] . "/cert/rp.pem" .
                     " -out " . $config['install_dir'] . "/cert/rp.crt" .
                     " -extensions req_ext "
             );
-        }
+            $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
+            $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";    
+            echo $colors->getColoredString("OK\n", "green");
 
-        $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
-        $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Core encryption... ", "white");
+            shell_exec(
+                "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
+                    " -keyout " . $config['install_dir'] . "/cert/rp-enc.pem" .
+                    " -out " . $config['install_dir'] . "/cert/rp-enc.crt" .
+                    " -extensions req_ext "
+            );
+            $config['rp_proxy_clients']['default']['cert_enc_private'] = $config['install_dir'] . "/cert/rp-enc.pem";
+            $config['rp_proxy_clients']['default']['cert_enc_public'] = $config['install_dir'] . "/cert/rp-enc.crt";    
+            echo $colors->getColoredString("OK\n", "green");
+        }
 
 
         // save default configurations

@@ -27,7 +27,7 @@
         }
     },
     "require": {
-        "php": "~7.4.1",
+        "php": "^7.4 || ^8.0",
         "ext-mbstring": "*",
         "ext-gmp": "*",
         "lib-openssl": ">=1.1.1",
