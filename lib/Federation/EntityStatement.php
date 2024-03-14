@@ -71,7 +71,7 @@ class EntityStatement
             "iss" => $config['client_id'],
             "sub" => $config['client_id'],
             "iat" => strtotime("now"),
-            "exp" => strtotime("+1 year"),
+            "exp" => strtotime("+30 minutes"),
             "jwks" => array(
                 "keys" => array( $crt_jwk )
             ),
@@ -80,6 +80,14 @@ class EntityStatement
             ),
             "trust_marks" => array($config['trust_mark']),
             "metadata" => array(
+                "federation_entity" => array(
+                    "federation_resolve_endpoint" => $config['federation_resolve_endpoint'],
+                    "organization_name" => $config['organization_name'],
+                    "homepage_uri" => $config['homepage_uri'],
+                    "policy_uri" => $config['policy_uri'],
+                    "logo_uri" => $config['logo_uri'],
+                    "contacts" => array( $config['contact'] ),
+                ),
                 "openid_relying_party" => array(
                     "application_type" => "web",
                     "client_registration_types" => array( "automatic" ),

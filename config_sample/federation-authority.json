@@ -1,4 +1,9 @@
-{
+{   "https://preprod.oidc.registry.servizicie.interno.gov.it": {
+        "organization_name": "Federazione CIE preproduzione"
+    },
+    "https://oidc.registry.servizicie.interno.gov.it": {
+        "organization_name": "Federazione CIE"
+    },
     "https://registry.spid.gov.it": {
         "organization_name": "Federazione SPID"
     },

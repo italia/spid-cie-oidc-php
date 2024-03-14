@@ -95,17 +95,17 @@ class AuthenticationRequest
 
         $claims = array(
             "id_token" => array(
-                "nbf" =>  array( "essential" => true ),
-                "jti" =>  array( "essential" => true )
+                "family_name" =>  array( "essential" => true ),
+                "given_name" =>  array( "essential" => true )
             ),
             "userinfo" => $userinfo_claims
         );
 
         $request = array(
-            "jti" => 'spid-cie-php-oidc_' . uniqid(),
+            "jti" => Util::uuidv4(),
             "iss" => $client_id,
             "sub" => $client_id,
-            "aud" => array($client_id),
+            "aud" => explode(" ", $this->config['aud']),
             "iat" => strtotime("now"),
             "exp" => strtotime("+180 seconds"),
             "client_id" => $client_id,
@@ -116,7 +116,7 @@ class AuthenticationRequest
             "nonce" => $nonce,
             "prompt" => $prompt,
             "redirect_uri" => $redirect_uri,
-            "acr_values" => $acr_values,
+            "acr_values" => implode(" ", $acr_values),
             "claims" => $claims,
             "state" => $state
         );
@@ -127,9 +127,6 @@ class AuthenticationRequest
         $header = array(
             "typ" => "JWT",
             "alg" => "RS256",
-            "jwk" => $crt_jwk,
-            "kid" => $crt_jwk['kid'],
-            "x5c" => $crt_jwk['x5c']
         );
 
         $key = $this->config['cert_private'];
@@ -137,12 +134,11 @@ class AuthenticationRequest
         $signed_request = JWT::makeJWS($header, $request, $key_jwk);
 
         $authentication_request = $authorization_endpoint .
-            "?client_id=" . $client_id .
+            "?client_id=" . urlencode($client_id) .
             "&response_type=" . $response_type .
             "&scope=" . $scope .
             "&code_challenge=" . $code_challenge .
             "&code_challenge_method=" . $code_challenge_method .
-            "&nonce=" . $nonce .
             "&request=" . $signed_request;
 
         return $authentication_request;
@@ -160,9 +156,9 @@ class AuthenticationRequest
      * @throws Exception
      * @codeCoverageIgnore
      */
-    public function send(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
+    public function send(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state, string $aud)
     {
-        $authenticationRequestURL = $this->getRedirectURL($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
+        $authenticationRequestURL = $this->getRedirectURL($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state, $aud);
 
         // HOOK: pre_authorization_request
         if ($this->hooks != null) {

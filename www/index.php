@@ -28,6 +28,7 @@ use SPID_CIE_OIDC_PHP\Core\Logger;
 use SPID_CIE_OIDC_PHP\Core\Util;
 use SPID_CIE_OIDC_PHP\Federation\Federation;
 use SPID_CIE_OIDC_PHP\Federation\EntityStatement;
+use SPID_CIE_OIDC_PHP\Federation\ResolveEndpoint;
 use SPID_CIE_OIDC_PHP\Federation\TrustChain;
 use SPID_CIE_OIDC_PHP\OIDC\RP\Database as RP_Database;
 use SPID_CIE_OIDC_PHP\OIDC\RP\AuthenticationRequest;
@@ -121,7 +122,7 @@ $f3->route([
 
     $output = $f3->get("GET.output");
     $json = strtolower($output) == 'json';
-    $mediaType = $json ? 'application/json' : 'application/jwt';
+    $mediaType = $json ? 'application/json' : 'application/entity-statement+jwt';
     header('Content-Type: ' . $mediaType);
     echo EntityStatement::makeFromConfig($config, $json);
 });
@@ -298,6 +299,22 @@ $f3->route([
     } catch (Exception $e) {
         $f3->error($e->getCode(), $e->getMessage());
     }
+});
+
+$f3->route([
+    'GET /resolve'
+], function ($f3){
+    $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
+    $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
+    $sub = $f3->get("GET.sub");
+    $anchor = $f3->get("GET.anchor");
+    if (empty($sub) || empty($anchor))
+        $f3->error(400, "anchor or sub not not found");
+    
+    $rp_database = $f3->get("RP_DATABASE");
+    $mediaType = 'application/entity-statement+jwt';
+    header('Content-Type: ' . $mediaType);
+    echo ResolveEndpoint::resolve($config, $rp_database, $sub, $anchor);
 });
 
 $f3->route([
