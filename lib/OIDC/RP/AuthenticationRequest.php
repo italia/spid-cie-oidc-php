@@ -156,9 +156,9 @@ class AuthenticationRequest
      * @throws Exception
      * @codeCoverageIgnore
      */
-    public function send(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state, string $aud)
+    public function send(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
-        $authenticationRequestURL = $this->getRedirectURL($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state, $aud);
+        $authenticationRequestURL = $this->getRedirectURL($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
 
         // HOOK: pre_authorization_request
         if ($this->hooks != null) {
