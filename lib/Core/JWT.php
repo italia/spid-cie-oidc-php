@@ -132,12 +132,16 @@ class JWT
             'kty'       => $jwk_obj->get('kty'),
             'n'         => $jwk_obj->get('n'),
             'e'         => $jwk_obj->get('e'),
-            'x5c'       => $x5c,
-            'x5t'       => $jwk_obj->get('x5t'),
-            'x5t#256'   => $jwk_obj->get('x5t#256'),
+            //'x5c'       => $x5c,
+            //'x5t'       => $jwk_obj->get('x5t'),
+            //'x5t#256'   => $jwk_obj->get('x5t#256'),
             'use'       => $jwk_obj->get('use')
         );
-
+        if($jwk_obj->get('use')=='sig')
+            $jwk['alg']= 'RS256';
+        else
+            $jwk['alg']="RSA-OAEP";
+        
         return $jwk;
     }
 

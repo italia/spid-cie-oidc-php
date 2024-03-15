@@ -64,8 +64,13 @@ class EntityStatement
      */
     public static function makeFromConfig(array $config, $json = false)
     {
-        $crt = $config['cert_public'];
-        $crt_jwk = JWT::getCertificateJWK($crt);
+        $crt_fed_sig = $config['cert_public_fed_sig'];
+        $crt_core_sig = $config['cert_public_core_sig'];
+        $crt_core_enc = $config['cert_public_core_enc'];
+        
+        $crt_jwk_fed_sig = JWT::getCertificateJWK($crt_fed_sig);
+        $crt_jwk_core_sig = JWT::getCertificateJWK($crt_core_sig);
+        $crt_jwk_core_enc = JWT::getCertificateJWK($crt_core_enc);
 
         $payload = array(
             "iss" => $config['client_id'],
@@ -73,7 +78,7 @@ class EntityStatement
             "iat" => strtotime("now"),
             "exp" => strtotime("+30 minutes"),
             "jwks" => array(
-                "keys" => array( $crt_jwk )
+                "keys" => array( $crt_jwk_fed_sig )
             ),
             "authority_hints" => array(
                 $config['authority_hint']
@@ -95,11 +100,15 @@ class EntityStatement
                     "contacts" => array( $config['contact'] ),
                     "grant_types" => array( "authorization_code" ),
                     "jwks" => array(
-                        "keys" => array( $crt_jwk )
+                        "keys" => array( $crt_jwk_core_sig, $crt_jwk_core_enc )
                     ),
-                    "redirect_uris" => array( $config['client_id'] . '/oidc/redirect' ),
+                    "redirect_uris" => array( $config['client_id'] . '/oidc/rp/redirect' ),
                     "response_types" => array( "code" ),
-                    "subject_type" => "pairwise"
+                    "id_token_signed_response_alg" => "RS256",
+                    "userinfo_signed_response_alg" => "RS256",
+                    "userinfo_encrypted_response_alg" => "RSA-OAEP",
+                    "userinfo_encrypted_response_enc"=> "A128CBC-HS256",
+                    "token_endpoint_auth_method" => "private_key_jwt",
                 )
             )
         );
@@ -110,7 +119,7 @@ class EntityStatement
             "kid" => $crt_jwk['kid']
         );
 
-        $key = $config['cert_private'];
+        $key = $config['cert_private_fed_sig'];
         $key_jwk = JWT::getKeyJWK($key);
         $jws = JWT::makeJWS($header, $payload, $key_jwk);
 

@@ -11,6 +11,7 @@
             "homepage_uri": "https://comune.it",
             "logo_uri": "https://www.comune.it/img/logo.svg",
             "policy_uri": "https://www.comune.it/informativa-protezione-dati/",
+            "federation_resolve_endpoint": "https://www.comune.it/resolve",
             "cert_private_core_sig": "/home/spid-cie-oidc-php/cert/rp_core_sig.pem",
             "cert_public_core_sig": "/home/spid-cie-oidc-php/cert/rp_core_sig.crt",
             "cert_private_core_enc": "/home/spid-cie-oidc-php/cert/rp_core_enc.pem",

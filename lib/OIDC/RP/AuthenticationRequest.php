@@ -121,7 +121,7 @@ class AuthenticationRequest
             "state" => $state
         );
 
-        $crt = $this->config['cert_public'];
+        $crt = $this->config['cert_public_core_sig'];
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -129,7 +129,7 @@ class AuthenticationRequest
             "alg" => "RS256",
         );
 
-        $key = $this->config['cert_private'];
+        $key = $this->config['cert_private_core_sig'];
         $key_jwk = JWT::getKeyJWK($key);
         $signed_request = JWT::makeJWS($header, $request, $key_jwk);
 
