@@ -110,7 +110,7 @@ class AuthenticationRequest
             "exp" => strtotime("+180 seconds"),
             "client_id" => $client_id,
             "response_type" => $response_type,
-            "scope" => explode(" ", $scope),
+            "scope" => $scope,
             "code_challenge" => $code_challenge,
             "code_challenge_method" => $code_challenge_method,
             "nonce" => $nonce,
