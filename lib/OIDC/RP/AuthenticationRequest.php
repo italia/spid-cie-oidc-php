@@ -127,6 +127,7 @@ class AuthenticationRequest
         $header = array(
             "typ" => "JWT",
             "alg" => "RS256",
+            "kid" => $crt_jwk['kid']
         );
 
         $key = $this->config['cert_private_core_sig'];
