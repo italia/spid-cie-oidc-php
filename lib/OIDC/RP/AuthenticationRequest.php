@@ -101,31 +101,51 @@ class AuthenticationRequest
             "userinfo" => $userinfo_claims
         );
 
+        // $request = array(
+        //     "jti" => Util::uuidv4(),
+        //     "iss" => $client_id,
+        //     "sub" => $client_id,
+        //     "aud" => explode(" ", $this->config['aud']),
+        //     "iat" => strtotime("now"),
+        //     "exp" => strtotime("+180 seconds"),
+        //     "client_id" => $client_id,
+        //     "response_type" => $response_type,
+        //     "scope" => $scope,
+        //     "code_challenge" => $code_challenge,
+        //     "code_challenge_method" => $code_challenge_method,
+        //     "nonce" => $nonce,
+        //     "prompt" => $prompt,
+        //     "redirect_uri" => $redirect_uri,
+        //     "acr_values" => implode(" ", $acr_values),
+        //     "claims" => $claims,
+        //     "state" => $state
+        // );
+        $iat = strtotime("now");
+        $exp = strtotime("+1 hour");
         $request = array(
-            "jti" => Util::uuidv4(),
             "iss" => $client_id,
-            "sub" => $client_id,
-            "aud" => explode(" ", $this->config['aud']),
-            "iat" => strtotime("now"),
-            "exp" => strtotime("+180 seconds"),
-            "client_id" => $client_id,
-            "response_type" => $response_type,
-            "scope" => $scope,
-            "code_challenge" => $code_challenge,
-            "code_challenge_method" => $code_challenge_method,
-            "nonce" => $nonce,
-            "prompt" => $prompt,
+            "scope" => $scope, #explode(" ", $scope),
             "redirect_uri" => $redirect_uri,
+            "response_type" => $response_type,
+            "nonce" => $nonce,
+            "state" => $state,
+            "client_id" => $client_id,
             "acr_values" => implode(" ", $acr_values),
+            "iat" => $iat,
+            "exp" => $exp,
+            "jti" => Util::uuidv4(),
+            "aud" => explode(" ", $this->config['aud']),
             "claims" => $claims,
-            "state" => $state
+            "prompt" => $prompt,
+            "code_challenge" => $code_challenge,
+            "code_challenge_method" => $code_challenge_method
         );
-
         $crt = $this->config['cert_public_core_sig'];
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
             "typ" => "entity-statement+jwt",
+            "cty" => "entity-statement+jwt",
             "alg" => "RS256",
             "kid" => $crt_jwk['kid']
         );
@@ -136,11 +156,11 @@ class AuthenticationRequest
 
         $authentication_request = $authorization_endpoint .
             "?client_id=" . urlencode($client_id) .
-            "&response_type=" . $response_type .
-            "&scope=" . $scope .
-            "&code_challenge=" . $code_challenge .
-            "&code_challenge_method=" . $code_challenge_method .
-            "&request=" . $signed_request;
+            "&response_type=" .  urlencode($response_type) .
+            "&scope=" .  urlencode($scope) .
+            "&code_challenge=" .  urlencode($code_challenge) .
+            "&code_challenge_method=" .  urlencode($code_challenge_method) .
+            "&request=" .  urlencode($signed_request);
 
         return $authentication_request;
     }
