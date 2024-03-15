@@ -145,7 +145,7 @@ class AuthenticationRequest
 
         $header = array(
             "typ" => "entity-statement+jwt",
-            "cty" => "entity-statement+jwt",
+            #"cty" => "entity-statement+jwt",
             "alg" => "RS256",
             "kid" => $crt_jwk['kid']
         );
