@@ -137,7 +137,7 @@
                                         </div>
                                         <div class="col-12 col-md-6 text-center">
                                             <li class="btn p-0 border-0 my-3">
-                                                <a href="<?php echo $BASEURL; ?>/oidc/rp/<?php echo $DOMAIN; ?>/authz/<?php echo base64_encode('http://trust-anchor.org:8000'); ?>/<?php echo base64_encode('http://cie-provider.org:8002/oidc/op'); ?>?state=state123">
+                                                <a href="<?php echo $BASEURL; ?>/oidc/rp/<?php echo $DOMAIN; ?>/authz/<?php echo base64_encode('https://preprod.oidc.registry.servizicie.interno.gov.it'); ?>/<?php echo base64_encode('https://preproduzione.oidc.idserver.servizicie.interno.gov.it'); ?>?state=state123">
                                                     <img class="img-fluid" src="<?php echo $BASEURL; ?>/assets/img/cie_button.png" alt="Entra con CIE">
                                                     <span class="sr-only">Accedi con identità digitale CIE</span>
                                                 </a>
