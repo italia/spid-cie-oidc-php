@@ -98,7 +98,7 @@ class EntityStatement
                     "client_registration_types" => array( "automatic" ),
                     "client_name" => $config['client_name'],
                     "contacts" => array( $config['contact'] ),
-                    "grant_types" => array( "authorization_code" ),
+                    "grant_types" => array( "refresh_token", "authorization_code" ),
                     "jwks" => array(
                         "keys" => array( $crt_jwk_core_sig, $crt_jwk_core_enc )
                     ),
@@ -116,7 +116,7 @@ class EntityStatement
         $header = array(
             "typ" => "entity-statement+jwt",
             "alg" => "RS256",
-            "kid" => $crt_jwk['kid']
+            "kid" => $crt_jwk_fed_sig['kid']
         );
 
         $key = $config['cert_private_fed_sig'];
