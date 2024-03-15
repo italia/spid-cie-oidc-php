@@ -73,17 +73,7 @@ class EntityStatement
         $crt_jwk_core_enc = JWT::getCertificateJWK($crt_core_enc, 'enc');
 
         $payload = array(
-            "iss" => $config['client_id'],
             "sub" => $config['client_id'],
-            "iat" => strtotime("now"),
-            "exp" => strtotime("+30 minutes"),
-            "jwks" => array(
-                "keys" => array( $crt_jwk_fed_sig )
-            ),
-            "authority_hints" => array(
-                $config['authority_hint']
-            ),
-            "trust_marks" => array($config['trust_mark']),
             "metadata" => array(
                 "federation_entity" => array(
                     "federation_resolve_endpoint" => $config['federation_resolve_endpoint'],
@@ -95,8 +85,9 @@ class EntityStatement
                 ),
                 "openid_relying_party" => array(
                     "application_type" => "web",
-                    "client_registration_types" => array( "automatic" ),
+                    "client_registration_types" => array( "automatic" ),    
                     "client_name" => $config['client_name'],
+                    "organization_name" => $config['organization_name'],
                     "contacts" => array( $config['contact'] ),
                     "grant_types" => array( "refresh_token", "authorization_code" ),
                     "jwks" => array(
@@ -104,13 +95,24 @@ class EntityStatement
                     ),
                     "redirect_uris" => array( $config['client_id'] . '/oidc/rp/redirect' ),
                     "response_types" => array( "code" ),
+                    "client_id" => $config['client_id'],
                     "id_token_signed_response_alg" => "RS256",
                     "userinfo_signed_response_alg" => "RS256",
                     "userinfo_encrypted_response_alg" => "RSA-OAEP",
                     "userinfo_encrypted_response_enc"=> "A128CBC-HS256",
                     "token_endpoint_auth_method" => "private_key_jwt",
-                )
-            )
+                    // "id_token_encrypted_response_enc" => "A128CBC-HS256",
+                    // "id_token_encrypted_response_alg" => "RSA-OAEP-256",
+                    // "subject_type" => "pairwise"
+                ),
+            ),
+            "iss" => $config['client_id'],
+            "iat" => strtotime("now"),
+            "exp" => strtotime("+30 minutes"),
+            "authority_hints" => array(
+                $config['authority_hint']
+            ),
+            "trust_marks" => array($config['trust_mark'])
         );
 
         $header = array(
