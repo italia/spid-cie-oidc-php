@@ -59,7 +59,7 @@ class AuthenticationEndpoint
         $scope          = $_GET['scope'];
         $response_type  = $_GET['response_type'];
         $client_id      = $_GET['client_id'];
-        $redirect_uri   = $_GET['redirect_uri'];
+        $redirect_uri   = urldecode($_GET['redirect_uri']);
         $state          = $_GET['state'] ? $_GET['state'] : '';
         $nonce          = $_GET['nonce'] ? $_GET['nonce'] : '';
 
