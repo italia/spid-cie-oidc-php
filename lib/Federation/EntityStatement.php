@@ -68,9 +68,9 @@ class EntityStatement
         $crt_core_sig = $config['cert_public_core_sig'];
         $crt_core_enc = $config['cert_public_core_enc'];
         
-        $crt_jwk_fed_sig = JWT::getCertificateJWK($crt_fed_sig);
-        $crt_jwk_core_sig = JWT::getCertificateJWK($crt_core_sig);
-        $crt_jwk_core_enc = JWT::getCertificateJWK($crt_core_enc);
+        $crt_jwk_fed_sig = JWT::getCertificateJWK($crt_fed_sig, 'sig');
+        $crt_jwk_core_sig = JWT::getCertificateJWK($crt_core_sig, 'sig');
+        $crt_jwk_core_enc = JWT::getCertificateJWK($crt_core_enc, 'enc');
 
         $payload = array(
             "iss" => $config['client_id'],
