@@ -90,7 +90,7 @@ class AuthenticationRequest
 
         $userinfo_claims = array();
         foreach ($user_attributes as $a) {
-            $userinfo_claims[$a] = null;
+            $userinfo_claims[$a] = array("essential" => true);
         }
 
         $claims = array(
@@ -125,7 +125,7 @@ class AuthenticationRequest
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
-            "typ" => "JWT",
+            "typ" => "entity-statement+jwt",
             "alg" => "RS256",
             "kid" => $crt_jwk['kid']
         );
