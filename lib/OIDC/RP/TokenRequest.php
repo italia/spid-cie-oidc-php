@@ -93,7 +93,7 @@ class TokenRequest
             //"x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config['cert_private'];
+        $key = $this->config['cert_public_core_sig'];
         $key_jwk = JWT::getKeyJWK($key);
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);
