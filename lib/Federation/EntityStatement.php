@@ -109,6 +109,9 @@ class EntityStatement
             "iss" => $config['client_id'],
             "iat" => strtotime("now"),
             "exp" => strtotime("+30 minutes"),
+            "jwks" => array(
+                "keys" => array( $crt_jwk_fed_sig )
+            ),
             "authority_hints" => array(
                 $config['authority_hint']
             ),
