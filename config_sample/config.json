@@ -7,6 +7,8 @@
     "rp_proxy_clients": {
         "default": {
             "trust_mark": "",
+            "trust_mark_iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
+            "trust_mark_id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public",
             "organization_name": "Comune di Demo",
             "homepage_uri": "https://comune.it",
             "logo_uri": "https://www.comune.it/img/logo.svg",

@@ -115,7 +115,13 @@ class EntityStatement
             "authority_hints" => array(
                 $config['authority_hint']
             ),
-            "trust_marks" => array($config['trust_mark'])
+            "trust_marks" => array(
+                    array(
+                        "trust_mark" => $config['trust_mark'],
+                        "iss" => $config["trust_mark_iss"],
+                        "id" => $config["trust_mark_id"]
+                    )
+            )
         );
 
         $header = array(
