@@ -61,7 +61,7 @@ class AuthenticationRequest
      * @throws Exception
      * @return string URL of the authentication request
      */
-    public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
+    public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state, string $op_id)
     {
         $client_id = $this->config['client_id'];
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
@@ -101,30 +101,11 @@ class AuthenticationRequest
             "userinfo" => $userinfo_claims
         );
 
-        // $request = array(
-        //     "jti" => Util::uuidv4(),
-        //     "iss" => $client_id,
-        //     "sub" => $client_id,
-        //     "aud" => explode(" ", $this->config['aud']),
-        //     "iat" => strtotime("now"),
-        //     "exp" => strtotime("+180 seconds"),
-        //     "client_id" => $client_id,
-        //     "response_type" => $response_type,
-        //     "scope" => $scope,
-        //     "code_challenge" => $code_challenge,
-        //     "code_challenge_method" => $code_challenge_method,
-        //     "nonce" => $nonce,
-        //     "prompt" => $prompt,
-        //     "redirect_uri" => $redirect_uri,
-        //     "acr_values" => implode(" ", $acr_values),
-        //     "claims" => $claims,
-        //     "state" => $state
-        // );
         $iat = strtotime("now");
         $exp = strtotime("+1 hour");
         $request = array(
             "iss" => $client_id,
-            "scope" => $scope, #explode(" ", $scope),
+            "scope" => $scope,
             "redirect_uri" => $redirect_uri,
             "response_type" => $response_type,
             "nonce" => $nonce,
@@ -134,7 +115,7 @@ class AuthenticationRequest
             "iat" => $iat,
             "exp" => $exp,
             "jti" => Util::uuidv4(),
-            "aud" => explode(" ", $this->config['aud']),
+            "aud" => array($op_id, $authorization_endpoint),
             "claims" => $claims,
             "prompt" => $prompt,
             "code_challenge" => $code_challenge,
@@ -145,7 +126,6 @@ class AuthenticationRequest
 
         $header = array(
             "typ" => "entity-statement+jwt",
-            #"cty" => "entity-statement+jwt",
             "alg" => "RS256",
             "kid" => $crt_jwk['kid']
         );

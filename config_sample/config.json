@@ -42,7 +42,6 @@
                 "birthdate",
                 "https://attributes.eid.gov.it/fiscal_number"
             ],
-            "aud": "https://preproduzione.oidc.idserver.servizicie.interno.gov.it https://preproduzione.oidc.idserver.servizicie.interno.gov.it/idp/profile/oidc/authorize",            
             "redirect_uri": "http://relying-party-php.org:8003/test.php",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
         },
