@@ -61,7 +61,7 @@ class AuthenticationRequest
      * @throws Exception
      * @return string URL of the authentication request
      */
-    public function getRedirectURL(string $op_client_id, string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
+    public function getRedirectURL(string $op_issuer, string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
         $client_id = $this->config['client_id'];
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
@@ -115,7 +115,7 @@ class AuthenticationRequest
             "iat" => $iat,
             "exp" => $exp,
             "jti" => Util::uuidv4(),
-            "aud" => array($op_client_id, $authorization_endpoint),
+            "aud" => array($op_issuer, $authorization_endpoint),
             "claims" => $claims,
             "prompt" => $prompt,
             "code_challenge" => $code_challenge,
@@ -157,9 +157,9 @@ class AuthenticationRequest
      * @throws Exception
      * @codeCoverageIgnore
      */
-    public function send(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
+    public function send(string $op_issuer, string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
-        $authenticationRequestURL = $this->getRedirectURL($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
+        $authenticationRequestURL = $this->getRedirectURL($op_issuer, $authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
 
         // HOOK: pre_authorization_request
         if ($this->hooks != null) {
