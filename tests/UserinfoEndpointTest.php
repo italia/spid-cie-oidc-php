@@ -36,8 +36,8 @@ class UserinfoEndpointTest extends TestCase
         $code = $database->createAuthorizationCode($req_id);
 
         $userinfo = array(
-            "fiscal_number" => "FISCALNUMBER",
-            "name" => "NAME",
+            "https://attributes.eid.gov.it/fiscal_number" => "FISCALNUMBER",
+            "given_name" => "NAME",
             "family_name" => "FAMILY NAME"
         );
 

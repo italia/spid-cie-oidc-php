@@ -61,7 +61,7 @@ class AuthenticationRequest
      * @throws Exception
      * @return string URL of the authentication request
      */
-    public function getRedirectURL(string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state, string $op_id)
+    public function getRedirectURL(string $op_client_id, string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
     {
         $client_id = $this->config['client_id'];
         $redirect_uri = Util::stringEndsWith($client_id, '/') ? $client_id : $client_id . '/';
@@ -115,7 +115,7 @@ class AuthenticationRequest
             "iat" => $iat,
             "exp" => $exp,
             "jti" => Util::uuidv4(),
-            "aud" => array($op_id, $authorization_endpoint),
+            "aud" => array($op_client_id, $authorization_endpoint),
             "claims" => $claims,
             "prompt" => $prompt,
             "code_challenge" => $code_challenge,

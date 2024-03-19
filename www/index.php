@@ -214,16 +214,17 @@ $f3->route([
     }
 
     $authorization_endpoint = $configuration->metadata->openid_provider->authorization_endpoint;
+    $op_client_id = $configuration->metadata->openid_provider->client_id;
     
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
+        $op_client_id,
         $authorization_endpoint,
         $acr,
         $user_attributes,
         $code_verifier,
         $nonce,
-        Util::base64UrlEncode(str_pad($req_id, 32),
-        $op_id);
+        Util::base64UrlEncode(str_pad($req_id, 32))
     );
 });
 
