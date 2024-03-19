@@ -214,11 +214,11 @@ $f3->route([
     }
 
     $authorization_endpoint = $configuration->metadata->openid_provider->authorization_endpoint;
-    $op_client_id = $configuration->metadata->openid_provider->client_id;
-    
+    $op_issuer = $configuration->metadata->openid_provider->issuer;
+
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
-        $op_client_id,
+        $op_issuer,
         $authorization_endpoint,
         $acr,
         $user_attributes,
