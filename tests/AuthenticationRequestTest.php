@@ -66,6 +66,7 @@ class AuthenticationRequestTest extends TestCase
         $request = new AuthenticationRequest($config);
 
         $authorization_endpoint = "https://op.org/auth";
+        $op_issuer = "https://op.org";
         $acr = array(3, 2, 1);
         $user_attributes = array(
             "given_name",
@@ -79,7 +80,7 @@ class AuthenticationRequestTest extends TestCase
         $state = "STATE";
 
         try {
-            $request->send($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
+            $request->send($op_issuer, $authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
         } catch (\Exception $e) {
             //
         }

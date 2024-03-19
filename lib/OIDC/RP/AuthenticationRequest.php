@@ -114,7 +114,7 @@ class AuthenticationRequest
             "acr_values" => implode(" ", $acr_values),
             "iat" => $iat,
             "exp" => $exp,
-            "jti" => Util::uuidv4(),
+            "jti" => 'spid-cie-php-oidc_' .Util::uuidv4(),
             "aud" => array($op_issuer, $authorization_endpoint),
             "claims" => $claims,
             "prompt" => $prompt,
