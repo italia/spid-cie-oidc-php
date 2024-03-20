@@ -138,8 +138,8 @@ class AuthenticationEndpoint
             }
 
             foreach ($userinfo as $claim => $value) {
-                if (substr($claim, 0, 31) == 'https://attributes_eid_gov_it/') {
-                    $c = substr($claim, 31);
+                if (substr($claim, 0, 30) == 'https://attributes_eid_gov_it/') {
+                    $c = substr($claim, 30);
                     $userinfo[$c] = $value;
                     unset($userinfo[$claim]);
                 }
