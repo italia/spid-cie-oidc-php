@@ -88,9 +88,9 @@ class TokenRequest
         $header = array(
             "typ" => "JWT",
             "alg" => "RS256",
-            "jwk" => $crt_jwk,
             "kid" => $crt_jwk['kid'],
-            "x5c" => $crt_jwk['x5c']
+            //"jwk" => $crt_jwk,
+            //"x5c" => $crt_jwk['x5c']
         );
 
         $key = $this->config['cert_private'];
@@ -128,7 +128,7 @@ class TokenRequest
         // @codeCoverageIgnoreEnd
 
         $response = $this->http_client->post($token_endpoint, [ 'form_params' => $data ]);
-
+        
         // @codeCoverageIgnoreStart
         $code = $response->getStatusCode();
         if ($code != 200) {

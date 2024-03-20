@@ -313,5 +313,7 @@ class Database
             ":value" => json_encode($value),
             ":severity" => $severity
         ));
+
+        error_log("[" . $severity . "] " . $context . ":" . $tag . " - " . json_encode($value));
     }
 }

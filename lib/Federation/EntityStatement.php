@@ -95,7 +95,7 @@ class EntityStatement
                         "authorization_code"
                     ),
                     "application_type" => "web",
-                    "redirect_uris" => array( $config['client_id'] . '/oidc/redirect' ),
+                    "redirect_uris" => array( $config['client_id'] . '/oidc/rp/redirect' ),
                     "id_token_signed_response_alg" => "RS256",
                     "userinfo_signed_response_alg" => "RS256",
                     "userinfo_encrypted_response_alg" => "RSA-OAEP",
@@ -104,7 +104,7 @@ class EntityStatement
                     "client_id" => $config['client_id'],
                     "client_name" => $config['client_name'],
                     "contacts" => $config['contacts'],
-                    //"organization_name" => $config['organization_name'],
+                    "organization_name" => $config['organization_name'],
                     //"id_token_encrypted_response_alg" => "RSA-OAEP",
                     //"id_token_encrypted_response_enc" => "A256CBC-HS512",
                     "response_types" => array( "code" ),
@@ -120,12 +120,11 @@ class EntityStatement
             ),
             "exp" => strtotime("+2 days"),
             "iat" => strtotime("-2 seconds"),
-            //"trust_marks" => $config['trust_marks'],
+            "trust_marks" => $config['trust_marks'] ?? [],
         );
 
         $header = array(
             "kid" => $crt_sig_fed_jwk['kid'],
-            "cty" => "entity-statement+jwt",
             "typ" => "entity-statement+jwt",
             "alg" => "RS256",
         );

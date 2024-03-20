@@ -81,9 +81,9 @@ class IntrospectionRequest
         $header = array(
             "typ" => "JWT",
             "alg" => "RS256",
-            "jwk" => $crt_jwk,
             "kid" => $crt_jwk['kid'],
-            "x5c" => $crt_jwk['x5c']
+            //"jwk" => $crt_jwk,
+            //"x5c" => $crt_jwk['x5c']
         );
 
         $key = $this->config['cert_private'];

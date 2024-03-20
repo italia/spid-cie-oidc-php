@@ -122,16 +122,16 @@ class OPDatabaseTest extends TestCase
         $this->assertTrue($accessToken2Exists);
 
         $userinfo = array(
-            "name" => "NAME",
-            "familyName" => "FAMILY NAME"
+            "given_name" => "NAME",
+            "family_name" => "FAMILY NAME"
         );
 
         $database->saveUserinfo($req_id, $userinfo);
 
         $userinfo2 = $database->getUserinfo($access_token2);
 
-        $this->assertEquals($userinfo2->name, "NAME");
-        $this->assertEquals($userinfo2->familyName, "FAMILY NAME");
+        $this->assertEquals($userinfo2->given_name, "NAME");
+        $this->assertEquals($userinfo2->family_name, "FAMILY NAME");
 
         $database->deleteRequest($req_id);
 

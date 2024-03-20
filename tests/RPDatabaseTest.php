@@ -80,7 +80,7 @@ class RPDatabaseTest extends TestCase
         $redirect_uri = "http://relying-party.org/redirect_uri";
         $state = "STATE";
         $acr = [2, 1];
-        $user_attributes = ["fiscalNumber", "name", "familyName"];
+        $user_attributes = ["https://attributes.eid.gov.it/fiscal_number", "given_name", "family_name"];
 
         $req_id = $database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
         $request = $database->getRequest($req_id);

@@ -250,7 +250,7 @@ class JWT
         }
 
         // max clock skew 5min
-        if ($payload->exp <= strtotime('+5 minutes')) {
+        if ($payload->exp <= strtotime('-5 minutes')) {
             $isValid = false;
         }
 

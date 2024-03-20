@@ -59,7 +59,7 @@ class AuthenticationEndpoint
         $scope          = $_GET['scope'];
         $response_type  = $_GET['response_type'];
         $client_id      = $_GET['client_id'];
-        $redirect_uri   = $_GET['redirect_uri'];
+        $redirect_uri   = urldecode($_GET['redirect_uri']);
         $state          = $_GET['state'] ? $_GET['state'] : '';
         $nonce          = $_GET['nonce'] ? $_GET['nonce'] : '';
 
@@ -138,8 +138,8 @@ class AuthenticationEndpoint
             }
 
             foreach ($userinfo as $claim => $value) {
-                if (substr($claim, 0, 31) == 'https://attributes_spid_gov_it/') {
-                    $c = substr($claim, 31);
+                if (substr($claim, 0, 30) == 'https://attributes_eid_gov_it/') {
+                    $c = substr($claim, 30);
                     $userinfo[$c] = $value;
                     unset($userinfo[$claim]);
                 }

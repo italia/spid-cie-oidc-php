@@ -110,7 +110,7 @@ class UserinfoRequest
         }
         // @codeCoverageIgnoreEnd
 
-        $file_key = $this->config['cert_private'];
+        $file_key = $this->config['cert_enc_private'];
         $jws = JWT::decryptJWE($jwe, $file_key);
 
         $file_cert = $this->config['cert_public'];

@@ -128,13 +128,13 @@ class TrustChain
                 $entity_statement_url,
                 $entity_statement_payload->iat,
                 $entity_statement_payload->exp,
-                $entity_statement
+                $entity_statement_payload
             );
 
             $this->database->log("TrustChain", "saved openid-federation for " . $this->entity . " to store", $entity_statement_payload);
         }
 
-        $authority_hints = $entity_statement_payload->authority_hints;
+        $authority_hints = $entity_statement_payload->authority_hints ?? null;
 
         // follow entity statement untill authority_hints
         if (
@@ -146,8 +146,6 @@ class TrustChain
 
             // get federation fetch endpoint
             $federation_fetch_endpoint = $entity_statement_payload->metadata->federation_entity->federation_fetch_endpoint;
-            $federation_fetch_endpoint = Util::stringEndsWith($this->entity, '/') ? $federation_fetch_endpoint : $federation_fetch_endpoint . '/';
-
             $federation_fetch_url = $federation_fetch_endpoint . '?sub=' . $this->leaf;
 
             // fetch metadata from trust anchor
@@ -164,7 +162,7 @@ class TrustChain
 
             if ($code != 200) {
                 $this->database->log("TrustChain", "failed fetching configuration for " . $this->leaf, $reason, "ERROR");
-                throw new \Exception("Unable to trust " . $this->leaf, $reason . " - " . $reason);
+                throw new \Exception("Unable to trust " . $this->leaf . " - " . $reason);
             }
 
             $federation_entity_statement_token = (string) $response->getBody();
@@ -191,7 +189,7 @@ class TrustChain
                 $this->database->log("TrustChain", "resolve trust for leaf " . $this->leaf . " on authority", $authority);
 
                 $parent_entity_statement = new TrustChain($this->config, $this->database, $this->leaf, $this->trust_anchor, $authority);
-                $this->federation_entity_statement = $parent_entity_statement->resolve($policy);
+                $this->federation_entity_statement = $parent_entity_statement->resolve($apply_policy);
             }
 
             $this->database->log("TrustChain", "trust verified for leaf " . $this->leaf, $this->federation_entity_statement);

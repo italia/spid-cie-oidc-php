@@ -70,6 +70,7 @@ class Setup
 
         $_rp_client_id = "http://relying-party-php.org:8003";
         $_rp_client_name = "Name of Relying Party";
+        $_rp_organization_name = "Name of Organization";
         $_rp_authority_hint = "http://trust-anchor.org:8000/";
         $_rp_contact = "info@relying-party-php.org";
         $_rp_trust_mark = [];
@@ -158,6 +159,18 @@ class Setup
                 || $config['rp_proxy_clients']['default']['client_name'] == ""
             ) {
                 $config['rp_proxy_clients']['default']['client_name'] = $_rp_client_name;
+            }
+        }
+
+        if (!isset($config['rp_proxy_clients']['default']['organization_name'])) {
+            echo "Please insert Organization Name (" .
+            $colors->getColoredString($_rp_organization_name, "green") . "): ";
+            $config['rp_proxy_clients']['default']['organization_name'] = str_replace("'", "\'", readline());
+            if (
+                $config['rp_proxy_clients']['default']['organization_name'] == null
+                || $config['rp_proxy_clients']['default']['organization_name'] == ""
+            ) {
+                $config['rp_proxy_clients']['default']['organization_name'] = $_rp_organization_name;
             }
         }
 
@@ -431,7 +444,7 @@ class Setup
 
         // TODO: let insert from user
         $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
-        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('name', 'familyName', 'fiscalNumber');
+        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('given_name', 'family_name', 'https://attributes.eid.gov.it/fiscal_number');
         $config['rp_proxy_clients']['default']['trust_mark'] = $_rp_trust_mark;
 
         $_rp_redirect_uri = '/' . $config['service_name'] . '/oidc/rp/test.php';
@@ -456,6 +469,7 @@ class Setup
         echo $colors->getColoredString("\nService Name: " . $config['service_name'], "yellow");
         echo $colors->getColoredString("\nclient_id: " . $config['rp_proxy_clients']['default']['client_id'], "yellow");
         echo $colors->getColoredString("\nclient_name: " . $config['rp_proxy_clients']['default']['client_name'], "yellow");
+        echo $colors->getColoredString("\nOrganization Name: " . $config['rp_proxy_clients']['default']['organization_name'], "yellow");
         echo $colors->getColoredString("\nauthority_hint: " . $config['rp_proxy_clients']['default']['authority_hint'], "yellow");
         echo $colors->getColoredString("\ncontacts: [" . $config['rp_proxy_clients']['default']['contacts'][0] . "]", "yellow");
         echo $colors->getColoredString("\nIs organization a Public Administration: ", "yellow");
@@ -535,8 +549,8 @@ class Setup
                 fwrite($openssl_config, "uri=2.5.4.83\n");
 
                 fwrite($openssl_config, "\n[ dn ]\n");
-                fwrite($openssl_config, "organizationName=" . $config['rp_proxy_clients']['default']['client_name'] . "\n");
-                fwrite($openssl_config, "commonName=" . $config['rp_proxy_clients']['default']['client_name'] . "\n");
+                fwrite($openssl_config, "organizationName=" . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
+                fwrite($openssl_config, "commonName=" . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
                 fwrite($openssl_config, "uri=" . $config['rp_proxy_clients']['default']['client_id'] . "\n");
                 fwrite($openssl_config, "organizationIdentifier=" . $config['rp_proxy_clients']['default']['organization_identifier'] . "\n");
                 fwrite($openssl_config, "countryName=" . $config['rp_proxy_clients']['default']['country_name'] . "\n");

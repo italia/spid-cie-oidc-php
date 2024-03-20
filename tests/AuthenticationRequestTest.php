@@ -29,20 +29,21 @@ class AuthenticationRequestTest extends TestCase
         $database = new RP_Database(__DIR__ . '/tests.sqlite');
         $request = new AuthenticationRequest($config);
 
-        $authorization_endpoint = "https://op.org/auth";
+        $op_issuer = "https://op.org/auth";
+        $authorization_endpoint = $op_issuer;
         $acr = array(3, 2, 1);
         $user_attributes = array(
-            "name",
-            "familyName",
+            "given_name",
+            "family_name",
             "email",
-            "fiscalNumber"
+            "https://attributes.eid.gov.it/fiscal_number"
         );
 
         $code_verifier = "VERIFIER";
         $nonce = "NONCE";
         $state = "STATE";
 
-        $redirect_url = $request->getRedirectURL($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
+        $redirect_url = $request->getRedirectURL($op_issuer, $authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
 
         $this->assertStringStartsWith("https://op.org/auth?client_id=http://relying-party-php.org:8003/&response_type=code&scope=openid&code_challenge=a1Y-Z7sHPycP84FUZMgqhDyqVo6DdP5EUEXrLaTUge0&code_challenge_method=S256&nonce=NONCE&request=", $redirect_url);
     }
@@ -65,13 +66,14 @@ class AuthenticationRequestTest extends TestCase
         $database = new RP_Database(__DIR__ . '/tests.sqlite');
         $request = new AuthenticationRequest($config);
 
-        $authorization_endpoint = "https://op.org/auth";
+        $op_issuer = "https://op.org/auth";
+        $authorization_endpoint = $op_issuer;
         $acr = array(3, 2, 1);
         $user_attributes = array(
-            "name",
-            "familyName",
+            "given_name",
+            "family_name",
             "email",
-            "fiscalNumber"
+            "https://attributes.eid.gov.it/fiscal_number"
         );
 
         $code_verifier = "VERIFIER";
@@ -79,7 +81,7 @@ class AuthenticationRequestTest extends TestCase
         $state = "STATE";
 
         try {
-            $request->send($authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
+            $request->send($op_issuer, $authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
         } catch (\Exception $e) {
             //
         }

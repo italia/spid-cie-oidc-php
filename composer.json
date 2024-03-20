@@ -33,7 +33,7 @@
         "lib-openssl": ">=1.1.1",
         "symfony/filesystem": "^5.2.6",
         "italia/spid-sp-access-button": "^1.0.0",
-        "bcosca/fatfree": "^3.7",
+        "bcosca/fatfree": "^3.8",
         "guzzlehttp/guzzle": "^7.0",
         "web-token/jwt-core": "^2.2.11",
         "web-token/jwt-key-mgmt": "^2.2.11",

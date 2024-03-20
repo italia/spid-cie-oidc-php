@@ -124,7 +124,7 @@ class TokenEndpoint
             $userinfo = (array) $this->database->getUserinfo($access_token);
             $request = $this->database->getRequestByCode($code);
 
-            $subject = $userinfo['fiscalNumber'];
+            $subject = $userinfo['fiscal_number'];
             $exp_time = 1800;
             $iss = $this->config['rp_proxy_clients'][$client_id]['client_id'];
             $aud = $client_id;

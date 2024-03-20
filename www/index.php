@@ -119,8 +119,8 @@ $f3->route([
     $logger = $f3->get("LOGGER");
     $logger->log('OIDC', 'GET /.well-known/openid-federation');
 
-    $output = $f3->get("GET.output");
-    $json = strtolower($output) == 'json';
+    $output = $f3->get("GET.output") ?? 'default';
+    $json = (strtolower($output)=='json');
     $mediaType = $json ? 'application/json' : 'application/entity-statement+jwt';
     header('Content-Type: ' . $mediaType);
     echo EntityStatement::makeFromConfig($config, $json);
@@ -141,7 +141,7 @@ $f3->route([
 
     // stash params state from proxy requests
     // (OIDC generic 2 OIDC SPID)
-    $f3->set("SESSION.state", $_GET['state']);
+    $f3->set("SESSION.state", $_GET['state']??'');
 
     $auth = $f3->get('SESSION.auth');
     if (
@@ -213,9 +213,11 @@ $f3->route([
     }
 
     $authorization_endpoint = $configuration->metadata->openid_provider->authorization_endpoint;
+    $op_issuer = $configuration->metadata->openid_provider->issuer;
 
     $authenticationRequest = new AuthenticationRequest($config, $hooks);
     $authenticationRequestURL = $authenticationRequest->send(
+        $op_issuer,
         $authorization_endpoint,
         $acr,
         $user_attributes,
@@ -275,6 +277,7 @@ $f3->route([
     try {
         $tokenRequest = new TokenRequest($config, $hooks);
         $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
+        
         $access_token = $tokenResponse->access_token;
 
         $userinfoRequest = new UserinfoRequest($config, $configuration->metadata->openid_provider, $hooks);
@@ -296,7 +299,8 @@ $f3->route([
         $responseHandler = new $responseHandlerClass($config);
         $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
     } catch (Exception $e) {
-        $f3->error($e->getCode(), $e->getMessage());
+        $code = in_array($e->getCode(), [200, 301, 302, 400, 401, 404])? $e->getCode() : 500;
+        $f3->error($code, $e->getMessage());
     }
 });
 
