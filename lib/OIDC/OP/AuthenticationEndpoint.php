@@ -60,8 +60,8 @@ class AuthenticationEndpoint
         $response_type  = $_GET['response_type'];
         $client_id      = $_GET['client_id'];
         $redirect_uri   = urldecode($_GET['redirect_uri']);
-        $state          = $_GET['state'] ? $_GET['state'] : '';
-        $nonce          = $_GET['nonce'] ? $_GET['nonce'] : '';
+        $state          = (isset($_GET['state']) && $_GET['state']) ? $_GET['state'] : '';
+        $nonce          = (isset($_GET['nonce']) && $_GET['nonce']) ? $_GET['nonce'] : '';
 
         $this->database->log("AuthenticationEndpoint", "AUTH", $_GET);
 

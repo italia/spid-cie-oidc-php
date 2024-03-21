@@ -60,7 +60,7 @@ class UserinfoEndpoint
             }
             $this->database->log("UserinfoEndpoint", "USERINFO", "Bearer: " . $bearer);
             $userinfo = (array) $this->database->getUserinfo($bearer);
-            $userinfo['sub'] = $userinfo['https://attributes_eid_gov_it/fiscal_number'];
+            $userinfo['sub'] = $userinfo['fiscal_number'];
             $this->database->log("UserinfoEndpoint", "USERINFO", $userinfo);
 
             header('Content-Type: application/json; charset=utf-8');

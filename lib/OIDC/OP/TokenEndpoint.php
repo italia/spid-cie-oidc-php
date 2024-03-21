@@ -70,7 +70,7 @@ class TokenEndpoint
         $client_id      = $_POST['client_id'];
         $client_secret  = $_POST['client_secret'];
         $redirect_uri   = $_POST['redirect_uri'];
-        $state          = $_POST['state'];
+        $state          = isset($_POST['state'])? $_POST['state'] : '';
 
         try {
             $credential = $this->getBasicAuthCredential();
