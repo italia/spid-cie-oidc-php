@@ -44,12 +44,12 @@
             "homepage_uri": "http://relying-party-php.org:8003/homepage_uri",
             "logo_uri": "http://relying-party-php.org:8003/logo_uri",
             "policy_uri": "http://relying-party-php.org:8003/policy_uri",
-            "cert_private_core_sig": "/home/spid-cie-oidc-php/cert/rp.pem",
-            "cert_public_core_sig": "/home/spid-cie-oidc-php/cert/rp.crt",
-            "cert_private_core_enc": "/home/spid/spid-cie-oidc-php/cert/rp-enc.pem",
-            "cert_public_core_enc": "/home/spid/spid-cie-oidc-php/cert/rp-enc.crt",
-            "cert_private_fed_sig": "/home/spid/spid-cie-oidc-php/cert/rp-fed.pem",
-            "cert_public_fed_sig": "/home/spid/spid-cie-oidc-php/cert/rp-fed.crt",
+            "cert_private_core_sig": "./cert/rp.pem",
+            "cert_public_core_sig": "./cert/rp.crt",
+            "cert_private_core_enc": "./cert/rp-enc.pem",
+            "cert_public_core_enc": "./cert/rp-enc.crt",
+            "cert_private_fed_sig": "./cert/rp-fed.pem",
+            "cert_public_fed_sig": "./cert/rp-fed.crt",
             "trust_marks": [
                 {
                     "trust_mark": "",
@@ -64,8 +64,12 @@
             ]
         },
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
-            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
-            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_private_core_sig": "./cert/rp.pem",
+            "cert_public_core_sig": "./cert/rp.crt",
+            "cert_private_core_enc": "./cert/rp-enc.pem",
+            "cert_public_core_enc": "./cert/rp-enc.crt",
+            "cert_private_fed_sig": "./cert/rp-fed.pem",
+            "cert_public_fed_sig": "./cert/rp-fed.crt",
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP Wordpress",
             "authority_hint": "http://trust-anchor.org:8000", 
@@ -92,8 +96,12 @@
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
         },
         "9798f8ca-2682-49bc-ac2f-67b568b86b74": {
-            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
-            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_private_core_sig": "./cert/rp.pem",
+            "cert_public_core_sig": "./cert/rp.crt",
+            "cert_private_core_enc": "./cert/rp-enc.pem",
+            "cert_public_core_enc": "./cert/rp-enc.crt",
+            "cert_private_fed_sig": "./cert/rp-fed.pem",
+            "cert_public_fed_sig": "./cert/rp-fed.crt",
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP Drupal",
             "authority_hint": "http://trust-anchor.org:8000", 
@@ -122,8 +130,8 @@
     },
 
     "op_proxy_client_id": "http://relying-party-php.org:8003/oidc/proxy/",
-    "op_proxy_cert_private": "/home/spid-cie-oidc-php/cert/op.pem",
-    "op_proxy_cert_public": "/home/spid-cie-oidc-php/cert/op.crt",
+    "op_proxy_cert_private": "./cert/op.pem",
+    "op_proxy_cert_public": "./cert/op.crt",
     "op_proxy_clients": {
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
             "name": "TEST",
