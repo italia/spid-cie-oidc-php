@@ -63,11 +63,11 @@
         "post-update-cmd": [
             "SPID_CIE_OIDC_PHP\\Setup\\Setup::setup"
         ],
-        "uninstall": [
+        "scop-uninstall": [
             "SPID_CIE_OIDC_PHP\\Setup\\Setup::remove"
         ]
     },
     "scripts-descriptions": {
-        "uninstall": "Remove all packages and custom configurations"
+        "scop-uninstall": "Remove all packages and custom configurations"
     }
 }
