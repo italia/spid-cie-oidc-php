@@ -38,6 +38,15 @@ use GuzzleHttp\Client;
  */
 class TrustChain
 {
+    private array $config;
+    private Database $database;
+    private string $leaf;
+    private string $trust_anchor;
+    private string $entity;
+    private $leaf_entity_statement; 
+    private $federation_entity_statement;
+    private Client $http_client;
+
     /**
      *  creates a new EntityStatement instance
      *
