@@ -42,7 +42,7 @@ class TrustChain
     private string $leaf;
     private string $trust_anchor;
     private string $entity;
-    private $leaf_entity_statement; 
+    private $leaf_entity_statement;
     private $federation_entity_statement;
     private Client $http_client;
 
@@ -147,7 +147,8 @@ class TrustChain
         $authority_hints = $entity_statement_payload->authority_hints ?? null;
 
         // follow entity statement untill authority_hints
-        if ($authority_hints == null 
+        if (
+            $authority_hints == null
             || (is_array($authority_hints) && count($authority_hints) == 0)
         ) {
             // trust anchor

@@ -89,7 +89,7 @@ class EntityStatement
                     "jwks" => array(
                         "keys" => $crt_jwks
                     ),
-                    "grant_types" => array( 
+                    "grant_types" => array(
                         "refresh_token",        // useful???
                         "authorization_code"
                     ),
@@ -211,27 +211,27 @@ class EntityStatement
                     if ($this->payload->metadata->$entity_type->$policy_claim != null) {
                         foreach ($policy_rule as $policy_modifier => $policy_value) {
                             switch ($policy_modifier) {
-                            case 'value':
-                                $this->applyPolicyModifierValue($entity_type, $policy_claim, $policy_value);
-                                break;
-                            case 'add':
-                                $this->applyPolicyModifierAdd($entity_type, $policy_claim, $policy_value);
-                                break;
-                            case 'default':
-                                $this->applyPolicyModifierDefault($entity_type, $policy_claim, $policy_value);
-                                break;
-                            case 'one_of':
-                                $this->applyPolicyModifierOneOf($entity_type, $policy_claim, $policy_value);
-                                break;
-                            case 'subset_of':
-                                $this->applyPolicyModifierSubsetOf($entity_type, $policy_claim, $policy_value);
-                                break;
-                            case 'superset_of':
-                                $this->applyPolicyModifierSupersetOf($entity_type, $policy_claim, $policy_value);
-                                break;
-                            case 'essential':
-                                $this->applyPolicyModifierEssential($entity_type, $policy_claim, $policy_value);
-                                break;
+                                case 'value':
+                                    $this->applyPolicyModifierValue($entity_type, $policy_claim, $policy_value);
+                                    break;
+                                case 'add':
+                                    $this->applyPolicyModifierAdd($entity_type, $policy_claim, $policy_value);
+                                    break;
+                                case 'default':
+                                    $this->applyPolicyModifierDefault($entity_type, $policy_claim, $policy_value);
+                                    break;
+                                case 'one_of':
+                                    $this->applyPolicyModifierOneOf($entity_type, $policy_claim, $policy_value);
+                                    break;
+                                case 'subset_of':
+                                    $this->applyPolicyModifierSubsetOf($entity_type, $policy_claim, $policy_value);
+                                    break;
+                                case 'superset_of':
+                                    $this->applyPolicyModifierSupersetOf($entity_type, $policy_claim, $policy_value);
+                                    break;
+                                case 'essential':
+                                    $this->applyPolicyModifierEssential($entity_type, $policy_claim, $policy_value);
+                                    break;
                             }
                         }
                     }

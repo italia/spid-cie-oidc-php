@@ -76,14 +76,16 @@ $f3->set('BASEURL', ($service_name == '') ? '' : '/' . $service_name);
 
 
 $f3->route(
-    'GET /info', function ($f3) {
+    'GET /info',
+    function ($f3) {
         $composer = json_decode(file_get_contents(__DIR__ . '/../composer.json'));
         echo "SPID CIE OIDC PHP - Version " . $composer->config->version;
     }
 );
 
 // transform json POST body data
-if (($f3->VERB == 'POST' || $f3->VERB == 'PUT')
+if (
+    ($f3->VERB == 'POST' || $f3->VERB == 'PUT')
     && preg_match('/json/', $f3->get('HEADERS[Content-Type]'))
 ) {
     $f3->set('BODY', file_get_contents('php://input'));
@@ -96,7 +98,8 @@ if (($f3->VERB == 'POST' || $f3->VERB == 'PUT')
 }
 
 $f3->set(
-    'ONERROR', function ($f3) {
+    'ONERROR',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $error_description = $f3->get('ERROR.text');
         $f3->set('error_description', $error_description);
@@ -114,7 +117,8 @@ $f3->route(
     [
     'GET /.well-known/openid-federation',
     'GET /@domain/.well-known/openid-federation'
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : $f3->get("CONFIG")['default_domain'];
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         if (!$config) {
@@ -125,7 +129,7 @@ $f3->route(
         $logger->log('OIDC', 'GET /.well-known/openid-federation');
 
         $output = $f3->get("GET.output") ?? 'default';
-        $json = (strtolower($output)=='json');
+        $json = (strtolower($output) == 'json');
 
         $mediaType = $json ? 'application/json' : 'application/entity-statement+jwt';
         header('Content-Type: ' . $mediaType);
@@ -137,7 +141,8 @@ $f3->route(
     [
     'GET /oidc/rp/authz',
     'GET /oidc/rp/@domain/authz'
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : $f3->get("CONFIG")['default_domain'];
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         if (!$config) {
@@ -149,10 +154,11 @@ $f3->route(
 
         // stash params state from proxy requests
         // (OIDC generic 2 OIDC SPID)
-        $f3->set("SESSION.state", $_GET['state']??'');
+        $f3->set("SESSION.state", $_GET['state'] ?? '');
 
         $auth = $f3->get('SESSION.auth');
-        if ($auth != null
+        if (
+            $auth != null
             && $auth['userinfo'] != null
             && $auth['redirect_uri'] != null
             && $auth['state'] != null
@@ -175,7 +181,8 @@ $f3->route(
     [
     'GET /oidc/rp/authz/@ta/@op',
     'GET /oidc/rp/@domain/authz/@ta/@op'
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : $f3->get("CONFIG")['default_domain'];
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         if (!$config) {
@@ -241,7 +248,8 @@ $f3->route(
     [
     'GET /oidc/rp/redirect',
     'GET /oidc/rp/@domain/redirect'
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : $f3->get("CONFIG")['default_domain'];
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         if (!$config) {
@@ -288,14 +296,15 @@ $f3->route(
         try {
             $tokenRequest = new TokenRequest($config, $hooks);
             $tokenResponse = $tokenRequest->send($token_endpoint, $code, $code_verifier);
-        
+
             $access_token = $tokenResponse->access_token;
 
             $userinfoRequest = new UserinfoRequest($config, $configuration->metadata->openid_provider, $hooks);
             $userinfoResponse = $userinfoRequest->send($userinfo_endpoint, $access_token);
 
             $f3->set(
-                'SESSION.auth', array(
+                'SESSION.auth',
+                array(
                 "ta_id" => $ta_id,
                 "op_id" => $op_id,
                 "access_token" => $access_token,
@@ -312,7 +321,7 @@ $f3->route(
             $responseHandler = new $responseHandlerClass($config);
             $responseHandler->sendResponse($redirect_uri, $userinfoResponse, $state);
         } catch (Exception $e) {
-            $code = in_array($e->getCode(), [200, 301, 302, 400, 401, 404])? $e->getCode() : 500;
+            $code = in_array($e->getCode(), [200, 301, 302, 400, 401, 404]) ? $e->getCode() : 500;
             $f3->error($code, $e->getMessage());
         }
     }
@@ -321,7 +330,8 @@ $f3->route(
 $f3->route(
     [
     'GET /resolve'
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : 'default';
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         $sub = $f3->get("GET.sub");
@@ -329,7 +339,7 @@ $f3->route(
         if (empty($sub) || empty($anchor)) {
             $f3->error(400, "anchor or sub not not found");
         }
-    
+
         $rp_database = $f3->get("RP_DATABASE");
         $mediaType = 'application/entity-statement+jwt';
         header('Content-Type: ' . $mediaType);
@@ -341,7 +351,8 @@ $f3->route(
     [
     'GET /oidc/rp/introspection',
     'GET /oidc/rp/@domain/introspection',
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : $f3->get("CONFIG")['default_domain'];
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         if (!$config) {
@@ -385,7 +396,8 @@ $f3->route(
     [
     'GET /oidc/rp/logout',
     'GET /oidc/rp/@domain/logout'
-    ], function ($f3) {
+    ],
+    function ($f3) {
         $domain = $f3->get("PARAMS.domain") ? $f3->get("PARAMS.domain") : $f3->get("CONFIG")['default_domain'];
         $config = $f3->get("CONFIG")['rp_proxy_clients'][$domain];
         if (!$config) {
@@ -439,7 +451,8 @@ $f3->route(
 //----------------------------------------------------------------------------------------
 
 $f3->route(
-    'GET /oidc/proxy/.well-known/openid-configuration', function ($f3) {
+    'GET /oidc/proxy/.well-known/openid-configuration',
+    function ($f3) {
         $config = $f3->get("CONFIG");
 
         try {
@@ -453,7 +466,8 @@ $f3->route(
 );
 
 $f3->route(
-    'GET /oidc/proxy/certs', function ($f3) {
+    'GET /oidc/proxy/certs',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $op_database = $f3->get("OP_DATABASE");
 
@@ -467,7 +481,8 @@ $f3->route(
 );
 
 $f3->route(
-    'GET /oidc/proxy/authz', function ($f3) {
+    'GET /oidc/proxy/authz',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $op_database = $f3->get("OP_DATABASE");
 
@@ -481,7 +496,8 @@ $f3->route(
 );
 
 $f3->route(
-    'POST /oidc/proxy/callback', function ($f3) {
+    'POST /oidc/proxy/callback',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $op_database = $f3->get("OP_DATABASE");
 
@@ -495,7 +511,8 @@ $f3->route(
 );
 
 $f3->route(
-    'POST /oidc/proxy/token', function ($f3) {
+    'POST /oidc/proxy/token',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $op_database = $f3->get("OP_DATABASE");
 
@@ -509,7 +526,8 @@ $f3->route(
 );
 
 $f3->route(
-    'POST /oidc/proxy/userinfo', function ($f3) {
+    'POST /oidc/proxy/userinfo',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $op_database = $f3->get("OP_DATABASE");
 
@@ -523,7 +541,8 @@ $f3->route(
 );
 
 $f3->route(
-    'GET /oidc/proxy/session/end', function ($f3) {
+    'GET /oidc/proxy/session/end',
+    function ($f3) {
         $config = $f3->get("CONFIG");
         $op_database = $f3->get("OP_DATABASE");
 
@@ -545,7 +564,8 @@ $f3->route(
 // DEMO
 //----------------------------------------------------------------------------------------
 $f3->route(
-    'GET /', function ($f3) {
+    'GET /',
+    function ($f3) {
         $f3->reroute('/test.php');
     }
 );

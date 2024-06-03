@@ -69,7 +69,7 @@ class TokenEndpoint
         $client_id      = $_POST['client_id'];
         $client_secret  = $_POST['client_secret'];
         $redirect_uri   = $_POST['redirect_uri'];
-        $state          = isset($_POST['state'])? $_POST['state'] : '';
+        $state          = isset($_POST['state']) ? $_POST['state'] : '';
 
         try {
             $credential = $this->getBasicAuthCredential();
@@ -82,19 +82,21 @@ class TokenEndpoint
                 $auth_method = $clients[$username]['token_endpoint_auth_method'];
                 $this->database->log("TokenEndpoint", "TOKEN configured auth_method", $auth_method);
                 switch ($auth_method) {
-                case 'client_secret_post':
-                    // already have client_id and client_secret
-                    break;
-                case 'client_secret_basic':
-                default:
-                    $client_id = $username;
-                    $client_secret = $password;
-                    break;
+                    case 'client_secret_post':
+                        // already have client_id and client_secret
+                        break;
+                    case 'client_secret_basic':
+                    default:
+                        $client_id = $username;
+                        $client_secret = $password;
+                        break;
                 }
                 // @codeCoverageIgnoreEnd
             }
             $this->database->log(
-                "TokenEndpoint", "TOKEN REQUEST CREDENTIAL", array(
+                "TokenEndpoint",
+                "TOKEN REQUEST CREDENTIAL",
+                array(
                 "client_id" => $client_id,
                 "client_secret" =>  $client_secret
                 )

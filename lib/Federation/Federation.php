@@ -35,7 +35,7 @@ class Federation
 {
     private array $config;
     private array $fed_config;
-    
+
     /**
      *  creates a new Federation instance
      *

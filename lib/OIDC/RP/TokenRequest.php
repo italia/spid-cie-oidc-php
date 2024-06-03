@@ -131,7 +131,7 @@ class TokenRequest
         // @codeCoverageIgnoreEnd
 
         $response = $this->http_client->post($token_endpoint, [ 'form_params' => $data ]);
-        
+
         // @codeCoverageIgnoreStart
         $code = $response->getStatusCode();
         if ($code != 200) {

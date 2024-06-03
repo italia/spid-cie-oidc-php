@@ -31,9 +31,8 @@ use SPID_CIE_OIDC_PHP\Core\Util;
  */
 class Database
 {
-
     private \SQLite3 $db;
-    
+
     /**
      *  creates a new Database instance
      *
@@ -319,7 +318,8 @@ class Database
             "
             INSERT INTO log(context, tag, value, severity)
             VALUES(:context, :tag, :value, :severity);
-        ", array(
+        ",
+            array(
             ":context" => $context,
             ":tag" => $tag,
             ":value" => json_encode($value),

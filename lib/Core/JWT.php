@@ -116,18 +116,15 @@ class JWT
      */
     public static function getCertificateJWK($file, string $use = 'sig')
     {
-        if($use=='sig+enc') {
-
-            $file_sig = is_array($file)? $file[0]: $file;
-            $file_enc = is_array($file)? $file[1]: $file;
+        if ($use == 'sig+enc') {
+            $file_sig = is_array($file) ? $file[0] : $file;
+            $file_enc = is_array($file) ? $file[1] : $file;
 
             $jwk_sig = JWT::getCertificateJWK($file_sig, 'sig');
             $jwk_enc = JWT::getCertificateJWK($file_enc, 'enc');
 
             return array($jwk_sig, $jwk_enc);
-
         } else {
-
             $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => $use]);
 
             // fix \n json_encode issue
@@ -144,7 +141,7 @@ class JWT
                 'e'         => $jwk_obj->get('e'),
                 'use'       => $jwk_obj->get('use'),
                 'kid'       => $kid,
-                'alg'       => ($use=='enc')? "RSA-OAEP" : "RS256", // useful???
+                'alg'       => ($use == 'enc') ? "RSA-OAEP" : "RS256", // useful???
                 'n'         => $jwk_obj->get('n'),
                 //'x5c'       => $x5c,
                 //'x5t'       => $jwk_obj->get('x5t'),

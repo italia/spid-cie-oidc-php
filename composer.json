@@ -65,7 +65,9 @@
         ],
         "scop-uninstall": [
             "SPID_CIE_OIDC_PHP\\Setup\\Setup::remove"
-        ]
+        ],
+        "phpcs": "php vendor/bin/phpcs --ignore=*/spid-sp-access-button/* --standard=PSR12 --warning-severity=0 lib www",
+        "phpcbf": "php vendor/bin/phpcbf --ignore=*/spid-sp-access-button/* --standard=PSR12 --warning-severity=0 lib www"
     },
     "scripts-descriptions": {
         "scop-uninstall": "Remove all packages and custom configurations"

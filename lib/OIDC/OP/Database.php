@@ -31,9 +31,8 @@ use SPID_CIE_OIDC_PHP\Core\Util;
  */
 class Database
 {
-
     private \SQLite3 $db;
-    
+
     /**
      *  creates a new Database instance
      *
@@ -132,7 +131,8 @@ class Database
             AND req_timestamp > datetime('now', '-30 minutes')
             ORDER BY req_timestamp DESC
             LIMIT 1;
-        ", array(
+        ",
+            array(
             ":client_id" => $client_id,
             ":redirect_uri" => $redirect_uri
             )
@@ -289,7 +289,8 @@ class Database
             WHERE client_id=:client_id 
             AND redirect_uri=:redirect_uri
             AND code=:code;
-        ", array(
+        ",
+            array(
             ":client_id" => $client_id,
             ":redirect_uri" => $redirect_uri,
             ":code" => $code
@@ -334,7 +335,8 @@ class Database
             "
             SELECT req_id FROM token 
             WHERE id_token=:id_token;
-        ", array(
+        ",
+            array(
             ":id_token" => $id_token
             )
         );
@@ -400,7 +402,8 @@ class Database
             "
             SELECT req_id FROM token 
             WHERE access_token=:access_token;
-        ", array(
+        ",
+            array(
             ":access_token" => $access_token
             )
         );
@@ -531,7 +534,8 @@ class Database
             "
              INSERT INTO log(context, tag, value, severity)
              VALUES(:context, :tag, :value, :severity);
-         ", array(
+         ",
+            array(
             ":context" => $context,
             ":tag" => $tag,
             ":value" => json_encode($value),

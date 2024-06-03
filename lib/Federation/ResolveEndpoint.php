@@ -1,4 +1,5 @@
 <?php
+
 namespace SPID_CIE_OIDC_PHP\Federation;
 
 use SPID_CIE_OIDC_PHP\Core\Util;
@@ -26,17 +27,17 @@ class ResolveEndpoint
     }
     public static function resolve($config, $db, $sub, $anchor)
     {
-       
+
         $key = $config['cert_private_fed_sig'];
         $key_jwk = JWT::getJWKFromJSON(file_get_contents($key));
 
         $header = array(
-            "typ" => "entity-statement+jwt",    
+            "typ" => "entity-statement+jwt",
             "alg" => "RS256",
             "kid" => $key_jwk->get('kid')
         );
 
-       
+
         $jws = JWT::makeJWS($header, array("test"), $key_jwk);
 
         return $jws;

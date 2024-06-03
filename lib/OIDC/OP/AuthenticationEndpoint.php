@@ -118,7 +118,8 @@ class AuthenticationEndpoint
      */
     public function callback()
     {
-        if (isset($_POST) && ($_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST']
+        if (
+            isset($_POST) && ($_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST']
             || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST'])
         ) {
             $req_id         = base64_decode($_POST['state']);

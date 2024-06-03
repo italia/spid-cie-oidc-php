@@ -30,7 +30,7 @@ namespace SPID_CIE_OIDC_PHP\Core;
 class Logger
 {
     private array $config;
-    
+
     /**
      *  creates a new Logger instance
      *
