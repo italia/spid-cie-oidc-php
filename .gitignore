@@ -14,3 +14,6 @@ error_log
 /.phpunit.cache/
 tests.sqlite
 
+/www/assets
+/www/view
+
