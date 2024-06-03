@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -37,7 +37,7 @@ class Database
     /**
      *  creates a new Database instance
      *
-     * @param string $db_file path of sqlite file
+     * @param  string $db_file path of sqlite file
      * @throws Exception
      * @return Database
      */
@@ -48,7 +48,8 @@ class Database
             die("Error while connecting to db.sqlite");
         }
 
-        $this->db->exec("
+        $this->db->exec(
+            "
             CREATE TABLE IF NOT EXISTS token (
                 req_id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 req_timestamp   DATETIME DEFAULT (datetime('now')) NOT NULL,
@@ -71,31 +72,36 @@ class Database
                 value           STRING,
                 severity        STRING
             );
-        ");
+        "
+        );
 
-        $this->db->exec("
+        $this->db->exec(
+            "
             DELETE FROM token WHERE req_timestamp <= datetime('now', '-30 minutes');
             DELETE FROM log WHERE timestamp <= datetime('now', '-60 minutes');
-        ");
+        "
+        );
     }
 
     /**
      *  creates a record from an authentication request
      *
-     * @param string $client_id id of the client
-     * @param string $redirect_uri URL to which return after authentication
-     * @param string $state value of the state param sent with the request
-     * @param string $nonce value of the nonce param sent with the request
+     * @param  string $client_id    id of the client
+     * @param  string $redirect_uri URL to which return after authentication
+     * @param  string $state        value of the state param sent with the request
+     * @param  string $nonce        value of the nonce param sent with the request
      * @throws Exception
      * @return string the request id
      */
     public function createRequest(string $client_id, string $redirect_uri, string $state = '', string $nonce = '')
     {
         $code = uniqid();
-        $stmt = $this->db->prepare("
+        $stmt = $this->db->prepare(
+            "
             INSERT INTO token(client_id, redirect_uri, state, nonce) 
             VALUES(:client_id, :redirect_uri, :state, :nonce);
-        ");
+        "
+        );
         $stmt->bindValue(':client_id', $client_id, SQLITE3_TEXT);
         $stmt->bindValue(':redirect_uri', $redirect_uri, SQLITE3_TEXT);
         $stmt->bindValue(':state', $state, SQLITE3_TEXT);
@@ -108,17 +114,18 @@ class Database
     /**
      *  updates a record of an authentication request
      *
-     * @param string $client_id id of the client
-     * @param string $redirect_uri URL to which return after authentication
-     * @param string $state value of the state param sent with the request
-     * @param string $nonce value of the nonce param sent with the request
+     * @param  string $client_id    id of the client
+     * @param  string $redirect_uri URL to which return after authentication
+     * @param  string $state        value of the state param sent with the request
+     * @param  string $nonce        value of the nonce param sent with the request
      * @throws Exception
      * @return string the request id
      */
     public function updateRequest(string $client_id, string $redirect_uri, string $state = '', string $nonce = '')
     {
         $req_id = null;
-        $result = $this->query("
+        $result = $this->query(
+            "
             SELECT req_id FROM token 
             WHERE client_id=:client_id 
             AND redirect_uri=:redirect_uri
@@ -128,15 +135,18 @@ class Database
         ", array(
             ":client_id" => $client_id,
             ":redirect_uri" => $redirect_uri
-        ));
+            )
+        );
 
         if (count($result) == 1) {
             $req_id = $result[0]['req_id'];
-            $stmt = $this->db->prepare("
+            $stmt = $this->db->prepare(
+                "
                 UPDATE token 
                 SET state=:state, nonce=:nonce
                 WHERE req_id=:req_id;
-            ");
+            "
+            );
             $stmt->bindValue(':state', $state, SQLITE3_TEXT);
             $stmt->bindValue(':nonce', $nonce, SQLITE3_TEXT);
             $stmt->bindValue(':req_id', $req_id, SQLITE3_TEXT);
@@ -148,7 +158,7 @@ class Database
     /**
      *  retrieve a record of an authentication request
      *
-     * @param string $req_id id of the authentication request
+     * @param  string $req_id id of the authentication request
      * @throws Exception
      * @return array the request
      */
@@ -172,7 +182,7 @@ class Database
     /**
      *  retrieve a record of an authentication request by authcode
      *
-     * @param string $code the authcode of the authentication request
+     * @param  string $code the authcode of the authentication request
      * @throws Exception
      * @return array the request
      */
@@ -197,7 +207,7 @@ class Database
     /**
      *  retrieve a record of an authentication request by id_token
      *
-     * @param string $id_token the id_token of the authentication request
+     * @param  string $id_token the id_token of the authentication request
      * @throws Exception
      * @return array the request
      */
@@ -222,7 +232,7 @@ class Database
     /**
      *  retrieve all records of authentication requests by client_id
      *
-     * @param string $client_id the client_id
+     * @param  string $client_id the client_id
      * @throws Exception
      * @return array the requests
      */
@@ -241,18 +251,20 @@ class Database
     /**
      *  update a request record generating the authcode for the request
      *
-     * @param string $req_id the request id
+     * @param  string $req_id the request id
      * @throws Exception
      * @return string the generated authcode
      */
     public function createAuthorizationCode(string $req_id)
     {
         $code = uniqid();
-        $stmt = $this->db->prepare("
+        $stmt = $this->db->prepare(
+            "
             UPDATE token 
             SET code=:code, auth_timestamp=datetime('now')
             WHERE req_id=:req_id;
-        ");
+        "
+        );
         $stmt->bindValue(':code', $code, SQLITE3_TEXT);
         $stmt->bindValue(':req_id', $req_id, SQLITE3_TEXT);
         $stmt->execute();
@@ -262,16 +274,17 @@ class Database
     /**
      *  check if exists a request with the specified authorization code for that client_id and redirect_uri
      *
-     * @param string $client_id the client id
-     * @param string $redirect_uri the redirect uri
-     * @param string $code the authroization code
+     * @param  string $client_id    the client id
+     * @param  string $redirect_uri the redirect uri
+     * @param  string $code         the authroization code
      * @throws Exception
      * @return boolean true if the auth code exists
      */
     public function checkAuthorizationCode(string $client_id, string $redirect_uri, string $code)
     {
         $check = false;
-        $result = $this->query("
+        $result = $this->query(
+            "
             SELECT req_id FROM token 
             WHERE client_id=:client_id 
             AND redirect_uri=:redirect_uri
@@ -280,7 +293,8 @@ class Database
             ":client_id" => $client_id,
             ":redirect_uri" => $redirect_uri,
             ":code" => $code
-        ));
+            )
+        );
 
         if (count($result) == 1) {
             $check = true;
@@ -291,8 +305,8 @@ class Database
     /**
      *  save id_token for the request
      *
-     * @param string $req_id the request id
-     * @param string $id_token the id_token to save
+     * @param  string $req_id   the request id
+     * @param  string $id_token the id_token to save
      * @throws Exception
      */
     public function saveIdToken(string $req_id, string $id_token)
@@ -309,19 +323,21 @@ class Database
     /**
      *  check if the id_token exists
      *
-     * @param string $id_token the id_token
+     * @param  string $id_token the id_token
      * @throws Exception
      * @return boolean true if the id_token exists
      */
     public function checkIdToken(string $id_token)
     {
         $check = false;
-        $result = $this->query("
+        $result = $this->query(
+            "
             SELECT req_id FROM token 
             WHERE id_token=:id_token;
         ", array(
             ":id_token" => $id_token
-        ));
+            )
+        );
 
         if (count($result) == 1) {
             $check = true;
@@ -332,18 +348,20 @@ class Database
     /**
      *  create a new access token for the request identified by authorization code
      *
-     * @param string $code the authcode
+     * @param  string $code the authcode
      * @throws Exception
      * @return string the generated access_token
      */
     public function createAccessToken(string $code)
     {
         $access_token = uniqid();
-        $stmt = $this->db->prepare("
+        $stmt = $this->db->prepare(
+            "
             UPDATE token
             SET access_token=:access_token, token_timestamp=datetime('now')
             WHERE code=:code;
-        ");
+        "
+        );
         $stmt->bindValue(':access_token', $access_token, SQLITE3_TEXT);
         $stmt->bindValue(':code', $code, SQLITE3_TEXT);
         $stmt->execute();
@@ -353,8 +371,8 @@ class Database
     /**
      *  save the provided access_token for the request
      *
-     * @param string $req_id the request id
-     * @param string $access_token the access_token
+     * @param  string $req_id       the request id
+     * @param  string $access_token the access_token
      * @throws Exception
      */
     public function saveAccessToken(string $req_id, string $access_token)
@@ -371,19 +389,21 @@ class Database
     /**
      *  check if the access_token exists
      *
-     * @param string $access_token the access_token
+     * @param  string $access_token the access_token
      * @throws Exception
      * @return boolean true if the access_token exists
      */
     public function checkAccessToken(string $access_token)
     {
         $check = false;
-        $result = $this->query("
+        $result = $this->query(
+            "
             SELECT req_id FROM token 
             WHERE access_token=:access_token;
         ", array(
             ":access_token" => $access_token
-        ));
+            )
+        );
 
         if (count($result) == 1) {
             $check = true;
@@ -394,8 +414,8 @@ class Database
     /**
      *  save user info for the request
      *
-     * @param string $req_id the request id
-     * @param array $userinfo the user info
+     * @param  string $req_id   the request id
+     * @param  array  $userinfo the user info
      * @throws Exception
      */
     public function saveUserinfo(string $req_id, array $userinfo)
@@ -412,7 +432,7 @@ class Database
     /**
      *  get user info for the access_token
      *
-     * @param string $access_token the access_token
+     * @param  string $access_token the access_token
      * @return array $userinfo the user info
      * @throws Exception
      */
@@ -428,7 +448,7 @@ class Database
     /**
      *  delete the request
      *
-     * @param string $req_id the request id
+     * @param  string $req_id the request id
      * @throws Exception
      */
     public function deleteRequest(string $req_id)
@@ -442,8 +462,8 @@ class Database
     /**
      *  executes a SQL query to retrieve values (SELECT)
      *
-     * @param string $sql the SQL prepared query to execute (es. SELECT * FROM request WHERE code_verifier = :code_verifier)
-     * @param string[] $values values to bind on the query
+     * @param  string   $sql    the SQL prepared query to execute (es. SELECT * FROM request WHERE code_verifier = :code_verifier)
+     * @param  string[] $values values to bind on the query
      * @throws Exception
      * @return array result of the query
      */
@@ -464,8 +484,8 @@ class Database
     /**
      *  executes a SQL query to upsert values (INSERT, UPDATE)
      *
-     * @param string $sql the SQL prepared query to execute
-     * @param string[] $values values to bind on the query
+     * @param  string   $sql    the SQL prepared query to execute
+     * @param  string[] $values values to bind on the query
      * @throws Exception
      * @return array result of the query
      */
@@ -482,7 +502,7 @@ class Database
     /**
      *  executes a dump of a table
      *
-     * @param string $table the name of the table to dump
+     * @param  string $table the name of the table to dump
      * @throws Exception
      * @return array result of the dump
      */
@@ -494,10 +514,10 @@ class Database
     /**
      *  saves a record on the log table
      *
-     * @param string $context context for the log record
-     * @param string $tag tag for the log record
-     * @param mixed $value value for the log record
-     * @param string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
+     * @param  string $context  context for the log record
+     * @param  string $tag      tag for the log record
+     * @param  mixed  $value    value for the log record
+     * @param  string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
      * @throws Exception
      */
     public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
@@ -507,7 +527,8 @@ class Database
             $this->log("Severity " . $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
             $severity = 'DEBUG';
         }
-        $this->exec("
+        $this->exec(
+            "
              INSERT INTO log(context, tag, value, severity)
              VALUES(:context, :tag, :value, :severity);
          ", array(
@@ -515,6 +536,7 @@ class Database
             ":tag" => $tag,
             ":value" => json_encode($value),
             ":severity" => $severity
-        ));
+            )
+        );
     }
 }

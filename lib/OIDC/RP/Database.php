@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\RP;
@@ -37,7 +37,7 @@ class Database
     /**
      *  creates a new Database instance
      *
-     * @param string $db_file path of sqlite file
+     * @param  string $db_file path of sqlite file
      * @throws Exception
      * @return Database
      */
@@ -48,7 +48,8 @@ class Database
             die("Error while connecting to db.sqlite");
         }
 
-        $this->db->exec("
+        $this->db->exec(
+            "
             CREATE TABLE IF NOT EXISTS log (
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
                 context         STRING,
@@ -81,33 +82,38 @@ class Database
 
                 PRIMARY KEY (issuer, type)
             );
-        ");
+        "
+        );
 
-        $this->db->exec("
+        $this->db->exec(
+            "
             DELETE FROM log WHERE timestamp <= datetime('now', '-60 minutes') AND severity <> 'CRITICAL';
             DELETE FROM request WHERE timestamp <= datetime('now', '-2 years');
             DELETE FROM store WHERE timestamp <= datetime('now', '-24 hours');
-        ");
+        "
+        );
     }
 
     /**
      *  creates a record for an authentication request
      *
-     * @param string $ta_id id of the trust anchor to wich the provider to which send the request belongs to
-     * @param string $op_id id of the provider to which send the request
-     * @param string $redirect_uri URL to which return after authentication
-     * @param string $state value of the state param sent with the request
-     * @param int[] $acr array of int values of the acr params to sent with the request
-     * @param string[] $user_attributes array of string values of the user attributes to query with the request
+     * @param  string   $ta_id           id of the trust anchor to wich the provider to which send the request belongs to
+     * @param  string   $op_id           id of the provider to which send the request
+     * @param  string   $redirect_uri    URL to which return after authentication
+     * @param  string   $state           value of the state param sent with the request
+     * @param  int[]    $acr             array of int values of the acr params to sent with the request
+     * @param  string[] $user_attributes array of string values of the user attributes to query with the request
      * @throws Exception
      * @return string the request id
      */
     public function createRequest(string $ta_id, string $op_id, string $redirect_uri, string $state = '', array $acr = [], array $user_attributes = [])
     {
-        $stmt = $this->db->prepare("
+        $stmt = $this->db->prepare(
+            "
             INSERT INTO request(ta_id, op_id, redirect_uri, state, acr, user_attributes, nonce, code_verifier) 
             VALUES(:ta_id, :op_id, :redirect_uri, :state, :acr, :user_attributes, :nonce, :code_verifier);
-        ");
+        "
+        );
         $stmt->bindValue(':ta_id', $ta_id, SQLITE3_TEXT);
         $stmt->bindValue(':op_id', $op_id, SQLITE3_TEXT);
         $stmt->bindValue(':redirect_uri', $redirect_uri, SQLITE3_TEXT);
@@ -124,7 +130,7 @@ class Database
     /**
      *  get a saved request
      *
-     * @param string $req_id the id of the request
+     * @param  string $req_id the id of the request
      * @throws Exception
      * @return array data of the request: req_id, timestamp, op_id, redirect_uri, state, acr, user_attributes, none, code_verifier
      */
@@ -150,20 +156,22 @@ class Database
     /**
      *  save an object to the store
      *
-     * @param string $issuer client_id owner of the data
-     * @param string $type type of object
-     * @param string $iat "issued at" timestamp of object
-     * @param string $exp "expire at" timestamp of object
-     * @param mixed $data json encoded string of object
+     * @param  string $issuer client_id owner of the data
+     * @param  string $type   type of object
+     * @param  string $iat    "issued at" timestamp of object
+     * @param  string $exp    "expire at" timestamp of object
+     * @param  mixed  $data   json encoded string of object
      * @throws Exception
      * @return string the record id
      */
     public function saveToStore(string $issuer, string $type, string $url, string $iat, string $exp, $data)
     {
-        $stmt = $this->db->prepare("
+        $stmt = $this->db->prepare(
+            "
             INSERT OR REPLACE INTO store(issuer, type, url, iat, exp, data) 
             VALUES(:issuer, :type, :url, :iat, :exp, :data);
-        ");
+        "
+        );
         $stmt->bindValue(':issuer', $issuer, SQLITE3_TEXT);
         $stmt->bindValue(':type', $type, SQLITE3_TEXT);
         $stmt->bindValue(':url', $url, SQLITE3_TEXT);
@@ -178,8 +186,8 @@ class Database
     /**
      *  get an object from store
      *
-     * @param string $issuer client_id owner of the data
-     * @param string $type type of object
+     * @param  string $issuer client_id owner of the data
+     * @param  string $type   type of object
      * @throws Exception
      * @return object the object
      */
@@ -208,7 +216,7 @@ class Database
     /**
      *  get an object from store by url
      *
-     * @param string $url url where the object is issued
+     * @param  string $url url where the object is issued
      * @throws Exception
      * @return object the object
      */
@@ -235,8 +243,8 @@ class Database
     /**
      *  executes a SQL query to retrieve values (SELECT)
      *
-     * @param string $sql the SQL prepared query to execute (es. SELECT * FROM request WHERE code_verifier = :code_verifier)
-     * @param string[] $values values to bind on the query
+     * @param  string   $sql    the SQL prepared query to execute (es. SELECT * FROM request WHERE code_verifier = :code_verifier)
+     * @param  string[] $values values to bind on the query
      * @throws Exception
      * @return array result of the query
      */
@@ -257,8 +265,8 @@ class Database
     /**
      *  executes a SQL query to upsert values (INSERT, UPDATE)
      *
-     * @param string $sql the SQL prepared query to execute
-     * @param string[] $values values to bind on the query
+     * @param  string   $sql    the SQL prepared query to execute
+     * @param  string[] $values values to bind on the query
      * @throws Exception
      * @return array result of the query
      */
@@ -275,9 +283,9 @@ class Database
     /**
      *  executes a dump of a table
      *
-     * @param string $table the name of the table to dump
-     * @throws Exception
-     * @return array result of the dump
+     * @param              string $table the name of the table to dump
+     * @throws             Exception
+     * @return             array result of the dump
      * @codeCoverageIgnore
      */
     public function dump($table)
@@ -292,12 +300,12 @@ class Database
     /**
      *  saves a record on the log table
      *
-     * @param string $context context for the log record
-     * @param string $tag tag for the log record
-     * @param mixed $value value for the log record
-     * @param string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
-     * @throws Exception
-     * @return array result of the save
+     * @param              string $context  context for the log record
+     * @param              string $tag      tag for the log record
+     * @param              mixed  $value    value for the log record
+     * @param              string $severity [DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL]
+     * @throws             Exception
+     * @return             array result of the save
      * @codeCoverageIgnore
      */
     public function log(string $context, string $tag, $value = '', string $severity = 'INFO')
@@ -307,7 +315,8 @@ class Database
             $this->log("Severity " . $severity . " not allowed, severity MUST be one of: " . json_encode($severity_available) . ". Changed to DEBUG");
             $severity = 'DEBUG';
         }
-        $this->exec("
+        $this->exec(
+            "
             INSERT INTO log(context, tag, value, severity)
             VALUES(:context, :tag, :value, :severity);
         ", array(
@@ -315,7 +324,8 @@ class Database
             ":tag" => $tag,
             ":value" => json_encode($value),
             ":severity" => $severity
-        ));
+            )
+        );
 
         error_log("[" . $severity . "] " . $context . ":" . $tag . " - " . json_encode($value));
     }

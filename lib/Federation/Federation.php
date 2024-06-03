@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Federation;
@@ -30,7 +30,6 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
  *  Utility functions for Federation
  *
  *  [OpenID Connect Federation Entity Statement](https://openid.net/specs/openid-connect-federation-1_0.html#rfc.section.3.1)
- *
  */
 class Federation
 {
@@ -40,8 +39,8 @@ class Federation
     /**
      *  creates a new Federation instance
      *
-     * @param array $config base configuration
-     * @param array $fed_config federation configuration
+     * @param  array $config     base configuration
+     * @param  array $fed_config federation configuration
      * @throws Exception
      * @return Federation
      */
@@ -54,7 +53,7 @@ class Federation
     /**
      *  check if federation is supported
      *
-     * @param string $federation entity id of federation
+     * @param  string $federation entity id of federation
      * @throws Exception
      * @return boolean if federation is supported
      */

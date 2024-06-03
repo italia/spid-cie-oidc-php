@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\RP;
@@ -31,15 +31,14 @@ use GuzzleHttp\Client;
  *  Generates the Token Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
- *
  */
 class TokenRequest
 {
     /**
      *  creates a new TokenRequest instance
      *
-     * @param array $config base configuration
-     * @param array $hooks hooks defined list
+     * @param  array $config base configuration
+     * @param  array $hooks  hooks defined list
      * @throws Exception
      * @return TokenRequest
      */
@@ -48,22 +47,24 @@ class TokenRequest
         $this->config = $config;
         $this->hooks = $hooks;
 
-        $this->http_client = new Client([
+        $this->http_client = new Client(
+            [
             'allow_redirects' => true,
             'timeout' => 15,
             'debug' => false,
             'http_errors' => false
-        ]);
+            ]
+        );
     }
 
     /**
      *  send the token request
      *
-     * @param string $token_endpoint token endpoint of the provider
-     * @param string $auth_code value of authorization_code obtained from authentication request
-     * @param string $code_verifier value of code_verifier whose related code_challenge was sent with authentication request
-     * @param boolean $refresh if true send a token request with a refresh token for obtain a new access token
-     * @param string $refresh_token value of refresh token
+     * @param  string  $token_endpoint token endpoint of the provider
+     * @param  string  $auth_code      value of authorization_code obtained from authentication request
+     * @param  string  $code_verifier  value of code_verifier whose related code_challenge was sent with authentication request
+     * @param  boolean $refresh        if true send a token request with a refresh token for obtain a new access token
+     * @param  string  $refresh_token  value of refresh token
      * @throws Exception
      * @return object response returned from token request
      */
@@ -118,10 +119,12 @@ class TokenRequest
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);
-                    $hpre->run(array(
+                    $hpre->run(
+                        array(
                         "token_endpoint" => $token_endpoint,
                         "post_data" => $data
-                    ));
+                        )
+                    );
                 }
             }
         }
@@ -144,10 +147,12 @@ class TokenRequest
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);
-                    $hpre->run(array(
+                    $hpre->run(
+                        array(
                         "token_endpoint" => $token_endpoint,
                         "response" => json_decode((string) $response->getBody())
-                    ));
+                        )
+                    );
                 }
             }
         }
@@ -163,8 +168,8 @@ class TokenRequest
     /**
      *  retrieves the response returned from previous token request
      *
-     * @throws Exception
-     * @return object response returned from token request
+     * @throws             Exception
+     * @return             object response returned from token request
      * @codeCoverageIgnore
      */
     public function getResponse()
@@ -175,8 +180,8 @@ class TokenRequest
     /**
      *  retrieves the access_token returned from previous token request
      *
-     * @throws Exception
-     * @return string access_token returned from token request
+     * @throws             Exception
+     * @return             string access_token returned from token request
      * @codeCoverageIgnore
      */
     public function getAccessToken()
@@ -188,8 +193,8 @@ class TokenRequest
     /**
      *  retrieves the id_token returned from previous token request
      *
-     * @throws Exception
-     * @return string id_token returned from token request
+     * @throws             Exception
+     * @return             string id_token returned from token request
      * @codeCoverageIgnore
      */
     public function getIdToken()

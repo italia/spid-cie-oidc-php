@@ -10,8 +10,8 @@ class ResolveEndpoint
     /**
      *  creates a new EntityStatement instance
      *
-     * @param string $sub entity
-     * @param string $anchor Trust Anchor
+     * @param  string $sub    entity
+     * @param  string $anchor Trust Anchor
      * @throws Exception
      * @return ResolveEndpoint
      */
@@ -24,7 +24,8 @@ class ResolveEndpoint
             //$this->validate($token);
         }
     }
-    public static function resolve($config, $db, $sub, $anchor) {
+    public static function resolve($config, $db, $sub, $anchor)
+    {
        
         $key = $config['cert_private_fed_sig'];
         $key_jwk = JWT::getJWKFromJSON(file_get_contents($key));

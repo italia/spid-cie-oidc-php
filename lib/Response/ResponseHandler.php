@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Response;
@@ -52,7 +52,7 @@ abstract class ResponseHandler
     /**
      *  creates a new <ResponseHandler> instance
      *
-     * @param array $config base configuration
+     * @param  array $config base configuration
      * @throws Exception
      * @return ResponseHandler
      */
@@ -64,9 +64,9 @@ abstract class ResponseHandler
     /**
      *  send the response
      *
-     * @param string $redirect_uri URL where send te response
-     * @param object $data data within the response
-     * @param string $state state to be returned
+     * @param  string $redirect_uri URL where send te response
+     * @param  object $data         data within the response
+     * @param  string $state        state to be returned
      * @throws Exception
      */
     abstract public function sendResponse(string $redirect_uri, object $data, string $state);

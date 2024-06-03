@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\RP;
@@ -31,15 +31,14 @@ use SPID_CIE_OIDC_PHP\Core\Util;
  *  Generates the Authentication Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
- *
  */
 class AuthenticationRequest
 {
     /**
      *  creates a new AuthenticationRequest instance
      *
-     * @param array $config base configuration
-     * @param array $hooks hooks defined list
+     * @param  array $config base configuration
+     * @param  array $hooks  hooks defined list
      * @throws Exception
      * @return AuthenticationRequest
      */
@@ -52,13 +51,13 @@ class AuthenticationRequest
     /**
      *  creates the URL to OIDC Provider to which redirect the user
      *
-     * @param string $op_issuer id of the provider
-     * @param string $authorization_endpoint autorization endpoint of the provider
-     * @param int[] $acr array of int values of the acr params to send with the request
-     * @param string[] $user_attributes array of string values of the user attributes to query with the request
-     * @param string $code_verifier value for PKCE code_verifier to send with the the request
-     * @param string $nonce value for nonce to send with the request
-     * @param string $state value for state to send with the request
+     * @param  string   $op_issuer              id of the provider
+     * @param  string   $authorization_endpoint autorization endpoint of the provider
+     * @param  int[]    $acr                    array of int values of the acr params to send with the request
+     * @param  string[] $user_attributes        array of string values of the user attributes to query with the request
+     * @param  string   $code_verifier          value for PKCE code_verifier to send with the the request
+     * @param  string   $nonce                  value for nonce to send with the request
+     * @param  string   $state                  value for state to send with the request
      * @throws Exception
      * @return string URL of the authentication request
      */
@@ -183,14 +182,14 @@ class AuthenticationRequest
     /**
      *  redirect the browser with the authentication request to the URL to OIDC Provider
      *
-     * @param string $op_issuer id of the provider
-     * @param string $authorization_endpoint autorization endpoint of the provider
-     * @param int[] $acr array of int values of the acr params to send with the request
-     * @param string[] $user_attributes array of string values of the user attributes to query with the request
-     * @param string $code_verifier value for PKCE code_verifier to send with the the request
-     * @param string $nonce value for nonce to send with the request
-     * @param string $state value for state to send with the request
-     * @throws Exception
+     * @param              string   $op_issuer              id of the provider
+     * @param              string   $authorization_endpoint autorization endpoint of the provider
+     * @param              int[]    $acr                    array of int values of the acr params to send with the request
+     * @param              string[] $user_attributes        array of string values of the user attributes to query with the request
+     * @param              string   $code_verifier          value for PKCE code_verifier to send with the the request
+     * @param              string   $nonce                  value for nonce to send with the request
+     * @param              string   $state                  value for state to send with the request
+     * @throws             Exception
      * @codeCoverageIgnore
      */
     public function send(string $op_issuer, string $authorization_endpoint, array $acr, array $user_attributes, string $code_verifier, string $nonce, string $state)
@@ -203,14 +202,16 @@ class AuthenticationRequest
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);
-                    $hpre->run(array(
+                    $hpre->run(
+                        array(
                         "authorization_endpoint" => $authorization_endpoint,
                         "acr" => $acr,
                         "user_attributes" => $user_attributes,
                         "code_verifier" => $code_verifier,
                         "nonce" => $nonce,
                         "authentication_request_url" => $authenticationRequestURL
-                    ));
+                        )
+                    );
                 }
             }
         }

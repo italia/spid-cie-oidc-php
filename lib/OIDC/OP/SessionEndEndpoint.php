@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -28,15 +28,14 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 
 /**
  *  Session End Endpoint
- *
  */
 class SessionEndEndpoint
 {
     /**
      *  creates a new SessionEndEndpoint instance
      *
-     * @param array $config base configuration
-     * @param Database $database database instance
+     * @param  array    $config   base configuration
+     * @param  Database $database database instance
      * @throws Exception
      * @return SessionEndEndpoint
      */
@@ -49,7 +48,7 @@ class SessionEndEndpoint
     /**
      *  process a session end request
      *
-     * @param object $_GET containing the request parameters
+     * @param  object $_GET containing the request parameters
      * @throws Exception
      */
     public function process()

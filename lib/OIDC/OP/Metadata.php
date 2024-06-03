@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -31,14 +31,13 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
  *  Proxy OIDC Metadata Discovery
  *
  *  [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)
- *
  */
 class Metadata
 {
     /**
      *  creates a new Metadata instance
      *
-     * @param array $config base configuration
+     * @param  array $config base configuration
      * @throws Exception
      * @return Metadata
      */

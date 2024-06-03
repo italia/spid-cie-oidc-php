@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\RP;
@@ -31,14 +31,13 @@ use GuzzleHttp\Client;
  *  Generates the Revocation Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
- *
  */
 class RevocationRequest
 {
     /**
      *  creates a new RevocationRequest instance
      *
-     * @param array $config base configuration
+     * @param  array $config base configuration
      * @throws Exception
      * @return RevocationRequest
      */
@@ -46,21 +45,23 @@ class RevocationRequest
     {
         $this->config = $config;
 
-        $this->http_client = new Client([
+        $this->http_client = new Client(
+            [
             'allow_redirects' => true,
             'timeout' => 15,
             'debug' => false,
             'http_errors' => false
-        ]);
+            ]
+        );
     }
 
     /**
      *  send the revocation request
      *
-     * @param string $revocation_endpoint revocation endpoint of the provider
-     * @param string $token token to be revoked
-     * @throws Exception
-     * @return object response returned from revocation
+     * @param              string $revocation_endpoint revocation endpoint of the provider
+     * @param              string $token               token to be revoked
+     * @throws             Exception
+     * @return             object response returned from revocation
      * @codeCoverageIgnore
      */
     public function send(string $revocation_endpoint, string $token)

@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Federation;
@@ -34,7 +34,6 @@ use GuzzleHttp\Client;
  *  Resolve the EntityStatement and apply authority policy
  *
  *  [OpenID Connect Federation Entity Statement](https://openid.net/specs/openid-connect-federation-1_0.html#rfc.section.3.1)
- *
  */
 class TrustChain
 {
@@ -50,11 +49,11 @@ class TrustChain
     /**
      *  creates a new EntityStatement instance
      *
-     * @param array $config base configuration
-     * @param Database $database instance of Database
-     * @param string $leaf id of leaf entity for wich resolve configuration
-     * @param string $trust_anchor id of the trust anchor authority
-     * @param string $entity id of the current entity node if it's intermediate
+     * @param  array    $config       base configuration
+     * @param  Database $database     instance of Database
+     * @param  string   $leaf         id of leaf entity for wich resolve configuration
+     * @param  string   $trust_anchor id of the trust anchor authority
+     * @param  string   $entity       id of the current entity node if it's intermediate
      * @throws Exception
      * @return EntityStatement
      */
@@ -69,12 +68,14 @@ class TrustChain
         $this->leaf_entity_statement = null;
         $this->federation_entity_statement = null;
 
-        $this->http_client = new Client([
+        $this->http_client = new Client(
+            [
             'allow_redirects' => true,
             'timeout' => 15,
             'debug' => false,
             'http_errors' => false
-        ]);
+            ]
+        );
 
         $this->database->log("TrustChain", "created", $this);
     }
@@ -82,9 +83,9 @@ class TrustChain
     /**
      *  resolve the entity statement recursively
      *
-     * @param boolean $apply_policy if true applies trust anchor authorities policies
-     * @throws Exception
-     * @return mixed
+     * @param              boolean $apply_policy if true applies trust anchor authorities policies
+     * @throws             Exception
+     * @return             mixed
      * @codeCoverageIgnore
      */
     public function resolve($apply_policy = true)
@@ -146,9 +147,8 @@ class TrustChain
         $authority_hints = $entity_statement_payload->authority_hints ?? null;
 
         // follow entity statement untill authority_hints
-        if (
-            $authority_hints == null ||
-            (is_array($authority_hints) && count($authority_hints) == 0)
+        if ($authority_hints == null 
+            || (is_array($authority_hints) && count($authority_hints) == 0)
         ) {
             // trust anchor
             $this->database->log("TrustChain", "found trust anchor for leaf " . $this->leaf, $this->entity);
