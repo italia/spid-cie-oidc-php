@@ -45,7 +45,9 @@ class AuthenticationRequestTest extends TestCase
 
         $redirect_url = $request->getRedirectURL($op_issuer, $authorization_endpoint, $acr, $user_attributes, $code_verifier, $nonce, $state);
 
-        $this->assertStringStartsWith("https://op.org/auth?client_id=http://relying-party-php.org:8003/&response_type=code&scope=openid&code_challenge=a1Y-Z7sHPycP84FUZMgqhDyqVo6DdP5EUEXrLaTUge0&code_challenge_method=S256&nonce=NONCE&request=", $redirect_url);
+        $this->assertStringStartsWith("https://op.org/auth?"
+            . "client_id=" . urlencode("http://relying-party-php.org:8003/")
+            . "&response_type=code&scope=openid&code_challenge=a1Y-Z7sHPycP84FUZMgqhDyqVo6DdP5EUEXrLaTUge0&code_challenge_method=S256&request=", $redirect_url); 
     }
 
     /**

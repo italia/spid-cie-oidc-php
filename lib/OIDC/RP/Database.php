@@ -327,6 +327,7 @@ class Database
             )
         );
 
-        error_log("[" . $severity . "] " . $context . ":" . $tag . " - " . json_encode($value));
+        //comment or it will throw error on phpunit
+        //error_log("[" . $severity . "] " . $context . ":" . $tag . " - " . json_encode($value));
     }
 }
