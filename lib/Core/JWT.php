@@ -242,12 +242,12 @@ class JWT
         $payload = self::getJWSPayload($token);
 
         // max clock skew 5min
-        if ($payload->iat >= strtotime('+5 minutes')) {
+        if (isset($payload->iat) && $payload->iat >= strtotime('+5 minutes')) {
             $isValid = false;
         }
 
         // max clock skew 5min
-        if ($payload->exp <= strtotime('-5 minutes')) {
+        if (isset($payload->exp) && $payload->exp <= strtotime('-5 minutes')) {
             $isValid = false;
         }
 
