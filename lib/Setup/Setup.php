@@ -786,9 +786,39 @@ class Setup
         $filesystem->remove($install_dir . "/composer.lock");
         echo $colors->getColoredString("OK", "green");
 
-        //echo $colors->getColoredString("\nRemove cert directory [" . $install_dir . "/cert]... ", "white");
-        //shell_exec("rm -Rf " . $install_dir . "/cert");
-        //echo $colors->getColoredString("OK", "green");
+        echo $colors->getColoredString("\nWARNING! this action is not reversable", "red") . " Remove certificates? (" .
+        $colors->getColoredString("N", "green") . "): ";
+        $confirmRemoval = readline();
+        if ($confirmRemoval==="Y") {
+            echo $colors->getColoredString("Remove cert directory [" . $install_dir . "/cert]... ", "white");
+            $filesystem->remove($install_dir . "/cert");
+            echo $colors->getColoredString("OK", "green");
+        } else {
+            echo $colors->getColoredString("Skipping", "green");
+        }
+
+        echo $colors->getColoredString("\nWARNING! this action is not reversable", "red") . " Remove configuration file? (" .
+        $colors->getColoredString("N", "green") . "): ";
+        $confirmRemoval = readline();
+        if ($confirmRemoval==="Y") {
+            echo $colors->getColoredString("Remove config file [" . $install_dir . "/config/config.json]... ", "white");
+            $filesystem->remove($install_dir . "/config/config.json");
+            echo $colors->getColoredString("OK", "green");
+        } else {
+            echo $colors->getColoredString("Skipping", "green");
+        }
+
+        echo $colors->getColoredString("\nWARNING! this action is not reversable", "red") . " Remove RP and OP databases? (" .
+        $colors->getColoredString("N", "green") . "): ";
+        $confirmRemoval = readline();
+        if ($confirmRemoval==="Y") {
+            echo $colors->getColoredString("Remove databases [" . $install_dir . "/data/store-rp.sqlite and store-op.sqlite]... ", "white");
+            $filesystem->remove($install_dir . "/data/store-rp.sqlite");
+            $filesystem->remove($install_dir . "/data/store-op.sqlite");
+            echo $colors->getColoredString("OK", "green");
+        } else {
+            echo $colors->getColoredString("Skipping", "green");
+        }
 
         echo $colors->getColoredString("\n\nSPID CIE OIDC PHP successfully removed\n\n", "green");
     }
