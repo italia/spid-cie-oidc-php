@@ -49,7 +49,8 @@
         "web-token/jwt-encryption-algorithm-rsa": "^2.2.11",
         "web-token/jwt-encryption-algorithm-pbes2": "^2.2.11",
         "web-token/jwt-encryption-algorithm-aesgcm": "^2.2.11",
-        "web-token/jwt-encryption-algorithm-aescbc": "^2.2.11"
+        "web-token/jwt-encryption-algorithm-aescbc": "^2.2.11",
+        "monolog/monolog": "^3.7"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "3.*",
