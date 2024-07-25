@@ -756,10 +756,23 @@ class Setup
             }
         }
 
-        $service_dir = ($service_name == "") ? $www_dir : $www_dir . "/" . $service_name;
-        echo $colors->getColoredString("\nRemove service symlink [" . $service_dir . "]... ", "white");
-        $filesystem->remove($service_dir);
-        echo $colors->getColoredString("OK", "green");
+        if (empty($service_name) ) {
+            echo "Service name empty, it means EVERYTHING in your web directory [" . $www_dir . "] will be GONE, proceed? (" .
+            $colors->getColoredString("N", "green") . "): ";
+            $removeWWW = readline();
+            if ($removeWWW==="Y") {
+                echo $colors->getColoredString("\nRemove web directory... ", "white");
+                $filesystem->remove($www_dir);
+                echo $colors->getColoredString("OK", "green");
+            } else {
+                echo $colors->getColoredString("Skipping", "green");
+            }
+        } else {
+            $service_dir = $www_dir . "/" . $service_name;
+            echo $colors->getColoredString("\nRemove service symlink [" . $service_dir . "]... ", "white");
+            $filesystem->remove($service_dir);
+            echo $colors->getColoredString("OK", "green");
+        }
 
         echo $colors->getColoredString("\nRemove spid-sp-access-button assets... ", "white");
         $filesystem->remove($install_dir . "/www/assets/spid-sp-access-button");
