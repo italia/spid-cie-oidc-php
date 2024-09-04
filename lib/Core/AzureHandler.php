@@ -1,0 +1,132 @@
+<?php declare(strict_types=1);
+
+/**
+ * spid-cie-oidc-php
+ * https://github.com/italia/spid-cie-oidc-php
+ *
+ * 2022 Michele D'Amico (damikael)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ */
+
+//namespace Monolog\Handler;
+namespace SPID_CIE_OIDC_PHP\Core;
+
+use Monolog\Level;
+use Monolog\Utils;
+use Monolog\LogRecord;
+use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Handler\Curl;
+
+/**
+ * @author Michele D'Amico <michele.damico@linfaservice.it>
+ * Linfa Service - https://www.linfaservice.it
+ * Damikael - https://www.damikael.dev
+ */
+class AzureHandler extends AbstractProcessingHandler
+{
+    private string $eventName;
+    private string $secretKey;
+
+    /**
+     * @param string $tenantId
+     * @param string $appId
+     * @param string $appSecret
+     * @param string $dceURI
+     * @param string $dcrImmutableId;
+     * @param string $table
+     *
+     * @throws MissingExtensionException If the curl extension is missing
+     */
+    public function __construct(string $tenantId, string $appId, string $appSecret, string $dceURI, string $dcrImmutableId, string $table, int|string|Level $level = Level::Debug, bool $bubble = true)
+    {
+        if (!\extension_loaded('curl')) {
+            throw new MissingExtensionException('The curl extension is needed to use the AzureHandler');
+        }
+
+        $this->tenantId = $tenantId;
+        $this->appId = $appId;
+        $this->appSecret = $appSecret;
+        $this->dceURI = $dceURI;
+        $this->dcrImmutableId = $dcrImmutableId;
+        $this->table = $table;
+
+        parent::__construct($level, $bubble);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function write(LogRecord $record): void
+    {
+
+        // retrieve access_token
+        $url = "https://login.microsoftonline.com/" . $this->tenantId . "/oauth2/v2.0/token";
+        $postString = "
+            grant_type=client_credentials
+            &scope=https://monitor.azure.com//.default
+            &client_id=" . $this->appId . "
+            &client_secret=" . $this->appSecret . "
+        ";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/x-www-form-urlencoded",
+        ]);
+
+        $response = Curl\Util::execute($ch);
+        $access_token = json_decode($response)->access_token;
+
+        // send log
+        $url = $this->dceURI . "/dataCollectionRules/" . $this->dcrImmutableId . "/streams/Custom-" . $this->table . "?api-version=2023-01-01";
+        $sourceUrl = $_SERVER['HTTP_HOST'];
+        $clientIp = $_SERVER['REMOTE_ADDR'];
+
+        $postString = "[
+            {
+                \"TimeGenerated\": \"" . (new \DateTime())->format('c') . "\",
+                \"Direction\": \"REQUEST\",
+                \"Method\": \"GET\",
+                \"Url\": \"" . $sourceUrl ."\",
+                \"IP\": \"" . $clientIp ."\",
+                \"Level\": \"INFO\",
+                \"response_type\": \"code\",
+                \"message\": \"" . $record->message . "\"
+            }
+        ]";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer " . $access_token,
+            "Content-Type: application/json",
+        ]);
+
+        //error_log("Log Request: " . var_export($postString, true));
+
+        $response = Curl\Util::execute($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        //error_log("Log Response: [" . $httpcode . "] " . var_export($response, true));
+    }
+}

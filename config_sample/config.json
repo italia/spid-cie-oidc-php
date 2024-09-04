@@ -3,9 +3,18 @@
     "install_dir": "/home/spid-cie-oidc-php",
     "www_dir": "/var/www/html",
     "service_name": "",
-    "log_path": "./log/spid-cie-oidc-php.log",
     "homepage": "/test.php", 
     "default_domain": "default",
+
+    "log_handler": "stream",
+    "log_stream_path": "./log/spid-cie-oidc-php.log",
+    "log_azure_tenantId": "",
+    "log_azure_appId": "",
+    "log_azure_appSecret": "",
+    "log_azure_dceURI": "",
+    "log_azure_dcrImmutableId": "",
+    "log_azure_table": "",
+
     "sa": {
         "client_id": "http://relying-party-php.org:8003/",
         "client_name": "Soggetto Aggregatore",

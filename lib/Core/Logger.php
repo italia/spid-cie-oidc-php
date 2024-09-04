@@ -53,8 +53,27 @@ class Logger
         }
         $this->config = $config;
 
-        //$handler = new SyslogHandler('spid-cie-oidc-php');
-        $handler = new StreamHandler($this->config['log_path']);
+        switch($this->config['log_handler']) {
+            case 'azure':
+                $tenantId = $this->config['log_azure_tenantId'];
+                $appId = $this->config['log_azure_appId'];
+                $appSecret = $this->config['log_azure_appSecret'];
+                $dceURI = $this->config['log_azure_dceURI'];
+                $dcrImmutableId = $this->config['log_azure_dcrImmutableId'];
+                $table = $this->config['log_azure_table'];
+                $handler = new AzureHandler($tenantId, $appId, $appSecret, $dceURI, $dcrImmutableId, $table);
+                break;
+
+            case 'syslog':
+                $handler = new SyslogHandler('spid-cie-oidc-php');
+                break;          
+
+            case 'stream':
+            default:
+                $handler = new StreamHandler($this->config['log_stream_path']);
+                break;
+        }
+
         $formatter = new SyslogFormatter();
         $handler->setFormatter($formatter);
 
