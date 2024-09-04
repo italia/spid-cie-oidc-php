@@ -1,4 +1,9 @@
-{
+{   "https://preprod.oidc.registry.servizicie.interno.gov.it": {
+        "organization_name": "Federazione CIE preproduzione"
+    },
+    "https://oidc.registry.servizicie.interno.gov.it": {
+        "organization_name": "Federazione CIE"
+    },
     "https://registry.spid.gov.it": {
         "organization_name": "Federazione SPID"
     },
@@ -8,7 +13,7 @@
     "http://localhost:8000": {
         "organization_name": "Federazione test local"
     },
-    "http://trust-anchor.org:8000/": {
+    "http://trust-anchor.org:8000": {
         "organization_name": "Federazione test oidcfed"
     }
 }

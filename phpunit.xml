@@ -11,6 +11,7 @@
          convertDeprecationsToExceptions="true"
          failOnRisky="false"
          failOnWarning="false"
+         stopOnFailure="false"
          verbose="true">
     <testsuites>
         <testsuite name="default">

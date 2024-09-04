@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -28,15 +28,17 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 
 /**
  *  Authentication Endpoint
- *
  */
 class AuthenticationEndpoint
 {
+    private $config;
+    private $database;
+    
     /**
      *  creates a new AuthenticationEndpoint instance
      *
-     * @param array $config base configuration
-     * @param Database $database database instance
+     * @param  array    $config   base configuration
+     * @param  Database $database database instance
      * @throws Exception
      * @return AuthenticationEndpoint
      */
@@ -49,7 +51,7 @@ class AuthenticationEndpoint
     /**
      *  process an authentication request
      *
-     * @param array $_GET containing the request parameters
+     * @param  array $_GET containing the request parameters
      * @throws Exception
      */
     public function process()
@@ -59,9 +61,9 @@ class AuthenticationEndpoint
         $scope          = $_GET['scope'];
         $response_type  = $_GET['response_type'];
         $client_id      = $_GET['client_id'];
-        $redirect_uri   = $_GET['redirect_uri'];
-        $state          = $_GET['state'] ? $_GET['state'] : '';
-        $nonce          = $_GET['nonce'] ? $_GET['nonce'] : '';
+        $redirect_uri   = urldecode($_GET['redirect_uri']);
+        $state          = (isset($_GET['state']) && $_GET['state']) ? $_GET['state'] : '';
+        $nonce          = (isset($_GET['nonce']) && $_GET['nonce']) ? $_GET['nonce'] : '';
 
         $this->database->log("AuthenticationEndpoint", "AUTH", $_GET);
 
@@ -82,6 +84,12 @@ class AuthenticationEndpoint
                 throw new \Exception('invalid_redirect_uri');
             }
 
+            $rp_proxy_client = $clients[$client_id]['rp_proxy_client'];
+
+            if (!array_key_exists($rp_proxy_client, $this->config['rp_proxy_clients'])) {
+                throw new \Exception('invalid_client');
+            }
+
             $req_id = $this->database->updateRequest($client_id, $redirect_uri, $state, $nonce);
             if ($req_id == null) {
                 $req_id = $this->database->createRequest($client_id, $redirect_uri, $state, $nonce);
@@ -92,7 +100,7 @@ class AuthenticationEndpoint
                 $url = '/' . $this->config['service_name'] . '/';
             }
 
-            $url .= 'oidc/rp/' . $client_id . '/authz?state=' . base64_encode($req_id);
+            $url .= 'oidc/rp/' . $rp_proxy_client . '/authz?state=' . base64_encode($req_id);
             header('Location: ' . $url);
         } catch (\Exception $e) {
             if (!$this->config['production'] || $e->getMessage() == 'invalid_redirect_uri') {
@@ -107,6 +115,8 @@ class AuthenticationEndpoint
                 $return .= '&error_description=' . $e->getMessage();
                 $return .= '&state=' . $state;
                 header('Location: ' . $return);
+
+                return $return;
             }
         }
     }
@@ -114,16 +124,14 @@ class AuthenticationEndpoint
     /**
      *  receive and process an authentication response
      *
-     * @throws Exception
+     * @throws             Exception
      * @codeCoverageIgnore
      */
     public function callback()
     {
         if (
-            isset($_POST) && (
-            $_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST']
-            || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST']
-            )
+            isset($_POST) && ($_SERVER['HTTP_ORIGIN'] == 'https://' . $_SERVER['HTTP_HOST']
+            || $_SERVER['HTTP_ORIGIN'] == 'http://' . $_SERVER['HTTP_HOST'])
         ) {
             $req_id         = base64_decode($_POST['state']);
             $auth_code      = $this->database->createAuthorizationCode($req_id);
@@ -138,8 +146,8 @@ class AuthenticationEndpoint
             }
 
             foreach ($userinfo as $claim => $value) {
-                if (substr($claim, 0, 31) == 'https://attributes_spid_gov_it/') {
-                    $c = substr($claim, 31);
+                if (substr($claim, 0, 30) == 'https://attributes_eid_gov_it/') {
+                    $c = substr($claim, 30);
                     $userinfo[$c] = $value;
                     unset($userinfo[$claim]);
                 }
@@ -156,6 +164,8 @@ class AuthenticationEndpoint
             }
             $return .= '&state=' . $state;
             header("Location: " . $return);
+
+            return $return;
         } else {
             throw new \Exception("Invalid origin");
         }

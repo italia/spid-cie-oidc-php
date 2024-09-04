@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Federation;
@@ -34,18 +34,26 @@ use GuzzleHttp\Client;
  *  Resolve the EntityStatement and apply authority policy
  *
  *  [OpenID Connect Federation Entity Statement](https://openid.net/specs/openid-connect-federation-1_0.html#rfc.section.3.1)
- *
  */
 class TrustChain
 {
+    private array $config;
+    private Database $database;
+    private string $leaf;
+    private string $trust_anchor;
+    private string $entity;
+    private $leaf_entity_statement;
+    private $federation_entity_statement;
+    private Client $http_client;
+
     /**
      *  creates a new EntityStatement instance
      *
-     * @param array $config base configuration
-     * @param Database $database instance of Database
-     * @param string $leaf id of leaf entity for wich resolve configuration
-     * @param string $trust_anchor id of the trust anchor authority
-     * @param string $entity id of the current entity node if it's intermediate
+     * @param  array    $config       base configuration
+     * @param  Database $database     instance of Database
+     * @param  string   $leaf         id of leaf entity for wich resolve configuration
+     * @param  string   $trust_anchor id of the trust anchor authority
+     * @param  string   $entity       id of the current entity node if it's intermediate
      * @throws Exception
      * @return EntityStatement
      */
@@ -60,12 +68,14 @@ class TrustChain
         $this->leaf_entity_statement = null;
         $this->federation_entity_statement = null;
 
-        $this->http_client = new Client([
+        $this->http_client = new Client(
+            [
             'allow_redirects' => true,
             'timeout' => 15,
             'debug' => false,
             'http_errors' => false
-        ]);
+            ]
+        );
 
         $this->database->log("TrustChain", "created", $this);
     }
@@ -73,9 +83,9 @@ class TrustChain
     /**
      *  resolve the entity statement recursively
      *
-     * @param boolean $apply_policy if true applies trust anchor authorities policies
-     * @throws Exception
-     * @return mixed
+     * @param              boolean $apply_policy if true applies trust anchor authorities policies
+     * @throws             Exception
+     * @return             mixed
      * @codeCoverageIgnore
      */
     public function resolve($apply_policy = true)
@@ -128,25 +138,25 @@ class TrustChain
                 $entity_statement_url,
                 $entity_statement_payload->iat,
                 $entity_statement_payload->exp,
-                $entity_statement
+                $entity_statement_payload
             );
 
             $this->database->log("TrustChain", "saved openid-federation for " . $this->entity . " to store", $entity_statement_payload);
         }
 
-        $authority_hints = $entity_statement_payload->authority_hints;
+        $authority_hints = $entity_statement_payload->authority_hints ?? null;
 
         // follow entity statement untill authority_hints
         if (
-            $authority_hints == null ||
-            (is_array($authority_hints) && count($authority_hints) == 0)
+            $authority_hints == null
+            || (is_array($authority_hints) && count($authority_hints) == 0)
         ) {
             // trust anchor
             $this->database->log("TrustChain", "found trust anchor for leaf " . $this->leaf, $this->entity);
 
             // get federation fetch endpoint
             $federation_fetch_endpoint = $entity_statement_payload->metadata->federation_entity->federation_fetch_endpoint;
-            $federation_fetch_endpoint = Util::stringEndsWith($this->entity, '/') ? $federation_fetch_endpoint : $federation_fetch_endpoint . '/';
+            //$federation_fetch_endpoint = Util::stringEndsWith($this->entity, '/') ? $federation_fetch_endpoint : $federation_fetch_endpoint . '/';
 
             $federation_fetch_url = $federation_fetch_endpoint . '?sub=' . $this->leaf;
 
@@ -164,7 +174,7 @@ class TrustChain
 
             if ($code != 200) {
                 $this->database->log("TrustChain", "failed fetching configuration for " . $this->leaf, $reason, "ERROR");
-                throw new \Exception("Unable to trust " . $this->leaf, $reason . " - " . $reason);
+                throw new \Exception("Unable to trust " . $this->leaf . " - " . $reason);
             }
 
             $federation_entity_statement_token = (string) $response->getBody();
@@ -191,7 +201,7 @@ class TrustChain
                 $this->database->log("TrustChain", "resolve trust for leaf " . $this->leaf . " on authority", $authority);
 
                 $parent_entity_statement = new TrustChain($this->config, $this->database, $this->leaf, $this->trust_anchor, $authority);
-                $this->federation_entity_statement = $parent_entity_statement->resolve($policy);
+                $this->federation_entity_statement = $parent_entity_statement->resolve($apply_policy);
             }
 
             $this->database->log("TrustChain", "trust verified for leaf " . $this->leaf, $this->federation_entity_statement);

@@ -3,44 +3,152 @@
     "install_dir": "/home/spid-cie-oidc-php",
     "www_dir": "/var/www/html",
     "service_name": "",
+    "homepage": "/test.php", 
+    "default_domain": "default",
 
+    "log_handler": "stream",
+    "log_stream_path": "./log/spid-cie-oidc-php.log",
+    "log_azure_tenantId": "",
+    "log_azure_appId": "",
+    "log_azure_appSecret": "",
+    "log_azure_dceURI": "",
+    "log_azure_dcrImmutableId": "",
+    "log_azure_table": "",
+
+    "sa": {
+        "client_id": "http://relying-party-php.org:8003/",
+        "client_name": "Soggetto Aggregatore",
+        "organization_name": "Soggetto Aggregatore",
+        "authority_hint": "http://trust-anchor.org:8000",
+        "contacts": [
+            "info@sa.org"
+        ],
+        "is_pa": false,
+        "code_type": "VATNumber",
+        "code": "000",
+        "organization_identifier": "VATIT-000",
+        "fpa_id_paese": "IT",
+        "fpa_id_codice": "000",
+        "fpa_denominazione": "Soggetto Aggregatore",
+        "fpa_indirizzo": "indirizzo",
+        "fpa_numero_civico": "01",
+        "fpa_cap": "00000",
+        "fpa_comune": "Comune",
+        "fpa_provincia": "Roma",
+        "fpa_nazione": "IT",
+        "fpa_organization_name": "Soggetto Aggregatore",
+        "fpa_organization_email_address": "info@sa.org",
+        "fpa_organization_telephone_number": "+39000",
+        "country_name": "IT",
+        "locality_name": "locality",
+        "email": "info@sa.org",
+        "telephone": "+39000",
+        "homepage_uri": "http://relying-party-php.org:8003/homepage_uri",
+        "logo_uri": "http://relying-party-php.org:8003/logo_uri",
+        "policy_uri": "http://relying-party-php.org:8003/policy_uri",
+        "requested_acr": [
+            2,
+            1
+        ],
+        "spid_user_attributes": [
+            "given_name",
+            "family_name",
+            "https://attributes.eid.gov.it/fiscal_number"
+        ],
+        "trust_marks": [
+
+        ],
+        "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
+        "cert_private_fed": "/home/spid-cie-oidc-php/cert/rp-fed.pem",
+        "cert_public_fed": "/home/spid-cie-oidc-php/cert/rp-fed.crt",
+        "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
+        "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+        "cert_enc_private": "/home/spid-cie-oidc-php/cert/rp-enc.pem",
+        "cert_enc_public": "/home/spid-cie-oidc-php/cert/rp-enc.crt"
+    }, 
     "rp_proxy_clients": {
         "default": {
-            "trust_mark": "",
-            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
-            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP",
-            "authority_hint": "http://trust-anchor.org:8000/", 
-            "contact": "info@relying-party-php.org",
+            "organization_name": "Relying Party PHP Organization",
+            "authority_hint": "http://trust-anchor.org:8000", 
+            "contacts": [
+                "info@relying-party-php.org"
+            ],
             "is_pa": true,
-            "code": "ipa",
             "code_type": "IPACode",
+            "code": "ipa",
             "organization_identifier": "PA:IT-ipa",
+            "fpa_id_paese": "IT",
+            "fpa_id_codice": "000",
+            "fpa_denominazione": "Soggetto Aggregatore",
+            "fpa_indirizzo": "indirizzo",
+            "fpa_numero_civico": "01",
+            "fpa_cap": "00000",
+            "fpa_comune": "Comune",
+            "fpa_provincia": "Roma",
+            "fpa_nazione": "IT",
+            "fpa_organization_name": "Soggetto Aggregatore",
+            "fpa_organization_email_address": "info@sa.org",
+            "fpa_organization_telephone_number": "+39000",
             "country_name": "IT",
             "locality_name": "Rome",
             "email": "info@relying-party-php.org",
             "telephone": "+3912345678",
+            "homepage_uri": "http://relying-party-php.org:8003/homepage_uri",
+            "logo_uri": "http://relying-party-php.org:8003/logo_uri",
+            "policy_uri": "http://relying-party-php.org:8003/policy_uri",
             "requested_acr": [
                 2,
-                1
+                "https://www.spid.gov.it/SpidL1",
+                "http://eidas.europa.eu/LoA/low"
             ],
             "spid_user_attributes": [
-                "name",
-                "familyName",
-                "email",
-                "fiscalNumber"
+                "given_name",
+                "family_name",
+                "birthdate",
+                "https://attributes.eid.gov.it/fiscal_number"
             ],
-            "redirect_uri": "http://relying-party-php.org:8003/test.php",
-            "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
+            "trust_marks": [
+                {
+                    "trust_mark": "",
+                    "iss": "https://oidc.registry.servizicie.interno.gov.it",
+                    "id": "https://oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                },
+                {
+                    "trust_mark": "",
+                    "iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
+                    "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                }
+            ],
+            "proxy_redirect_uri": "/test.php",
+            "proxy_response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
+            "cert_private_fed": "./cert/rp-fed.pem",
+            "cert_public_fed": "./cert/rp-fed.crt",
+            "cert_private": "./cert/rp.pem",
+            "cert_public": "./cert/rp.crt",
+            "cert_enc_private": "./cert/rp-enc.pem",
+            "cert_enc_public": "./cert/rp-enc.crt",
+            "application_type": "web",
+            "client_registration_types": ["automatic"],
+            "subject_type": "pairwise",
+            "scope": "openid",
+            "code_challenge_method": "S256",
+            "prompt": "consent login"
         },
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
-            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
-            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_private": "./cert/rp.pem",
+            "cert_public": "./cert/rp.crt",
+            "cert_enc_private": "./cert/rp-enc.pem",
+            "cert_enc_public": "./cert/rp-enc.crt",
+            "cert_private_fed": "./cert/rp-fed.pem",
+            "cert_public_fed": "./cert/rp-fed.crt",
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP Wordpress",
-            "authority_hint": "http://trust-anchor.org:8000/", 
-            "contact": "info@relying-party-php.org",
+            "authority_hint": "http://trust-anchor.org:8000", 
+            "contacts": [
+                "info@relying-party-php.org"
+            ],
             "is_pa": true,
             "code": "ipa",
             "code_type": "IPACode",
@@ -54,21 +162,27 @@
                 1
             ],
             "spid_user_attributes": [
-                "name",
-                "familyName",
-                "email",
-                "fiscalNumber"
+                "given_name",
+                "family_name",
+                "birthdate",
+                "https://attributes.eid.gov.it/fiscal_number"
             ],
-            "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
-            "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
+            "proxy_redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
+            "proxy_response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
         },
         "9798f8ca-2682-49bc-ac2f-67b568b86b74": {
-            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
-            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_private": "./cert/rp.pem",
+            "cert_public": "./cert/rp.crt",
+            "cert_enc_private": "./cert/rp-enc.pem",
+            "cert_enc_public": "./cert/rp-enc.crt",
+            "cert_private_fed": "./cert/rp-fed.pem",
+            "cert_public_fed": "./cert/rp-fed.crt",
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP Drupal",
-            "authority_hint": "http://trust-anchor.org:8000/", 
-            "contact": "info@relying-party-php.org",
+            "authority_hint": "http://trust-anchor.org:8000", 
+            "contacts": [
+                "info@relying-party-php.org"
+            ],
             "is_pa": true,
             "code": "ipa",
             "code_type": "IPACode",
@@ -82,25 +196,26 @@
                 1
             ],
             "spid_user_attributes": [
-                "name",
-                "familyName",
-                "email",
-                "fiscalNumber"
+                "given_name",
+                "family_name",
+                "birthdate",
+                "https://attributes.eid.gov.it/fiscal_number"
             ],
-            "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
-            "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
+            "proxy_redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
+            "proxy_response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain"
         }
     },
 
     "op_proxy_client_id": "http://relying-party-php.org:8003/oidc/proxy/",
-    "op_proxy_cert_private": "/home/spid-cie-oidc-php/cert/op.pem",
-    "op_proxy_cert_public": "/home/spid-cie-oidc-php/cert/op.crt",
+    "op_proxy_cert_private": "./cert/op.pem",
+    "op_proxy_cert_public": "./cert/op.crt",
     "op_proxy_clients": {
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
             "name": "TEST",
             "description": "TEST WordPress",
             "technical_reference": "technical reference",
             "technical_contact": "contact@email",
+            "rp_proxy_client": "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb",
             "client_id": "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb",
             "client_secret": "389451f0-dc60-4fba-8c03-eea4adb340b6",
             "redirect_uri": [
@@ -117,6 +232,7 @@
             "description": "TEST Drupal",
             "technical_reference": "technical reference",
             "technical_contact": "contact@email",
+            "rp_proxy_client": "9798f8ca-2682-49bc-ac2f-67b568b86b74",
             "client_id": "9798f8ca-2682-49bc-ac2f-67b568b86b74",
             "client_secret": "59764f55-eb1e-49a6-80f7-0efc7edeeeb2",
             "redirect_uri": [

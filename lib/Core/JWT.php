@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Core;
@@ -83,7 +83,7 @@ class JWT
     /**
      *  get a private key JWK object from a private key PEM file
      *
-     * @param string $file path of the private key PEM file
+     * @param  string $file path of the private key PEM file
      * @throws Exception
      * @return object JWK object
      */
@@ -96,7 +96,7 @@ class JWT
     /**
      *  get a JWK object from JSON string
      *
-     * @param string $json JSON string of the JWK
+     * @param  string $json JSON string of the JWK
      * @throws Exception
      * @return object JWK object
      */
@@ -109,42 +109,55 @@ class JWT
     /**
      *  get a public cert JWK object from a public cert PEM file
      *
-     * @param string $file path of the public cert PEM file
-     * @param string $use the use of certificate [sig|enc]
+     * @param  string $file path of the public cert PEM file
+     * @param  string $use  the use of certificate [sig|enc]
      * @throws Exception
      * @return object JWK object
      */
-    public static function getCertificateJWK(string $file, string $use = 'sig')
+    public static function getCertificateJWK($file, string $use = 'sig')
     {
-        $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => $use]);
+        if ($use == 'sig+enc') {
+            $file_sig = is_array($file) ? $file[0] : $file;
+            $file_enc = is_array($file) ? $file[1] : $file;
 
-        // fix \n json_encode issue
-        $x5c    = $jwk_obj->get('x5c')[0];
-        $x5c    = preg_replace("/\s+/", "", $x5c);
+            $jwk_sig = JWT::getCertificateJWK($file_sig, 'sig');
+            $jwk_enc = JWT::getCertificateJWK($file_enc, 'enc');
 
-        $x5cData = openssl_x509_parse(file_get_contents($file), false);
-        $organizationIdentifier = $x5cData['issuer']['organizationIdentifier'];
-        $serialNumber = $x5cData['serialNumber'];
-        $kid = hash('sha256', $organizationIdentifier . '.' . $serialNumber);
+            return array($jwk_sig, $jwk_enc);
+        } else {
+            $jwk_obj = JWKFactory::createFromCertificateFile($file, ['use' => $use]);
 
-        $jwk = array(
-            'kid'       => $kid,
-            'kty'       => $jwk_obj->get('kty'),
-            'n'         => $jwk_obj->get('n'),
-            'e'         => $jwk_obj->get('e'),
-            'x5c'       => $x5c,
-            'x5t'       => $jwk_obj->get('x5t'),
-            'x5t#256'   => $jwk_obj->get('x5t#256'),
-            'use'       => $jwk_obj->get('use')
-        );
+            // fix \n json_encode issue
+            $x5c    = $jwk_obj->get('x5c')[0];
+            $x5c    = preg_replace("/\s+/", "", $x5c);
 
-        return $jwk;
+            $x5cData = openssl_x509_parse(file_get_contents($file), false);
+            $organizationIdentifier = $x5cData['issuer']['organizationIdentifier'];
+            $serialNumber = $x5cData['serialNumber'];
+            $kid = hash('sha256', $organizationIdentifier . '.' . $serialNumber);
+
+            $jwk = array(
+                'kty'       => $jwk_obj->get('kty'),
+                'e'         => $jwk_obj->get('e'),
+                'use'       => $jwk_obj->get('use'),
+                'kid'       => $kid,
+                'alg'       => ($use == 'enc') ? "RSA-OAEP" : "RS256", // useful???
+                'n'         => $jwk_obj->get('n'),
+                //'x5c'       => $x5c,
+                //'x5t'       => $jwk_obj->get('x5t'),
+                //'x5t#256'   => $jwk_obj->get('x5t#256'),
+            );
+
+            //if($use=='enc') unset($jwk['alg']);
+
+            return $jwk;
+        }
     }
 
     /**
      *  get a public cert JWK object from an object
      *
-     * @param array $values array containing JWK values
+     * @param  array $values array containing JWK values
      * @throws Exception
      * @return object JWK object
      */
@@ -157,9 +170,9 @@ class JWT
     /**
      *  create a signed JWT (JWS) from given values
      *
-     * @param array $header associative array for header
-     * @param array $payload associative array for payload
-     * @param object $jwk JWK object to use for signing JWS
+     * @param  array  $header  associative array for header
+     * @param  array  $payload associative array for payload
+     * @param  object $jwk     JWK object to use for signing JWS
      * @throws Exception
      * @return string of the JWS token
      */
@@ -183,7 +196,7 @@ class JWT
     /**
      *  get the payload of the JWS token
      *
-     * @param string $token JWS token
+     * @param  string $token JWS token
      * @throws Exception
      * @return object payload string of the JWS token
      */
@@ -198,8 +211,8 @@ class JWT
     /**
      *  verify the signature of the JWS token
      *
-     * @param string $token JWS token
-     * @param object $jwks JWK SET to which verify the signature of the token
+     * @param  string $token JWS token
+     * @param  object $jwks  JWK SET to which verify the signature of the token
      * @throws Exception
      * @return boolean true if the signature is verified
      */
@@ -218,7 +231,7 @@ class JWT
     /**
      *  verify if token is not expired and other stuff...
      *
-     * @param string $token JWS token
+     * @param  string $token JWS token
      * @throws Exception
      * @return boolean true if the the token is valid
      */
@@ -229,12 +242,12 @@ class JWT
         $payload = self::getJWSPayload($token);
 
         // max clock skew 5min
-        if ($payload->iat >= strtotime('+5 minutes')) {
+        if (isset($payload->iat) && $payload->iat >= strtotime('+5 minutes')) {
             $isValid = false;
         }
 
         // max clock skew 5min
-        if ($payload->exp <= strtotime('+5 minutes')) {
+        if (isset($payload->exp) && $payload->exp <= strtotime('-5 minutes')) {
             $isValid = false;
         }
 
@@ -246,8 +259,8 @@ class JWT
     /**
      *  encrypt the token and return the JWE token
      *
-     * @param array $data the data to be encrypted
-     * @param string $file path to PEM file of the public key to wich encrypt the JWE
+     * @param  array  $data the data to be encrypted
+     * @param  string $file path to PEM file of the public key to wich encrypt the JWE
      * @throws Exception
      * @return string the JWE token
      */
@@ -263,9 +276,11 @@ class JWT
         $contentEncryptionAlgorithmManager = self::getContentEncAlgManager();
 
         // The compression method manager with the DEF (Deflate) method.
-        $compressionMethodManager = new CompressionMethodManager([
-           new Deflate(),
-        ]);
+        $compressionMethodManager = new CompressionMethodManager(
+            [
+            new Deflate(),
+            ]
+        );
 
         // We instantiate our JWE Builder.
         $jweBuilder = new JWEBuilder(
@@ -275,15 +290,17 @@ class JWT
         );
 
         $jwe = $jweBuilder
-           ->create()
-           ->withPayload($payload)
-           ->withSharedProtectedHeader([
-               'alg' => 'RSA-OAEP',
-               'enc' => 'A256CBC-HS512',
-               'zip' => 'DEF'
-           ])
-           ->addRecipient($jwk_obj)
-           ->build();
+            ->create()
+            ->withPayload($payload)
+            ->withSharedProtectedHeader(
+                [
+                'alg' => 'RSA-OAEP',
+                'enc' => 'A256CBC-HS512',
+                'zip' => 'DEF'
+                ]
+            )
+            ->addRecipient($jwk_obj)
+            ->build();
 
         $serializer = new JWESerializer();
         $token = $serializer->serialize($jwe, 0);
@@ -295,8 +312,8 @@ class JWT
     /**
      *  descrypts the token and return the embedded JWS
      *
-     * @param string $token the JWE token to be decrypted
-     * @param string $file path to PEM file of the private key to wich decrypt the JWE
+     * @param  string $token the JWE token to be decrypted
+     * @param  string $file  path to PEM file of the private key to wich decrypt the JWE
      * @throws Exception
      * @return object the decrypted JWS object inside the JWE
      */
@@ -306,9 +323,11 @@ class JWT
         $keyEncryptionAlgorithmManager = JWT::getKeyEncAlgManager();
         $contentEncryptionAlgorithmManager = JWT::getContentEncAlgManager();
 
-        $compressionMethodManager = new CompressionMethodManager([
+        $compressionMethodManager = new CompressionMethodManager(
+            [
             new Deflate(),
-        ]);
+            ]
+        );
 
         $jweDecrypter = new JWEDecrypter(
             $keyEncryptionAlgorithmManager,
@@ -316,9 +335,11 @@ class JWT
             $compressionMethodManager
         );
 
-        $serializerManager = new JWESerializerManager([
+        $serializerManager = new JWESerializerManager(
+            [
             new JWESerializer(),
-        ]);
+            ]
+        );
 
         $headerCheckerManager = null;
 
@@ -377,8 +398,8 @@ class JWT
      *  if $alg is set to an algorithm string, return manager for that,
      *  else $alg is null, return manager for all supported algorithms
      *
-     * @param object $algClassMap class map of available algorithms
-     * @param string $alg algorithm to use or null
+     * @param  object $algClassMap class map of available algorithms
+     * @param  string $alg         algorithm to use or null
      * @throws Exception
      * @return object
      */
@@ -403,7 +424,7 @@ class JWT
     /**
      *  getSigAlgManager
      *
-     * @param string $alg algorithm to use or null
+     * @param  string $alg algorithm to use or null
      * @throws Exception
      * @return object
      */
@@ -417,7 +438,7 @@ class JWT
     /**
      *  getKeyEncAlgManager
      *
-     * @param string $alg algorithm to use or null
+     * @param  string $alg algorithm to use or null
      * @throws Exception
      * @return object
      */
@@ -431,7 +452,7 @@ class JWT
     /**
      *  getContentEncAlgManager
      *
-     * @param string $alg algorithm to use or null
+     * @param  string $alg algorithm to use or null
      * @throws Exception
      * @return object
      */

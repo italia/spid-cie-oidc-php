@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\RP;
@@ -31,16 +31,20 @@ use GuzzleHttp\Client;
  *  Generates the Userinfo Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
- *
  */
 class UserinfoRequest
 {
+    private $config;
+    private $op_metadata;
+    private $hooks;
+    private $http_client;
+
     /**
      *  creates a new UserinfoRequest instance
      *
-     * @param array $config base configuration
-     * @param object $op_metadata provider metadata
-     * @param array $hooks hooks defined list
+     * @param  array  $config      base configuration
+     * @param  object $op_metadata provider metadata
+     * @param  array  $hooks       hooks defined list
      * @throws Exception
      * @return UserinfoRequest
      */
@@ -50,21 +54,23 @@ class UserinfoRequest
         $this->op_metadata = $op_metadata;
         $this->hooks = $hooks;
 
-        $this->http_client = new Client([
+        $this->http_client = new Client(
+            [
             'allow_redirects' => true,
             'timeout' => 15,
             'debug' => false,
             'http_errors' => false
-        ]);
+            ]
+        );
     }
 
     /**
      *  send the userinfo request
      *
-     * @param string $userinfo_endpoint userinfo endpoint of the provider
-     * @param string $access_token access_token needed to access to userinfo endpoint
-     * @throws Exception
-     * @return object response returned from userinfo endpoint
+     * @param              string $userinfo_endpoint userinfo endpoint of the provider
+     * @param              string $access_token      access_token needed to access to userinfo endpoint
+     * @throws             Exception
+     * @return             object response returned from userinfo endpoint
      * @codeCoverageIgnore
      */
     public function send(string $userinfo_endpoint, string $access_token)
@@ -76,10 +82,12 @@ class UserinfoRequest
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);
-                    $hpre->run(array(
+                    $hpre->run(
+                        array(
                         "userinfo_endpoint" => $userinfo_endpoint,
                         "access_token" => $access_token
-                    ));
+                        )
+                    );
                 }
             }
         }
@@ -102,18 +110,20 @@ class UserinfoRequest
             if ($hooks_pre != null && is_array($hooks_pre)) {
                 foreach ($hooks_pre as $hpreClass) {
                     $hpre = new $hpreClass($config);
-                    $hpre->run(array(
+                    $hpre->run(
+                        array(
                         "response" => $jwe
-                    ));
+                        )
+                    );
                 }
             }
         }
         // @codeCoverageIgnoreEnd
 
-        $file_key = $this->config['cert_private'];
+        $file_key = $this->config['cert_enc_private']; 
         $jws = JWT::decryptJWE($jwe, $file_key);
 
-        $file_cert = $this->config['cert_public'];
+        $file_cert = $this->config['cert_enc_public'];
         $decrypted = $jws->getPayload();
         $decrypted = str_replace("\"", "", $decrypted);
 

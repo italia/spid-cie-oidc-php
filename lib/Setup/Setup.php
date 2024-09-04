@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Setup;
@@ -47,8 +47,8 @@ if (!function_exists('readline')) {
 class Setup
 {
     /**
-    *  main setup function called by "composer install" command
-    */
+     *  main setup function called by "composer install" command
+     */
     public static function setup(Event $event)
     {
         $filesystem = new Filesystem();
@@ -70,9 +70,10 @@ class Setup
 
         $_rp_client_id = "http://relying-party-php.org:8003";
         $_rp_client_name = "Name of Relying Party";
+        $_rp_organization_name = "Name of Organization";
         $_rp_authority_hint = "http://trust-anchor.org:8000/";
         $_rp_contact = "info@relying-party-php.org";
-        $_rp_trust_mark = "";
+        $_rp_trust_mark = [];
 
         $_rp_url = "http://relying-party-php.org:8003";
         $_rp_country_name = "IT";
@@ -128,6 +129,8 @@ class Setup
             }
         }
 
+        $config['default_domain'] = 'default';
+
         if (!isset($config['rp_proxy_clients'])) {
             $config['rp_proxy_clients'] = array();
         }
@@ -143,7 +146,7 @@ class Setup
                 $config['rp_proxy_clients']['default']['client_id'] == null
                 || $config['rp_proxy_clients']['default']['client_id'] == ""
             ) {
-                    $config['rp_proxy_clients']['default']['client_id'] = $_rp_client_id;
+                $config['rp_proxy_clients']['default']['client_id'] = $_rp_client_id;
             }
         }
 
@@ -155,7 +158,19 @@ class Setup
                 $config['rp_proxy_clients']['default']['client_name'] == null
                 || $config['rp_proxy_clients']['default']['client_name'] == ""
             ) {
-                    $config['rp_proxy_clients']['default']['client_name'] = $_rp_client_name;
+                $config['rp_proxy_clients']['default']['client_name'] = $_rp_client_name;
+            }
+        }
+
+        if (!isset($config['rp_proxy_clients']['default']['organization_name'])) {
+            echo "Please insert Organization Name (" .
+            $colors->getColoredString($_rp_organization_name, "green") . "): ";
+            $config['rp_proxy_clients']['default']['organization_name'] = str_replace("'", "\'", readline());
+            if (
+                $config['rp_proxy_clients']['default']['organization_name'] == null
+                || $config['rp_proxy_clients']['default']['organization_name'] == ""
+            ) {
+                $config['rp_proxy_clients']['default']['organization_name'] = $_rp_organization_name;
             }
         }
 
@@ -167,19 +182,20 @@ class Setup
                 $config['rp_proxy_clients']['default']['authority_hint'] == null
                 || $config['rp_proxy_clients']['default']['authority_hint'] == ""
             ) {
-                    $config['rp_proxy_clients']['default']['authority_hint'] = $_rp_authority_hint;
+                $config['rp_proxy_clients']['default']['authority_hint'] = $_rp_authority_hint;
             }
         }
 
-        if (!isset($config['rp_proxy_clients']['default']['contact'])) {
+        if (!isset($config['rp_proxy_clients']['default']['contacts'])) {
             echo "Please insert contact email (" .
             $colors->getColoredString($_rp_contact, "green") . "): ";
-            $config['rp_proxy_clients']['default']['contact'] = str_replace("'", "\'", readline());
+            $config['rp_proxy_clients']['default']['contacts'] = array(str_replace("'", "\'", readline()));
             if (
-                $config['rp_proxy_clients']['default']['contact'] == null
-                || $config['rp_proxy_clients']['default']['contact'] == ""
+                !count($config['rp_proxy_clients']['default']['contacts'])
+                || $config['rp_proxy_clients']['default']['contacts'][0] == null
+                || $config['rp_proxy_clients']['default']['contacts'][0] == ""
             ) {
-                $config['rp_proxy_clients']['default']['contact'] = $_rp_contact;
+                $config['rp_proxy_clients']['default']['contacts'] = array($_rp_contact);
             }
         }
 
@@ -200,13 +216,13 @@ class Setup
                     || $config['rp_proxy_clients']['default']['code_type'] != 'IPACode'
                 ) {
                     echo "Please insert your Organization's IPA Code (" .
-                        $colors->getColoredString($_rp_code, "green") . "): ";
+                    $colors->getColoredString($_rp_code, "green") . "): ";
                     $config['rp_proxy_clients']['default']['code'] = readline();
                     if (
                         $config['rp_proxy_clients']['default']['code'] == null
                         || $config['rp_proxy_clients']['default']['code'] == ""
                     ) {
-                            $config['rp_proxy_clients']['default']['code'] = $_rp_code;
+                        $config['rp_proxy_clients']['default']['code'] = $_rp_code;
                     }
                     $config['rp_proxy_clients']['default']['code_type'] = "IPACode";
                     $config['rp_proxy_clients']['default']['organization_identifier'] = "PA:IT-" . $config['rp_proxy_clients']['default']['code'];
@@ -217,13 +233,11 @@ class Setup
                 if (
                     !isset($config['rp_proxy_clients']['default']['code_type'])
                     || !isset($config['rp_proxy_clients']['default']['code'])
-                    || (
-                        $config['rp_proxy_clients']['default']['code_type'] != 'VATNumber'
-                        && $config['rp_proxy_clients']['default']['code_type'] != 'FiscalCode'
-                    )
+                    || (                    $config['rp_proxy_clients']['default']['code_type'] != 'VATNumber'
+                    && $config['rp_proxy_clients']['default']['code_type'] != 'FiscalCode'                )
                 ) {
                     echo "Please insert 1 for VATNumber or 2 for FiscalCode (" .
-                        $colors->getColoredString(($_rp_code_type == 'VATNumber') ? '1' : '2', "green") . "): ";
+                    $colors->getColoredString(($_rp_code_type == 'VATNumber') ? '1' : '2', "green") . "): ";
                     $_rp_code_typ_choice = readline();
                     if ($_rp_code_typ_choice == null || $_rp_code_typ_choice == "") {
                         $_rp_code_typ_choice = '1';
@@ -234,7 +248,7 @@ class Setup
                     }
                     $config['rp_proxy_clients']['default']['code_type'] = $_rp_code_typ_choice == 1 ? 'VATNumber' : 'FiscalCode';
                     echo "Please insert your Organization's " . $config['rp_proxy_clients']['default']['code_type'] . " (" .
-                        $colors->getColoredString($_rp_code, "green") . "): ";
+                    $colors->getColoredString($_rp_code, "green") . "): ";
                     $config['rp_proxy_clients']['default']['code'] = readline();
                     if ($config['rp_proxy_clients']['default']['code'] == null || $config['rp_proxy_clients']['default']['code'] == "") {
                         $config['rp_proxy_clients']['default']['code'] = $_rp_code;
@@ -395,12 +409,43 @@ class Setup
             }
         }
 
+        $_rp_homepage_uri = $config['rp_proxy_clients']['default']['client_id'] . "/";
+        if (!isset($config['rp_proxy_clients']['default']['homepage_uri'])) {
+            echo "Please insert Organization Home Page URI (" .
+              $colors->getColoredString($_rp_homepage_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['homepage_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['homepage_uri'] == null || $config['rp_proxy_clients']['default']['homepage_uri'] == "") {
+                $config['rp_proxy_clients']['default']['homepage_uri'] = $_rp_homepage_uri;
+            }
+        }
+
+        $_rp_logo_uri = $config['rp_proxy_clients']['default']['client_id'] . "/logo.svg";
+        if (!isset($config['rp_proxy_clients']['default']['logo_uri'])) {
+            echo "Please insert Organization Logo URI (" .
+              $colors->getColoredString($_rp_logo_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['logo_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['logo_uri'] == null || $config['rp_proxy_clients']['default']['logo_uri'] == "") {
+                $config['rp_proxy_clients']['default']['logo_uri'] = $_rp_logo_uri;
+            }
+        }
+
+        $_rp_policy_uri = $config['rp_proxy_clients']['default']['client_id'] . "/policy";
+        if (!isset($config['rp_proxy_clients']['default']['policy_uri'])) {
+            echo "Please insert Organization Policy URI (" .
+              $colors->getColoredString($_rp_policy_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['policy_uri'] = str_replace("'", "\'", readline());
+            if ($config['rp_proxy_clients']['default']['policy_uri'] == null || $config['rp_proxy_clients']['default']['policy_uri'] == "") {
+                $config['rp_proxy_clients']['default']['policy_uri'] = $_rp_policy_uri;
+            }
+        }
+
+
         // TODO: let insert from user
         $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
-        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('name', 'familyName', 'fiscalNumber');
+        $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('given_name', 'family_name', 'https://attributes.eid.gov.it/fiscal_number');
         $config['rp_proxy_clients']['default']['trust_mark'] = $_rp_trust_mark;
 
-        $_rp_redirect_uri = '/' . $config['service_name'] . '/test.php';
+        $_rp_redirect_uri = '/' . $config['service_name'] . '/oidc/rp/test.php';
 
         if (!isset($config['rp_proxy_clients']['default']['redirect_uri'])) {
             echo "Please insert redirect_uri (" .
@@ -422,8 +467,9 @@ class Setup
         echo $colors->getColoredString("\nService Name: " . $config['service_name'], "yellow");
         echo $colors->getColoredString("\nclient_id: " . $config['rp_proxy_clients']['default']['client_id'], "yellow");
         echo $colors->getColoredString("\nclient_name: " . $config['rp_proxy_clients']['default']['client_name'], "yellow");
+        echo $colors->getColoredString("\nOrganization Name: " . $config['rp_proxy_clients']['default']['organization_name'], "yellow");
         echo $colors->getColoredString("\nauthority_hint: " . $config['rp_proxy_clients']['default']['authority_hint'], "yellow");
-        echo $colors->getColoredString("\ncontact: " . $config['rp_proxy_clients']['default']['contact'], "yellow");
+        echo $colors->getColoredString("\ncontacts: [" . $config['rp_proxy_clients']['default']['contacts'][0] . "]", "yellow");
         echo $colors->getColoredString("\nIs organization a Public Administration: ", "yellow");
         echo $colors->getColoredString(($config['rp_proxy_clients']['default']['is_pa']) ? "Y" : "N", "yellow");
         echo $colors->getColoredString("\nOrganization Code Type: " . $config['rp_proxy_clients']['default']['code_type'], "yellow");
@@ -433,6 +479,9 @@ class Setup
         echo $colors->getColoredString("\nCertificate LocalityName: " . $config['rp_proxy_clients']['default']['locality_name'], "yellow");
         echo $colors->getColoredString("\nOrganization Contact Email Address: " . $config['rp_proxy_clients']['default']['email'], "yellow");
         echo $colors->getColoredString("\nOrganization Contact Telephone Number: " . $config['rp_proxy_clients']['default']['telephone'], "yellow");
+        echo $colors->getColoredString("\nOrganization Home Page URI: " . $config['rp_proxy_clients']['default']['homepage_uri'], "yellow");
+        echo $colors->getColoredString("\nOrganization Logo URI: " . $config['rp_proxy_clients']['default']['logo_uri'], "yellow");
+        echo $colors->getColoredString("\nOrganization Policy URI: " . $config['rp_proxy_clients']['default']['policy_uri'], "yellow");
         if (!$config['rp_proxy_clients']['default']['is_pa']) {
             echo $colors->getColoredString("\nCessionarioCommittente IdPaese: " . $config['rp_proxy_clients']['default']['fpa_id_paese'], "yellow");
             echo $colors->getColoredString("\nCessionarioCommittente IdCodice: " . $config['rp_proxy_clients']['default']['fpa_id_codice'], "yellow");
@@ -465,8 +514,11 @@ class Setup
 
         // create vhost directory if not exists
         if (!file_exists($config['www_dir']) && $config['service_name'] != '') {
-            echo $colors->getColoredString("\nWebroot directory not found. Making directory " .
-                    $config['www_dir'], "yellow");
+            echo $colors->getColoredString(
+                "\nWebroot directory not found. Making directory " .
+                $config['www_dir'],
+                "yellow"
+            );
             echo $colors->getColoredString("\nPlease remember to configure your virtual host.\n\n", "yellow");
             $filesystem->mkdir($config['www_dir']);
         }
@@ -498,8 +550,8 @@ class Setup
                 fwrite($openssl_config, "uri=2.5.4.83\n");
 
                 fwrite($openssl_config, "\n[ dn ]\n");
-                fwrite($openssl_config, "organizationName=" . $config['rp_proxy_clients']['default']['client_name'] . "\n");
-                fwrite($openssl_config, "commonName=" . $config['rp_proxy_clients']['default']['client_name'] . "\n");
+                fwrite($openssl_config, "organizationName=" . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
+                fwrite($openssl_config, "commonName=" . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
                 fwrite($openssl_config, "uri=" . $config['rp_proxy_clients']['default']['client_id'] . "\n");
                 fwrite($openssl_config, "organizationIdentifier=" . $config['rp_proxy_clients']['default']['organization_identifier'] . "\n");
                 fwrite($openssl_config, "countryName=" . $config['rp_proxy_clients']['default']['country_name'] . "\n");
@@ -528,21 +580,44 @@ class Setup
                 echo $colors->getColoredString("OK\n", "green");
             }
 
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Federation signing...\n", "white");
+            shell_exec(
+                "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
+                    " -keyout " . $config['install_dir'] . "/cert/rp-fed.pem" .
+                    " -out " . $config['install_dir'] . "/cert/rp-fed.crt" .
+                    " -extensions req_ext "
+            );
+            $config['rp_proxy_clients']['default']['cert_private_fed'] = $config['install_dir'] . "/cert/rp-fed.pem";
+            $config['rp_proxy_clients']['default']['cert_public_fed'] = $config['install_dir'] . "/cert/rp-fed.crt";
+            echo $colors->getColoredString("OK\n", "green");
+
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Core signing...\n", "white");
             shell_exec(
                 "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
                     " -keyout " . $config['install_dir'] . "/cert/rp.pem" .
                     " -out " . $config['install_dir'] . "/cert/rp.crt" .
                     " -extensions req_ext "
             );
-        }
+            $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
+            $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";
+            echo $colors->getColoredString("OK\n", "green");
 
-        $config['rp_proxy_clients']['default']['cert_private'] = $config['install_dir'] . "/cert/rp.pem";
-        $config['rp_proxy_clients']['default']['cert_public'] = $config['install_dir'] . "/cert/rp.crt";
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Core encryption...\n", "white");
+            shell_exec(
+                "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
+                    " -keyout " . $config['install_dir'] . "/cert/rp-enc.pem" .
+                    " -out " . $config['install_dir'] . "/cert/rp-enc.crt" .
+                    " -extensions req_ext "
+            );
+            $config['rp_proxy_clients']['default']['cert_enc_private'] = $config['install_dir'] . "/cert/rp-enc.pem";
+            $config['rp_proxy_clients']['default']['cert_enc_public'] = $config['install_dir'] . "/cert/rp-enc.crt";
+            echo $colors->getColoredString("OK\n", "green");
+        }
 
 
         // save default configurations
         echo $colors->getColoredString("\nSave default base configurations... ", "white");
-        file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config));
+        file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config, JSON_PRETTY_PRINT));
         echo $colors->getColoredString("\n - save config.json", "green");
 
         echo json_encode($config, JSON_PRETTY_PRINT);
@@ -631,8 +706,8 @@ class Setup
     }
 
     /**
-    *  uninstall function called by "composer uninstall" command
-    */
+     *  uninstall function called by "composer uninstall" command
+     */
     public static function remove()
     {
         $filesystem = new Filesystem();
@@ -681,10 +756,23 @@ class Setup
             }
         }
 
-        echo $colors->getColoredString("\nRemove service symlink [" .
-        $www_dir . "/" . $service_name . "]... ", "white");
-        $filesystem->remove($www_dir . "/" . $service_name);
-        echo $colors->getColoredString("OK", "green");
+        if (empty($service_name) ) {
+            echo "Service name empty, it means EVERYTHING in your web directory [" . $www_dir . "] will be GONE, proceed? (" .
+            $colors->getColoredString("N", "green") . "): ";
+            $removeWWW = readline();
+            if ($removeWWW==="Y") {
+                echo $colors->getColoredString("\nRemove web directory... ", "white");
+                $filesystem->remove($www_dir);
+                echo $colors->getColoredString("OK", "green");
+            } else {
+                echo $colors->getColoredString("Skipping", "green");
+            }
+        } else {
+            $service_dir = $www_dir . "/" . $service_name;
+            echo $colors->getColoredString("\nRemove service symlink [" . $service_dir . "]... ", "white");
+            $filesystem->remove($service_dir);
+            echo $colors->getColoredString("OK", "green");
+        }
 
         echo $colors->getColoredString("\nRemove spid-sp-access-button assets... ", "white");
         $filesystem->remove($install_dir . "/www/assets/spid-sp-access-button");
@@ -698,9 +786,39 @@ class Setup
         $filesystem->remove($install_dir . "/composer.lock");
         echo $colors->getColoredString("OK", "green");
 
-        //echo $colors->getColoredString("\nRemove cert directory [" . $install_dir . "/cert]... ", "white");
-        //shell_exec("rm -Rf " . $install_dir . "/cert");
-        //echo $colors->getColoredString("OK", "green");
+        echo $colors->getColoredString("\nWARNING! this action is not reversable", "red") . " Remove certificates? (" .
+        $colors->getColoredString("N", "green") . "): ";
+        $confirmRemoval = readline();
+        if ($confirmRemoval==="Y") {
+            echo $colors->getColoredString("Remove cert directory [" . $install_dir . "/cert]... ", "white");
+            $filesystem->remove($install_dir . "/cert");
+            echo $colors->getColoredString("OK", "green");
+        } else {
+            echo $colors->getColoredString("Skipping", "green");
+        }
+
+        echo $colors->getColoredString("\nWARNING! this action is not reversable", "red") . " Remove configuration file? (" .
+        $colors->getColoredString("N", "green") . "): ";
+        $confirmRemoval = readline();
+        if ($confirmRemoval==="Y") {
+            echo $colors->getColoredString("Remove config file [" . $install_dir . "/config/config.json]... ", "white");
+            $filesystem->remove($install_dir . "/config/config.json");
+            echo $colors->getColoredString("OK", "green");
+        } else {
+            echo $colors->getColoredString("Skipping", "green");
+        }
+
+        echo $colors->getColoredString("\nWARNING! this action is not reversable", "red") . " Remove RP and OP databases? (" .
+        $colors->getColoredString("N", "green") . "): ";
+        $confirmRemoval = readline();
+        if ($confirmRemoval==="Y") {
+            echo $colors->getColoredString("Remove databases [" . $install_dir . "/data/store-rp.sqlite and store-op.sqlite]... ", "white");
+            $filesystem->remove($install_dir . "/data/store-rp.sqlite");
+            $filesystem->remove($install_dir . "/data/store-op.sqlite");
+            echo $colors->getColoredString("OK", "green");
+        } else {
+            echo $colors->getColoredString("Skipping", "green");
+        }
 
         echo $colors->getColoredString("\n\nSPID CIE OIDC PHP successfully removed\n\n", "green");
     }

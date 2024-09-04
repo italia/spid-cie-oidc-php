@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\RP;
@@ -31,14 +31,17 @@ use GuzzleHttp\Client;
  *  Generates the Introspection Request
  *
  *  [Linee Guida OpenID Connect in SPID](https://www.agid.gov.it/sites/default/files/repository_files/linee_guida_openid_connect_in_spid.pdf)
- *
  */
 class IntrospectionRequest
 {
+    private $config;
+    private $http_client;
+    private $response;
+
     /**
      *  creates a new IntrospectionRequest instance
      *
-     * @param array $config base configuration
+     * @param  array $config base configuration
      * @throws Exception
      * @return IntrospectionRequest
      */
@@ -46,19 +49,21 @@ class IntrospectionRequest
     {
         $this->config = $config;
 
-        $this->http_client = new Client([
+        $this->http_client = new Client(
+            [
             'allow_redirects' => true,
             'timeout' => 15,
             'debug' => false,
             'http_errors' => false
-        ]);
+            ]
+        );
     }
 
     /**
      *  send the introspection request
      *
-     * @param string $introspection_endpoint introspection endpoint of the provider
-     * @param string $token token for wich send the introspection request
+     * @param  string $introspection_endpoint introspection endpoint of the provider
+     * @param  string $token                  token for wich send the introspection request
      * @throws Exception
      * @return object response returned from introspection
      */
@@ -81,9 +86,9 @@ class IntrospectionRequest
         $header = array(
             "typ" => "JWT",
             "alg" => "RS256",
-            "jwk" => $crt_jwk,
             "kid" => $crt_jwk['kid'],
-            "x5c" => $crt_jwk['x5c']
+            //"jwk" => $crt_jwk,
+            //"x5c" => $crt_jwk['x5c']
         );
 
         $key = $this->config['cert_private'];

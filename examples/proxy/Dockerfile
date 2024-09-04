@@ -12,7 +12,7 @@ RUN \
     apt-get update && \
     apt-get -yq install \
         curl \
-        git \
+        git \ 
         apache2 \
         libapache2-mod-php \
         php-sqlite3 \
@@ -40,10 +40,10 @@ RUN curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && \
 # Prepare spid-cie-oidc-php
 RUN cd /home && \
     git clone https://github.com/italia/spid-cie-oidc-php.git && \
-    mkdir /home/spid-cie-oidc-php/data && \
+    mkdir -p /home/spid-cie-oidc-php/data  && \
     cp -R /home/spid-cie-oidc-php/config_sample /home/spid-cie-oidc-php/config && \
     cp -R /home/spid-cie-oidc-php/cert_sample /home/spid-cie-oidc-php/cert
-    
+
 # Setup spid-cie-oidc-php
 RUN cd /home/spid-cie-oidc-php && composer install
 
