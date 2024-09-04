@@ -108,10 +108,11 @@ class SessionEndEndpoint
             // @codeCoverageIgnoreEnd
         }
 
-        $rp_proxy_client = $this->config['op_proxy_clients'][$request['client_id']]['rp_proxy_client'];
-
-        if(isset($request) && $request!=null) {
+        if(isset($request) && $request!=null && isset($request['client_id'])) {
+            $rp_proxy_client = $this->config['op_proxy_clients'][$request['client_id']]['rp_proxy_client'];
             $logout_url .= 'oidc/rp/' . $rp_proxy_client . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        } else {
+            $logout_url .= 'oidc/rp/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
         }
 
         // @codeCoverageIgnoreStart
