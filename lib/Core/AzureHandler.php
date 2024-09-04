@@ -32,14 +32,21 @@ use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\Curl;
 
 /**
+ * AzureHandler uses cURL to send log to Azure Monitor
+ * https://learn.microsoft.com/en-us/azure/azure-monitor/
+ * 
  * @author Michele D'Amico <michele.damico@linfaservice.it>
  * Linfa Service - https://www.linfaservice.it
  * Damikael - https://www.damikael.dev
  */
 class AzureHandler extends AbstractProcessingHandler
 {
-    private string $eventName;
-    private string $secretKey;
+    private string $tenantId;
+    private string $appId;
+    private string $appSecret;
+    private string $dceURI;
+    private string $dcrImmutableId;
+    private string $table;
 
     /**
      * @param string $tenantId
