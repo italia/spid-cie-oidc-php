@@ -58,6 +58,7 @@ class Metadata
             "authorization_endpoint" => $base_url . 'authz',
             "token_endpoint" => $base_url . 'token',
             "userinfo_endpoint" => $base_url . 'userinfo',
+            "end_session_endpoint" => $base_url . 'session/end', 
             "jwks_uri" => $base_url . 'certs',
             "scopes_supported" => array(
                 "openid profile"
