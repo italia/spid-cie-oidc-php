@@ -34,6 +34,10 @@ use GuzzleHttp\Client;
  */
 class RevocationRequest
 {
+    private array $config;
+    private Client $http_client;
+    private $response;
+
     /**
      *  creates a new RevocationRequest instance
      *

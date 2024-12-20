@@ -34,6 +34,10 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
  */
 class EntityStatement
 {
+    private string $token;
+    private string $iss;
+    private $payload;
+
     /**
      *  creates a new EntityStatement instance
      *

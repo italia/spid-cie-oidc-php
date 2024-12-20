@@ -40,6 +40,9 @@ const DEFAULT_TOKEN_EXPIRATION_TIME = 1200;
  */
 class TokenEndpoint
 {
+    private array $config;
+    private Database $database;
+
     /**
      *  creates a new TokenEndpoint instance
      *

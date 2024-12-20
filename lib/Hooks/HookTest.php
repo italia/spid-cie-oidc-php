@@ -31,6 +31,8 @@ namespace SPID_CIE_OIDC_PHP\Hooks;
  */
 class HookTest
 {
+    private $config;
+
     /**
      *  creates a new <HookTest> instance
      *

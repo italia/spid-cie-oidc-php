@@ -31,6 +31,9 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
  */
 class SessionEndEndpoint
 {
+    private array $config;
+    private Database $database;
+
     /**
      *  creates a new SessionEndEndpoint instance
      *

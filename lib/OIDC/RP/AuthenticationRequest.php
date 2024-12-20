@@ -34,6 +34,9 @@ use SPID_CIE_OIDC_PHP\Core\Util;
  */
 class AuthenticationRequest
 {
+    private array $config;
+    private array $hooks;
+
     /**
      *  creates a new AuthenticationRequest instance
      *

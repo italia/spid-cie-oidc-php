@@ -34,6 +34,11 @@ use GuzzleHttp\Client;
  */
 class TokenRequest
 {
+    private array $config;
+    private array $hooks;
+    private Client $http_client;
+    private $response;
+
     /**
      *  creates a new TokenRequest instance
      *

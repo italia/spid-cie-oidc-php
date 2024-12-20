@@ -8,6 +8,9 @@ use SPID_CIE_OIDC_PHP\OIDC\RP\Database;
 
 class ResolveEndpoint
 {
+    private string $sub;
+    private string $anchor;
+
     /**
      *  creates a new EntityStatement instance
      *

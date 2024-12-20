@@ -34,6 +34,11 @@ use GuzzleHttp\Client;
  */
 class UserinfoRequest
 {
+    private array $config;
+    private $op_metadata;
+    private array $hooks;
+    private Client $http_client;
+
     /**
      *  creates a new UserinfoRequest instance
      *
