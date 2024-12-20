@@ -51,29 +51,29 @@ class Database
             "
             CREATE TABLE IF NOT EXISTS log (
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
-                context         STRING,
-                tag             STRING,
-                value           STRING,
-                severity        STRING
+                context         VARCHAR,
+                tag             VARCHAR,
+                value           VARCHAR,
+                severity        VARCHAR
             );
 
             CREATE TABLE IF NOT EXISTS request (
                 req_id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
-                ta_id           STRING,
-                op_id           STRING,
-                redirect_uri    STRING,
-                state           STRING,
-                acr             STRING,
-                user_attributes STRING,
-                nonce           STRING,
-                code_verifier   STRING
+                ta_id           VARCHAR,
+                op_id           VARCHAR,
+                redirect_uri    VARCHAR,
+                state           VARCHAR,
+                acr             VARCHAR,
+                user_attributes VARCHAR,
+                nonce           VARCHAR,
+                code_verifier   VARCHAR
             );
 
             CREATE TABLE IF NOT EXISTS store (
-                issuer          STRING,
-                type            STRING,
-                url             STRING UNIQUE,
+                issuer          VARCHAR,
+                type            VARCHAR,
+                url             VARCHAR UNIQUE,
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
                 iat             DATETIME,
                 exp             DATETIME,

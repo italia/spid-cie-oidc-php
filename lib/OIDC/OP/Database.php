@@ -52,24 +52,24 @@ class Database
             CREATE TABLE IF NOT EXISTS token (
                 req_id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 req_timestamp   DATETIME DEFAULT (datetime('now')) NOT NULL,
-                client_id       STRING NOT NULL,
-                redirect_uri    STRING NOT NULL,
-                code            STRING UNIQUE,
+                client_id       VARCHAR NOT NULL,
+                redirect_uri    VARCHAR NOT NULL,
+                code            VARCHAR UNIQUE,
                 auth_timestamp  DATETIME,
-                id_token        STRING UNIQUE,
-                access_token    STRING UNIQUE,
+                id_token        VARCHAR UNIQUE,
+                access_token    VARCHAR UNIQUE,
                 token_timestamp DATETIME,
-                state           STRING,
-                userinfo        STRING,
-                nonce           STRING
+                state           VARCHAR,
+                userinfo        VARCHAR,
+                nonce           VARCHAR
             );
 
             CREATE TABLE IF NOT EXISTS log (
                 timestamp       DATETIME DEFAULT (datetime('now')) NOT NULL,
-                context         STRING,
-                tag             STRING,
-                value           STRING,
-                severity        STRING
+                context         VARCHAR,
+                tag             VARCHAR,
+                value           VARCHAR,
+                severity        VARCHAR
             );
         "
         );
@@ -171,12 +171,16 @@ class Database
             array(":req_id" => $req_id)
         );
 
-        return array(
-            "client_id"     => $result[0]['client_id'],
-            "redirect_uri"  => $result[0]['redirect_uri'],
-            "state"         => $result[0]['state'],
-            "nonce"         => $result[0]['nonce'],
-        );
+        if(count($result)) {
+            return array(
+                "client_id"     => $result[0]['client_id'],
+                "redirect_uri"  => $result[0]['redirect_uri'],
+                "state"         => $result[0]['state'],
+                "nonce"         => $result[0]['nonce'],
+            );
+        } else {
+            throw new \Exception('Session not found'); 
+        }
     }
 
     /**
