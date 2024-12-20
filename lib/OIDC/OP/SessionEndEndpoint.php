@@ -56,8 +56,8 @@ class SessionEndEndpoint
      */
     public function process()
     {
-        $id_token_hint = $_GET['id_token_hint'];
-        $post_logout_redirect_uri = $_GET['post_logout_redirect_uri'];
+        $id_token_hint = isset($_GET['id_token_hint'])? $_GET['id_token_hint'] : null;
+        $post_logout_redirect_uri = isset($_GET['post_logout_redirect_uri'])? $_GET['post_logout_redirect_uri'] : null;
 
         if ($id_token_hint) {
             // @codeCoverageIgnoreStart
