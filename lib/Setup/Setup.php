@@ -617,7 +617,7 @@ class Setup
 
         // save default configurations
         echo $colors->getColoredString("\nSave default base configurations... ", "white");
-        file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config));
+        file_put_contents($config['install_dir'] . "/config/config.json", json_encode($config, JSON_PRETTY_PRINT));
         echo $colors->getColoredString("\n - save config.json", "green");
 
         echo json_encode($config, JSON_PRETTY_PRINT);
