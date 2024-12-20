@@ -108,7 +108,11 @@ class SessionEndEndpoint
             // @codeCoverageIgnoreEnd
         }
 
-        $logout_url .= 'oidc/rp/' . $request['client_id'] . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        if(isset($request) && $request!=null && isset($request['client_id'])) {
+            $logout_url .= 'oidc/rp/' . $request['client_id'] . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        } else {
+            $logout_url .= 'oidc/rp/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        }
 
         // @codeCoverageIgnoreStart
         header('Location: ' . $logout_url);
