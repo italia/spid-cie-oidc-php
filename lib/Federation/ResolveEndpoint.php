@@ -31,7 +31,7 @@ class ResolveEndpoint
     public static function resolve($config, $db, $sub, $anchor)
     {
 
-        $key = $config['cert_private_fed_sig'];
+        $key = $config['cert_private_fed'];
         $key_jwk = JWT::getJWKFromJSON(file_get_contents($key));
 
         $header = array(

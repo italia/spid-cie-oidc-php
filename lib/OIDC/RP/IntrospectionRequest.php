@@ -80,7 +80,7 @@ class IntrospectionRequest
         );
         $client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
 
-        $crt = $this->config['cert_public_core_sig'];
+        $crt = $this->config['cert_public'];
         $crt_jwk = JWT::getCertificateJWK($crt);
 
         $header = array(
@@ -91,7 +91,7 @@ class IntrospectionRequest
             //"x5c" => $crt_jwk['x5c']
         );
 
-        $key = $this->config['cert_private_core_sig'];
+        $key = $this->config['cert_private'];
         $key_jwk = JWT::getKeyJWK($key);
 
         $signed_client_assertion = JWT::makeJWS($header, $client_assertion, $key_jwk);
