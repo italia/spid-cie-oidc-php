@@ -171,7 +171,7 @@ class TokenEndpoint
     private function getBasicAuthCredential()
     {
         $credential = false;
-        $authHeader = $this->getAuthorizationHeader();
+        $authHeader = $this->getAuthorizationHeader() || '';
         $this->database->log("TokenEndpoint", "TOKEN BASIC AUTH", $authHeader);
         if (substr($authHeader, 0, 5) == 'Basic') {
             $creds = base64_decode(substr($authHeader, 6));
