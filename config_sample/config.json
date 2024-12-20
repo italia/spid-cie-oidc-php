@@ -56,12 +56,12 @@
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/redirect",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",    
-            "cert_private": "./cert/rp.pem",
-            "cert_public": "./cert/rp.crt",
-            "cert_enc_private": "./cert/rp-enc.pem",
-            "cert_enc_public": "./cert/rp-enc.crt",
-            "cert_private_fed": "./cert/rp-fed.pem",
-            "cert_public_fed": "./cert/rp-fed.crt"
+            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
+            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_enc_private": "/home/spid-cie-oidc-php/cert/rp-enc.pem",
+            "cert_enc_public": "/home/spid-cie-oidc-php/cert/rp-enc.crt",
+            "cert_private_fed": "/home/spid-cie-oidc-php/cert/rp-fed.pem",
+            "cert_public_fed": "/home/spid-cie-oidc-php/cert/rp-fed.crt"
         },
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
             "client_id": "http://relying-party-php.org:8003/",
@@ -90,12 +90,12 @@
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
-            "cert_private": "./cert/rp.pem",
-            "cert_public": "./cert/rp.crt",
-            "cert_enc_private": "./cert/rp-enc.pem",
-            "cert_enc_public": "./cert/rp-enc.crt",
-            "cert_private_fed": "./cert/rp-fed.pem",
-            "cert_public_fed": "./cert/rp-fed.crt"
+            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
+            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_enc_private": "/home/spid-cie-oidc-php/cert/rp-enc.pem",
+            "cert_enc_public": "/home/spid-cie-oidc-php/cert/rp-enc.crt",
+            "cert_private_fed": "/home/spid-cie-oidc-php/cert/rp-fed.pem",
+            "cert_public_fed": "/home/spid-cie-oidc-php/cert/rp-fed.crt"
         },
         "9798f8ca-2682-49bc-ac2f-67b568b86b74": {
             "client_id": "http://relying-party-php.org:8003/",
@@ -124,18 +124,18 @@
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
-            "cert_private": "./cert/rp.pem",
-            "cert_public": "./cert/rp.crt",
-            "cert_enc_private": "./cert/rp-enc.pem",
-            "cert_enc_public": "./cert/rp-enc.crt",
-            "cert_private_fed": "./cert/rp-fed.pem",
-            "cert_public_fed": "./cert/rp-fed.crt"
+            "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
+            "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
+            "cert_enc_private": "/home/spid-cie-oidc-php/cert/rp-enc.pem",
+            "cert_enc_public": "/home/spid-cie-oidc-php/cert/rp-enc.crt",
+            "cert_private_fed": "/home/spid-cie-oidc-php/cert/rp-fed.pem",
+            "cert_public_fed": "/home/spid-cie-oidc-php/cert/rp-fed.crt"
         }
     },
 
     "op_proxy_client_id": "http://relying-party-php.org:8003/oidc/proxy/",
-    "op_proxy_cert_private": "./cert/op.pem",
-    "op_proxy_cert_public": "./cert/op.crt",
+    "op_proxy_cert_private": "/home/spid-cie-oidc-php/cert/op.pem",
+    "op_proxy_cert_public": "/home/spid-cie-oidc-php/cert/op.crt",
     "op_proxy_clients": {
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
             "name": "TEST",
