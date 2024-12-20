@@ -566,7 +566,13 @@ $f3->route(
 $f3->route(
     'GET /',
     function ($f3) {
-        $f3->reroute('/test.php');
+        $config = $f3->get("CONFIG");
+        $homepage = (isset($config['homepage']) && $config['homepage']!=null)? $config['homepage'] : false;
+        if($homepage) {
+            $f3->reroute($config['homepage']);
+        } else {
+            $f3->error(400, "Bad Request");
+        }
     }
 );
 

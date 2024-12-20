@@ -3,6 +3,7 @@
     "install_dir": "/home/spid-cie-oidc-php",
     "www_dir": "/var/www/html",
     "service_name": "",
+    "homepage": "/test.php", 
     "default_domain": "default",
     "rp_proxy_clients": {
         "default": {
