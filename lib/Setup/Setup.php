@@ -73,7 +73,7 @@ class Setup
         $_rp_organization_name = "Name of Organization";
         $_rp_authority_hint = "http://trust-anchor.org:8000/";
         $_rp_contact = "info@relying-party-php.org";
-        $_rp_trust_mark = [];
+        $_rp_trust_marks = [];
 
         $_rp_url = "http://relying-party-php.org:8003";
         $_rp_country_name = "IT";
@@ -443,7 +443,7 @@ class Setup
         // TODO: let insert from user
         $config['rp_proxy_clients']['default']['requested_acr'] = array(2, 1);
         $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('given_name', 'family_name', 'https://attributes.eid.gov.it/fiscal_number');
-        $config['rp_proxy_clients']['default']['trust_mark'] = $_rp_trust_mark;
+        $config['rp_proxy_clients']['default']['trust_marks'] = $_rp_trust_marks;
 
         $_rp_redirect_uri = '/' . $config['service_name'] . '/oidc/rp/test.php';
 
@@ -545,18 +545,18 @@ class Setup
 
                 fwrite($openssl_config, "\n[ spid_oids ]\n");
                 //fwrite($openssl_config, "organizationIdentifier=2.5.4.97\n");
-                fwrite($openssl_config, "spid-privatesector-SP=1.3.76.16.4.3.1\n");
-                fwrite($openssl_config, "spid-publicsector-SP=1.3.76.16.4.2.1\n");
-                fwrite($openssl_config, "uri=2.5.4.83\n");
+                fwrite($openssl_config, "spid-privatesector-SP = 1.3.76.16.4.3.1\n");
+                fwrite($openssl_config, "spid-publicsector-SP = 1.3.76.16.4.2.1\n");
+                fwrite($openssl_config, "uri = 2.5.4.83\n");
 
                 fwrite($openssl_config, "\n[ dn ]\n");
-                fwrite($openssl_config, "organizationName=" . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
-                fwrite($openssl_config, "commonName=" . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
-                fwrite($openssl_config, "uri=" . $config['rp_proxy_clients']['default']['client_id'] . "\n");
-                fwrite($openssl_config, "organizationIdentifier=" . $config['rp_proxy_clients']['default']['organization_identifier'] . "\n");
-                fwrite($openssl_config, "countryName=" . $config['rp_proxy_clients']['default']['country_name'] . "\n");
-                fwrite($openssl_config, "localityName=" . $config['rp_proxy_clients']['default']['locality_name'] . "\n");
-                //fwrite($openssl_config, "serialNumber=" . $config['rp_proxy_clients']['default']['code'] . "\n");
+                fwrite($openssl_config, "organizationName = " . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
+                fwrite($openssl_config, "commonName = " . $config['rp_proxy_clients']['default']['organization_name'] . "\n");
+                fwrite($openssl_config, "uri = " . $config['rp_proxy_clients']['default']['client_id'] . "\n");
+                fwrite($openssl_config, "organizationIdentifier = " . $config['rp_proxy_clients']['default']['organization_identifier'] . "\n");
+                fwrite($openssl_config, "countryName = " . $config['rp_proxy_clients']['default']['country_name'] . "\n");
+                fwrite($openssl_config, "localityName = " . $config['rp_proxy_clients']['default']['locality_name'] . "\n");
+                //fwrite($openssl_config, "serialNumber = " . $config['rp_proxy_clients']['default']['code'] . "\n");
 
                 fwrite($openssl_config, "\n[ req_ext ]\n");
                 fwrite($openssl_config, "certificatePolicies = @spid_policies\n");
