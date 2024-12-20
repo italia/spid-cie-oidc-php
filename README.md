@@ -54,7 +54,6 @@ SPID/CIE OIDC PHP is:
 
 - Web server
 - php >= 8.0.28
-- ^7.4 || ^8.0
 - php-gmp 
 - php-mbstring
 - php-simplexml
