@@ -45,13 +45,8 @@
             "trust_marks": [
                 {
                     "trust_mark": "",
-                    "iss": "https://oidc.registry.servizicie.interno.gov.it",
-                    "id": "https://oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
-                },
-                {
-                    "trust_mark": "",
-                    "iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
-                    "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                    "iss": "http://trust-anchor.org:8000",
+                    "id": "http://trust-anchor.org:8000/oidc/op"
                 }
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/redirect",
@@ -92,13 +87,8 @@
             "trust_marks": [
                 {
                     "trust_mark": "",
-                    "iss": "https://oidc.registry.servizicie.interno.gov.it",
-                    "id": "https://oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
-                },
-                {
-                    "trust_mark": "",
-                    "iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
-                    "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                    "iss": "http://trust-anchor.org:8000",
+                    "id": "http://trust-anchor.org:8000/oidc/op"
                 }
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb/redirect",
@@ -139,13 +129,8 @@
             "trust_marks": [
                 {
                     "trust_mark": "",
-                    "iss": "https://oidc.registry.servizicie.interno.gov.it",
-                    "id": "https://oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
-                },
-                {
-                    "trust_mark": "",
-                    "iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
-                    "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                    "iss": "http://trust-anchor.org:8000",
+                    "id": "http://trust-anchor.org:8000/oidc/op"
                 }
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/9798f8ca-2682-49bc-ac2f-67b568b86b74/redirect",
