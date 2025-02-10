@@ -54,7 +54,8 @@
                     "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
                 }
             ],
-            "redirect_uri": "http://relying-party-php.org:8003/oidc/redirect",
+            "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/redirect",
+            "proxy_redirect_uri": "http://relying-party-php.org:8003/test.php",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",    
             "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
             "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
@@ -88,7 +89,8 @@
                 "birthdate",
                 "https://attributes.eid.gov.it/fiscal_number"
             ],
-            "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
+            "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb/redirect",
+            "proxy_redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
             "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
             "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",
@@ -122,7 +124,8 @@
                 "birthdate",
                 "https://attributes.eid.gov.it/fiscal_number"
             ],
-            "redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
+            "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/9798f8ca-2682-49bc-ac2f-67b568b86b74/redirect",
+            "proxy_redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
             "cert_private": "/home/spid-cie-oidc-php/cert/rp.pem",
             "cert_public": "/home/spid-cie-oidc-php/cert/rp.crt",

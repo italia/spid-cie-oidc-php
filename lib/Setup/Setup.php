@@ -445,7 +445,7 @@ class Setup
         $config['rp_proxy_clients']['default']['spid_user_attributes'] = array('given_name', 'family_name', 'https://attributes.eid.gov.it/fiscal_number');
         $config['rp_proxy_clients']['default']['trust_marks'] = $_rp_trust_marks;
 
-        $_rp_redirect_uri = '/' . $config['service_name'] . '/oidc/rp/test.php';
+        $_rp_redirect_uri = ($config['service_name'] != '' ? '/' . $config['service_name'] : '') . '/oidc/rp/redirect';
 
         if (!isset($config['rp_proxy_clients']['default']['redirect_uri'])) {
             echo "Please insert redirect_uri (" .
@@ -456,6 +456,20 @@ class Setup
                 || $config['rp_proxy_clients']['default']['redirect_uri'] == ""
             ) {
                     $config['rp_proxy_clients']['default']['redirect_uri'] = $_rp_redirect_uri;
+            }
+        }
+
+        $_rp_proxy_redirect_uri = ($config['service_name'] != '' ? '/' . $config['service_name'] : '') . '/test.php';
+
+        if (!isset($config['rp_proxy_clients']['default']['proxy_redirect_uri'])) {
+            echo "Please insert proxy redirect_uri (" .
+              $colors->getColoredString($_rp_proxy_redirect_uri, "green") . "): ";
+            $config['rp_proxy_clients']['default']['proxy_redirect_uri'] = str_replace("'", "\'", readline());
+            if (
+                $config['rp_proxy_clients']['default']['proxy_redirect_uri'] == null
+                || $config['rp_proxy_clients']['default']['proxy_redirect_uri'] == ""
+            ) {
+                    $config['rp_proxy_clients']['default']['proxy_redirect_uri'] = $_rp_proxy_redirect_uri;
             }
         }
 
@@ -611,6 +625,17 @@ class Setup
             );
             $config['rp_proxy_clients']['default']['cert_enc_private'] = $config['install_dir'] . "/cert/rp-enc.pem";
             $config['rp_proxy_clients']['default']['cert_enc_public'] = $config['install_dir'] . "/cert/rp-enc.crt";
+            echo $colors->getColoredString("OK\n", "green");
+
+            echo $colors->getColoredString("\nMaking OpenSSL keys for Provider signing...\n", "white");
+            shell_exec(
+                "openssl req -new -x509 -config " . "config/openssl.cnf -days 730 " .
+                    " -keyout " . $config['install_dir'] . "/cert/op.pem" .
+                    " -out " . $config['install_dir'] . "/cert/op.crt" .
+                    " -extensions req_ext "
+            );
+            $config['op_proxy_cert_private'] = $config['install_dir'] . "/cert/op.pem";
+            $config['op_proxy_cert_public'] = $config['install_dir'] . "/cert/op.crt";
             echo $colors->getColoredString("OK\n", "green");
         }
 

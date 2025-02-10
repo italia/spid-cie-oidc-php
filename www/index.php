@@ -210,7 +210,7 @@ $f3->route(
 
         $acr = $config['requested_acr'];
         $user_attributes = $config['spid_user_attributes'];
-        $redirect_uri = $config['redirect_uri'];
+        $redirect_uri = $config['proxy_redirect_uri'];
         $req_id = $rp_database->createRequest($ta_id, $op_id, $redirect_uri, $state, $acr, $user_attributes);
         $request = $rp_database->getRequest($req_id);
         $code_verifier = $request['code_verifier'];
