@@ -89,6 +89,18 @@
                 "birthdate",
                 "https://attributes.eid.gov.it/fiscal_number"
             ],
+            "trust_marks": [
+                {
+                    "trust_mark": "",
+                    "iss": "https://oidc.registry.servizicie.interno.gov.it",
+                    "id": "https://oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                },
+                {
+                    "trust_mark": "",
+                    "iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
+                    "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                }
+            ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb/redirect",
             "proxy_redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
             "response_handler": "SPID_CIE_OIDC_PHP\\Response\\ResponseHandlerPlain",
@@ -123,6 +135,18 @@
                 "family_name",
                 "birthdate",
                 "https://attributes.eid.gov.it/fiscal_number"
+            ],
+            "trust_marks": [
+                {
+                    "trust_mark": "",
+                    "iss": "https://oidc.registry.servizicie.interno.gov.it",
+                    "id": "https://oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                },
+                {
+                    "trust_mark": "",
+                    "iss": "https://preprod.oidc.registry.servizicie.interno.gov.it",
+                    "id": "https://preprod.oidc.registry.servizicie.interno.gov.it/openid_relying_party/public"
+                }
             ],
             "redirect_uri": "http://relying-party-php.org:8003/oidc/rp/9798f8ca-2682-49bc-ac2f-67b568b86b74/redirect",
             "proxy_redirect_uri": "http://relying-party-php.org:8003/oidc/proxy/callback",
