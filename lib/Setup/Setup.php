@@ -71,7 +71,7 @@ class Setup
         $_rp_client_id = "http://relying-party-php.org:8003";
         $_rp_client_name = "Name of Relying Party";
         $_rp_organization_name = "Name of Organization";
-        $_rp_authority_hint = "http://trust-anchor.org:8000/";
+        $_rp_authority_hints = "http://trust-anchor.org:8000/";
         $_rp_contact = "info@relying-party-php.org";
         $_rp_trust_marks = [];
 
@@ -174,15 +174,16 @@ class Setup
             }
         }
 
-        if (!isset($config['rp_proxy_clients']['default']['authority_hint'])) {
+        if (!isset($config['rp_proxy_clients']['default']['authority_hints'])) {
             echo "Please insert authority_hint (" .
-            $colors->getColoredString($_rp_authority_hint, "green") . "): ";
-            $config['rp_proxy_clients']['default']['authority_hint'] = str_replace("'", "\'", readline());
+            $colors->getColoredString($_rp_authority_hints, "green") . "): ";
+            $config['rp_proxy_clients']['default']['authority_hints'] = array(str_replace("'", "\'", readline()));
             if (
-                $config['rp_proxy_clients']['default']['authority_hint'] == null
-                || $config['rp_proxy_clients']['default']['authority_hint'] == ""
+                !count($config['rp_proxy_clients']['default']['authority_hints'])
+                || $config['rp_proxy_clients']['default']['authority_hints'][0] == null
+                || $config['rp_proxy_clients']['default']['authority_hints'][0] == ""
             ) {
-                $config['rp_proxy_clients']['default']['authority_hint'] = $_rp_authority_hint;
+                $config['rp_proxy_clients']['default']['authority_hints'] = array($_rp_authority_hints);
             }
         }
 
@@ -482,7 +483,7 @@ class Setup
         echo $colors->getColoredString("\nclient_id: " . $config['rp_proxy_clients']['default']['client_id'], "yellow");
         echo $colors->getColoredString("\nclient_name: " . $config['rp_proxy_clients']['default']['client_name'], "yellow");
         echo $colors->getColoredString("\nOrganization Name: " . $config['rp_proxy_clients']['default']['organization_name'], "yellow");
-        echo $colors->getColoredString("\nauthority_hint: " . $config['rp_proxy_clients']['default']['authority_hint'], "yellow");
+        echo $colors->getColoredString("\nauthority_hints: [" . $config['rp_proxy_clients']['default']['authority_hints'][0] . "]", "yellow");
         echo $colors->getColoredString("\ncontacts: [" . $config['rp_proxy_clients']['default']['contacts'][0] . "]", "yellow");
         echo $colors->getColoredString("\nIs organization a Public Administration: ", "yellow");
         echo $colors->getColoredString(($config['rp_proxy_clients']['default']['is_pa']) ? "Y" : "N", "yellow");

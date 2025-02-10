@@ -118,9 +118,7 @@ class EntityStatement
                 "keys" => array($crt_fed_jwks)
             ),
             "iss" => $config['client_id'],
-            "authority_hints" => array(
-                $config['authority_hint']
-            ),
+            "authority_hints" => is_array($config['authority_hints']) ? $config['authority_hints'] : array($config['authority_hints']),
             "exp" => strtotime("+2 days"),
             "iat" => strtotime("-2 seconds"),
             "trust_marks" => $config['trust_marks'] ?? [],

@@ -11,7 +11,9 @@
             "application_type": "web",
             "client_registration_types": ["automatic"],
             "client_name": "Relying Party PHP",
-            "authority_hint": "http://trust-anchor.org:8000", 
+            "authority_hints": [
+                "http://trust-anchor.org:8000"
+            ],
             "subject_type": "pairwise",
             "scope": "openid",
             "code_challenge_method": "S256",
@@ -62,7 +64,9 @@
         "2b4601ab-9e1b-4f5b-8b1e-3ae27beb9fdb": {
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP Wordpress",
-            "authority_hint": "http://trust-anchor.org:8000", 
+            "authority_hints": [
+                "http://trust-anchor.org:8000"
+            ],
             "is_pa": true,
             "code": "ipa",
             "code_type": "IPACode",
@@ -104,7 +108,9 @@
         "9798f8ca-2682-49bc-ac2f-67b568b86b74": {
             "client_id": "http://relying-party-php.org:8003/",
             "client_name": "Relying Party PHP Drupal",
-            "authority_hint": "http://trust-anchor.org:8000", 
+            "authority_hints": [
+                "http://trust-anchor.org:8000"
+            ],
             "is_pa": true,
             "code": "ipa",
             "code_type": "IPACode",
