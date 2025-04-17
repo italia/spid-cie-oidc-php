@@ -50,6 +50,16 @@ SPID/CIE OIDC PHP is:
 - Proxy functions
 - Ready to use
 
+## Requirements
+
+- Web server
+- php >= 8.0.28
+- php-gmp 
+- php-mbstring
+- php-simplexml
+- php-sqlite3
+- php-zip
+
 ## Setup
 
 ```

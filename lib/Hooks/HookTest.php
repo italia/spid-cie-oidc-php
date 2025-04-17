@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Hooks;
@@ -31,10 +31,12 @@ namespace SPID_CIE_OIDC_PHP\Hooks;
  */
 class HookTest
 {
+    private $config;
+
     /**
      *  creates a new <HookTest> instance
      *
-     * @param object $config base configuration
+     * @param  object $config base configuration
      * @throws Exception
      * @return <HookTest>
      */
@@ -46,7 +48,7 @@ class HookTest
     /**
      *  main function that will be executed when the hook is enabled
      *
-     * @param object $data data provided by caller related to hook position
+     * @param  object $data data provided by caller related to hook position
      * @throws Exception
      * @return mixed what you want
      */

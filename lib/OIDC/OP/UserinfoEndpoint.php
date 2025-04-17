@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -28,15 +28,17 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 
 /**
  *  Userinfo Endpoint
- *
  */
 class UserinfoEndpoint
 {
+    private array $config;
+    private Database $database;
+
     /**
      *  creates a new UserinfoEndpoint instance
      *
-     * @param array $config base configuration
-     * @param Database $database database instance
+     * @param  array    $config   base configuration
+     * @param  Database $database database instance
      * @throws Exception
      * @return UserinfoEndpoint
      */
@@ -60,7 +62,8 @@ class UserinfoEndpoint
             }
             $this->database->log("UserinfoEndpoint", "USERINFO", "Bearer: " . $bearer);
             $userinfo = (array) $this->database->getUserinfo($bearer);
-            $userinfo['sub'] = $userinfo['fiscalNumber'];
+            $fiscalNumber = isset($userinfo['https://attributes_eid_gov_it/fiscal_number'])? $userinfo['https://attributes_eid_gov_it/fiscal_number'] : $userinfo['fiscal_number'];
+            $userinfo['sub'] = $fiscalNumber;
             $this->database->log("UserinfoEndpoint", "USERINFO", $userinfo);
 
             header('Content-Type: application/json; charset=utf-8');
@@ -76,6 +79,7 @@ class UserinfoEndpoint
 
     /**
      * Get hearder Authorization
+     *
      * @codeCoverageIgnore
      */
     private function getAuthorizationHeader()
@@ -102,6 +106,7 @@ class UserinfoEndpoint
 
     /**
      * get access token from header
+     *
      * @codeCoverageIgnore
      */
     private function getBearerToken()

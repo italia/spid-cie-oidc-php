@@ -8,7 +8,12 @@ error_log
 /data/
 /www/assets/spid-sp-access-button/
 /www/doc
+/www/stats
+/www/test.php
 /.phpdoc/
 /.phpunit.cache/
 tests.sqlite
+
+/www/assets
+/www/view
 

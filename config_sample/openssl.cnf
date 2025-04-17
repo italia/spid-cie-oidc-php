@@ -9,17 +9,17 @@ prompt = no
 req_extensions  = req_ext
 
 [ spid_oids ]
-spid-privatesector-SP=1.3.76.16.4.3.1
-spid-publicsector-SP=1.3.76.16.4.2.1
-uri=2.5.4.83
+spid-privatesector-SP = 1.3.76.16.4.3.1
+spid-publicsector-SP = 1.3.76.16.4.2.1
+uri = 2.5.4.83
 
 [ dn ]
-organizationName=Name of Relying Party
-commonName=Name of Relying Party
-uri=https://localhost
-organizationIdentifier=PA:IT-ipa
-countryName=IT
-localityName=Rome
+organizationName = Name of Relying Party
+commonName = Name of Relying Party
+uri = https://localhost
+organizationIdentifier = PA:IT-ipa
+countryName = IT
+localityName = Rome
 
 [ req_ext ]
 certificatePolicies = @spid_policies

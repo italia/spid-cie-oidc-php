@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\Core;
@@ -30,12 +30,36 @@ namespace SPID_CIE_OIDC_PHP\Core;
 class Util
 {
     /**
+     *  generate a random uuidv4
+     *
+     *  used for generate jti
+     *
+     * @param  int $data length of generated code
+     * @throws Exception
+     * @return string the random code
+     */
+    public static function uuidv4($data = null)
+    {
+        // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
+        $data = $data ?? random_bytes(16);
+        assert(strlen($data) == 16);
+
+        // Set version to 0100
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+        // Set bits 6-7 to 10
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+
+        // Output the 36 character UUID.
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
+
+    /**
      *  generate a random code
      *
      *  used for generate code_verifier and nonce
      *  [code verifier for PKCE](https://datatracker.ietf.org/doc/html/rfc7636#section-4.1)
      *
-     * @param int $length length of generated code
+     * @param  int $length length of generated code
      * @throws Exception
      * @return string the random code
      */
@@ -51,7 +75,7 @@ class Util
      *
      *  [code challenge for PKCE](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2)
      *
-     * @param string $code_verifier the code verifier
+     * @param  string $code_verifier the code verifier
      * @throws Exception
      * @return string the code_challenge
      */
@@ -65,7 +89,7 @@ class Util
     /**
      *  return the base64 url encoded value of the given string
      *
-     * @param string $data the string to encode
+     * @param  string $data the string to encode
      * @throws Exception
      * @return string the encoded string
      */
@@ -86,8 +110,8 @@ class Util
     /**
      *  decode a base64 url encoded string
      *
-     * @param string $data the string to decode
-     * @param boolean $strict if true, will return false if the input contains character from outside the base64 alphabet
+     * @param  string  $data   the string to decode
+     * @param  boolean $strict if true, will return false if the input contains character from outside the base64 alphabet
      * @throws Exception
      * @return string the decoded string
      */
@@ -100,9 +124,9 @@ class Util
     /**
      *  check if haystack string starts with needle string
      *
-     * @param string $haystack the string to check
-     * @param string $needle the string to check for
-     * @param string $case if case sensitive
+     * @param  string $haystack the string to check
+     * @param  string $needle   the string to check for
+     * @param  string $case     if case sensitive
      * @throws Exception
      * @return boolean true if haystack starts with needle
      */
@@ -117,9 +141,9 @@ class Util
     /**
      *  check if haystack string ends with needle string
      *
-     * @param string $haystack the string to check
-     * @param string $needle the string to check for
-     * @param string $case if case sensitive
+     * @param  string $haystack the string to check
+     * @param  string $needle   the string to check for
+     * @param  string $case     if case sensitive
      * @throws Exception
      * @return boolean true if haystack ends with needle
      */
@@ -134,8 +158,8 @@ class Util
 
 
     /**
-    * @codeCoverageIgnore
-    */
+     * @codeCoverageIgnore
+     */
     public static function debug($object)
     {
         header('Content-Type: application/json');

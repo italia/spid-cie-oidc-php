@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -28,15 +28,17 @@ use SPID_CIE_OIDC_PHP\OIDC\OP\Database;
 
 /**
  *  Session End Endpoint
- *
  */
 class SessionEndEndpoint
 {
+    private array $config;
+    private Database $database;
+
     /**
      *  creates a new SessionEndEndpoint instance
      *
-     * @param array $config base configuration
-     * @param Database $database database instance
+     * @param  array    $config   base configuration
+     * @param  Database $database database instance
      * @throws Exception
      * @return SessionEndEndpoint
      */
@@ -49,13 +51,13 @@ class SessionEndEndpoint
     /**
      *  process a session end request
      *
-     * @param object $_GET containing the request parameters
+     * @param  object $_GET containing the request parameters
      * @throws Exception
      */
     public function process()
     {
-        $id_token_hint = $_GET['id_token_hint'];
-        $post_logout_redirect_uri = $_GET['post_logout_redirect_uri'];
+        $id_token_hint = isset($_GET['id_token_hint'])? $_GET['id_token_hint'] : null;
+        $post_logout_redirect_uri = isset($_GET['post_logout_redirect_uri'])? $_GET['post_logout_redirect_uri'] : null;
 
         if ($id_token_hint) {
             // @codeCoverageIgnoreStart
@@ -106,7 +108,11 @@ class SessionEndEndpoint
             // @codeCoverageIgnoreEnd
         }
 
-        $logout_url .= 'oidc/rp/' . $request['client_id'] . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        if(isset($request) && $request!=null && isset($request['client_id'])) {
+            $logout_url .= 'oidc/rp/' . $request['client_id'] . '/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        } else {
+            $logout_url .= 'oidc/rp/logout?post_logout_redirect_uri=' . $post_logout_redirect_uri;
+        }
 
         // @codeCoverageIgnoreStart
         header('Location: ' . $logout_url);

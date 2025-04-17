@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -31,14 +31,16 @@ use SPID_CIE_OIDC_PHP\Core\JWT;
  *  Proxy OIDC Metadata Discovery
  *
  *  [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)
- *
  */
 class Metadata
 {
+    private array $config;
+    private array $metadata;
+
     /**
      *  creates a new Metadata instance
      *
-     * @param array $config base configuration
+     * @param  array $config base configuration
      * @throws Exception
      * @return Metadata
      */
@@ -56,6 +58,7 @@ class Metadata
             "authorization_endpoint" => $base_url . 'authz',
             "token_endpoint" => $base_url . 'token',
             "userinfo_endpoint" => $base_url . 'userinfo',
+            "end_session_endpoint" => $base_url . 'session/end', 
             "jwks_uri" => $base_url . 'certs',
             "scopes_supported" => array(
                 "openid profile"
@@ -71,15 +74,14 @@ class Metadata
             ),
             "claims_supported" => array(
                 "sub",
-                "spidCode",
-                "name",
-                "familyName",
-                "placeOfBirth",
-                "countyOfBirth",
-                "dateOfBirth",
+                "https://attributes.eid.gov.it/spid_code",
+                "given_name",
+                "family_name",
+                "place_of_birth",
+                "birthdate",
                 "gender",
-                "fiscalNumber",
-                "mobilePhone",
+                "https://attributes.eid.gov.it/fiscal_number",
+                "phone_number",
                 "email"
             )
         );

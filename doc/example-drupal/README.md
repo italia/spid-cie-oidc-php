@@ -38,7 +38,7 @@ Now you should be able to run the entire federation by just opening a Terminal s
 docker-compose up
 ```
 
-The proxy relying party should respond to http://relying-party-php.org:8003/,<br/>the drupal site configured to connect to the proxy should respond to http://relying-party-drupal.org:8005/<br/>and the Trust Anchor should respond to http://trust-anchor.org:8000/.
+The proxy relying party should respond to http://relying-party-php.org:8003/,<br/>the drupal site configured to connect to the proxy should respond to http://relying-party-drupal.org:8005/<br/>and the Trust Anchor should respond to http://trust-anchor.org:8000.
 
 Now navigate to the endpoint that shows the openid federation configuration of the proxy relying party as a decoded json (http://relying-party-php.org:8003/.well-known/openid-federation?output=json), you will receive something like the following output.
 
@@ -52,7 +52,7 @@ Now navigate to the endpoint that shows the openid federation configuration of t
         "keys": [...]
     },
     "authority_hints": [
-        "http://trust-anchor.org:8000/"
+        "http://trust-anchor.org:8000"
     ],
     "trust_marks": [],
     "metadata": {
@@ -98,7 +98,7 @@ The onboarding process can be summarized as follows:
 - Fill the form with the requested data (you should paste the same keys value in the Public Jwks field) and click Save. The newly added descendand should appear in the descendants list.
 - Now click on the "Federation entity descendants assigned profiles" button, in order to assign a profile to the newly created descendant and have the trust mark generated for it.
 - Click on the "Add federation entity descendand assigned profile" button on the top-right corner, and a form will show.
-- Select the RP as the descendant, a profile (e.g. the Public one) and the Issuer (the Trust Anchor at http://trust-anchor.org:8000/) and click Save.
+- Select the RP as the descendant, a profile (e.g. the Public one) and the Issuer (the Trust Anchor at http://trust-anchor.org:8000) and click Save.
 - The RP descendant should now appear in the associated policies.
 - If you click again on the RP in the "Federation entity descendants assigned profiles" page, now you should see the generated Trust Mark.
 

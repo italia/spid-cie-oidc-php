@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @author     Michele D'Amico <michele.damico@linfaservice.it>
- * @license    http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
+ * @author  Michele D'Amico <michele.damico@linfaservice.it>
+ * @license http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
 namespace SPID_CIE_OIDC_PHP\OIDC\OP;
@@ -37,15 +37,17 @@ const DEFAULT_TOKEN_EXPIRATION_TIME = 1200;
 
 /**
  *  Token Endpoint
- *
  */
 class TokenEndpoint
 {
+    private array $config;
+    private Database $database;
+
     /**
      *  creates a new TokenEndpoint instance
      *
-     * @param array $config base configuration
-     * @param Database $database database instance
+     * @param  array    $config   base configuration
+     * @param  Database $database database instance
      * @throws Exception
      * @return TokenEndpoint
      */
@@ -58,7 +60,7 @@ class TokenEndpoint
     /**
      *  process a token request
      *
-     * @param array $_POST containing the request parameters
+     * @param  array $_POST containing the request parameters
      * @throws Exception
      */
     public function process()
@@ -70,7 +72,7 @@ class TokenEndpoint
         $client_id      = $_POST['client_id'];
         $client_secret  = $_POST['client_secret'];
         $redirect_uri   = $_POST['redirect_uri'];
-        $state          = $_POST['state'];
+        $state          = isset($_POST['state']) ? $_POST['state'] : '';
 
         try {
             $credential = $this->getBasicAuthCredential();
@@ -94,10 +96,14 @@ class TokenEndpoint
                 }
                 // @codeCoverageIgnoreEnd
             }
-            $this->database->log("TokenEndpoint", "TOKEN REQUEST CREDENTIAL", array(
+            $this->database->log(
+                "TokenEndpoint",
+                "TOKEN REQUEST CREDENTIAL",
+                array(
                 "client_id" => $client_id,
                 "client_secret" =>  $client_secret
-            ));
+                )
+            );
 
             $this->database->log("TokenEndpoint", "TOKEN REQUEST", $_POST);
 
@@ -124,7 +130,7 @@ class TokenEndpoint
             $userinfo = (array) $this->database->getUserinfo($access_token);
             $request = $this->database->getRequestByCode($code);
 
-            $subject = $userinfo['fiscalNumber'];
+            $subject = $userinfo['fiscal_number'];
             $exp_time = 1800;
             $iss = $this->config['rp_proxy_clients'][$client_id]['client_id'];
             $aud = $client_id;
@@ -138,12 +144,14 @@ class TokenEndpoint
             $this->database->log("TokenEndpoint", "ID_TOKEN", $id_token);
 
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(array(
+            echo json_encode(
+                array(
                 "access_token" => $access_token,
                 "token_type" => "Bearer",
                 "expires_in" => 1800,
                 "id_token" => $id_token
-            ));
+                )
+            );
         } catch (\Exception $e) {
             // API /token error
             http_response_code(400);
@@ -157,12 +165,13 @@ class TokenEndpoint
 
     /**
      * Get username e password of Basic Authentication
+     *
      * @codeCoverageIgnore
      */
     private function getBasicAuthCredential()
     {
         $credential = false;
-        $authHeader = $this->getAuthorizationHeader();
+        $authHeader = $this->getAuthorizationHeader() || '';
         $this->database->log("TokenEndpoint", "TOKEN BASIC AUTH", $authHeader);
         if (substr($authHeader, 0, 5) == 'Basic') {
             $creds = base64_decode(substr($authHeader, 6));
@@ -177,6 +186,7 @@ class TokenEndpoint
 
     /**
      * Get header Authorization
+     *
      * @codeCoverageIgnore
      */
     private function getAuthorizationHeader()
@@ -205,6 +215,7 @@ class TokenEndpoint
 
     /**
      * Make ID Token
+     *
      * @codeCoverageIgnore
      */
     private function makeIdToken(string $subject, string $exp_time, string $iss, string $aud, string $nonce, string $jwk_pem): string
